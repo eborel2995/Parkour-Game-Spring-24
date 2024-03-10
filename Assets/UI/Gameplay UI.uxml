@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/UI%20Classes/Toolbar%20button.uss?fileID=7433441132597879392&amp;guid=8c3ff20452a32494697ce0380870b579&amp;type=3#Toolbar button" />
+    <ui:VisualElement name="Toolbox" style="flex-grow: 1; padding-top: 16px; padding-right: 16px; padding-bottom: 16px; padding-left: 16px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; max-height: 15%; flex-direction: row; flex-wrap: nowrap; flex-basis: auto;">
+        <ui:Button text="Select" parse-escape-sequences="true" display-tooltip-when-elided="true" class="button" />
+        <ui:Button text="Move" parse-escape-sequences="true" display-tooltip-when-elided="true" class="button" />
+        <ui:Button text="Rotate" parse-escape-sequences="true" display-tooltip-when-elided="true" class="button" />
+        <ui:Button text="Resize" parse-escape-sequences="true" display-tooltip-when-elided="true" class="button" />
+        <ui:Button text="Duplicate" parse-escape-sequences="true" display-tooltip-when-elided="true" class="button" />
+        <ui:Button text="Delete" parse-escape-sequences="true" display-tooltip-when-elided="true" class="button" />
+        <ui:Button text="Spawn" parse-escape-sequences="true" display-tooltip-when-elided="true" class="button" />
+        <ui:Button text="Visibility" parse-escape-sequences="true" display-tooltip-when-elided="true" class="button" />
+        <ui:Button text="Freeze" parse-escape-sequences="true" display-tooltip-when-elided="true" class="button" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Screen" style="flex-grow: 1;" />
+</ui:UXML>
