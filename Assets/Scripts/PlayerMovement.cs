@@ -7,11 +7,13 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;         // Variable to hold our 2D rigid body (player). 
     private Animator anim;          // Variable to hold the animator component.
     private SpriteRenderer sprite;  // Variable to hold the sprite renderer component.
+    private BoxCollider2D coll;     // Variable to hold the 2D box collider component.
     private float dirX = 0f;        // Variable to hold direction on the x-axis (initialized to zero).
 
     // "[SerializeFeild]" allows these variables to be edited in Unity.
     [SerializeField] private float moveSpeed = 7f;          // Variable to hold the movement speed of the player.
     [SerializeField] private float jumpForce = 14f;         // Variable to hold the jump force of the player.
+    [SerializeField] private LayerMask jumpableGround;      // Variable to check against IsGrounded() method.
 
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1        2        3        mathematically.
@@ -28,6 +30,9 @@ public class PlayerMovement : MonoBehaviour
 
         // Store GetComponent<SpriteRenderer>() once in sprite to save memory and CPU resources.
         sprite = GetComponent<SpriteRenderer>();
+
+        // Store GetComponent<BoxCollider2D>(0 once in coll to save memory and CPU resources.
+        coll = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame.
@@ -41,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
         // If space is pressed and IsGround() method returns true, then player jumps.
-        if (Input.GetButtonDown("Jump") /*&& IsGrounded()*/)
+        if (Input.GetButtonDown("Jump") && IsGrounded())
         {
             // Play the jump sound effect.
             //jumpSoundEffect.Play();
@@ -92,5 +97,14 @@ public class PlayerMovement : MonoBehaviour
 
         // Cast enum state into int state
         anim.SetInteger("state", (int)state);
+    }
+
+    // Method to check if player is on the ground.
+    private bool IsGrounded()
+    {
+        // Create a box around the player model that is slightly lower than player's hitbox.
+        // If box overlaps jumpableGround return true, then player can jump again.
+        // If box does not overlap jumpableGround return false, then player cannot jump again.
+        return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, 0.1f, jumpableGround);
     }
 }
