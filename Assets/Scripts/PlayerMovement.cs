@@ -13,6 +13,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 7f;          // Variable to hold the movement speed of the player.
     [SerializeField] private float jumpForce = 14f;         // Variable to hold the jump force of the player.
 
+    // Enum of movement state animations for our player to cycle through.
+    // Each variable equals      0     1        2        3        mathematically.
+    private enum MovementState { idle, running, jumping, falling }
+
     // Start is called before the first frame update.
     private void Start()
     {
@@ -53,22 +57,40 @@ public class PlayerMovement : MonoBehaviour
     // Method to update animation states.
     private void UpdateAnimationState()
     {
+        // Variable to hold the movement state.
+        MovementState state;
+
         // If moving right (positive x-axis) set running animation to true.
         if (dirX > 0f)
         {
-            anim.SetBool("running", true);  // running animation = true
-            sprite.flipX = false;           // flip animation to face right
+            state = MovementState.running;  // running animation = true
+            sprite.flipX = false;   // flip animation to face right
         }
         // If moving left (negative x-axis) set running animation to true and flip animation on the x-axis.
         else if (dirX < 0f)
         {
-            anim.SetBool("running", true);  // running animation = true
-            sprite.flipX = true;            // flip animatino to face left
+            state = MovementState.running;  // running animation = true
+            sprite.flipX = true;    // flip animatino to face left
         }
         // If not moving set running animation to false.
         else
         {
-            anim.SetBool("running", false); // running animation = false
+            state = MovementState.idle; // running animation = false
         }
+
+        // We use +/-0.1f because our y-axis velocity is never perfectly zero.
+        // If moving up (positive y-axis) set jumping animation to true.
+        if (rb.velocity.y > 0.1f)
+        {
+            state = MovementState.jumping;  // jumping animation = true.
+        }
+        // If moving down (negative y-axis) set falling animation to true.
+        else if (rb.velocity.y < -0.1f)
+        {
+            state = MovementState.falling;  // falling animation = true.
+        }
+
+        // Cast enum state into int state
+        anim.SetInteger("state", (int)state);
     }
 }
