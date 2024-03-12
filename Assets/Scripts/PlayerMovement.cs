@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody2D rb;         // Variable to hold our 2D rigid body (player). 
+    [SerializeField] private Rigidbody2D rb;         // Variable to hold our 2D rigid body (player). 
     private Animator anim;          // Variable to hold the animator component.
     private SpriteRenderer sprite;  // Variable to hold the sprite renderer component.
     private BoxCollider2D coll;     // Variable to hold the 2D box collider component.
@@ -22,16 +22,10 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update.
     private void Start()
     {
-        // Store GetComponent<Rigidbody2D>() once in rb to save memory and CPU resources.
+        // Store components once to save memory and CPU resources.
         rb = GetComponent<Rigidbody2D>();
-
-        // Store GetComponent<Animator>() once in anim to save memory and CPU resources.
         anim = GetComponent<Animator>();
-
-        // Store GetComponent<SpriteRenderer>() once in sprite to save memory and CPU resources.
         sprite = GetComponent<SpriteRenderer>();
-
-        // Store GetComponent<BoxCollider2D>(0 once in coll to save memory and CPU resources.
         coll = GetComponent<BoxCollider2D>();
     }
 
