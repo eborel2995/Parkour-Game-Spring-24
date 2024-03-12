@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rb;         // Variable to hold our 2D rigid body (player). 
-    private Animator anim;          // Variable to hold the animator component.
-    private SpriteRenderer sprite;  // Variable to hold the sprite renderer component.
-    private BoxCollider2D coll;     // Variable to hold the 2D box collider component.
+    // Get access to the components of the current object (player) so we can modify them in code
+    private Rigidbody2D rb;
+    private Animator anim;
+    private SpriteRenderer sprite;
+    private BoxCollider2D coll;     
     private float dirX = 0f;        // Variable to hold direction on the x-axis (initialized to zero).
 
     // "[SerializeFeild]" allows these variables to be edited in Unity.
-    [SerializeField] private float moveSpeed = 7f;          // Variable to hold the movement speed of the player.
-    [SerializeField] private float jumpForce = 14f;         // Variable to hold the jump force of the player.
+    [SerializeField] private float moveSpeed = 7f;          
+    [SerializeField] private float jumpForce = 14f;         
     [SerializeField] private LayerMask jumpableGround;      // Variable to check against IsGrounded() method.
 
     // Enum of movement state animations for our player to cycle through.
@@ -93,7 +94,6 @@ public class PlayerMovement : MonoBehaviour
         anim.SetInteger("state", (int)state);
     }
 
-    // Method to check if player is on the ground.
     private bool IsGrounded()
     {
         // Create a box around the player model that is slightly lower than player's hitbox.
