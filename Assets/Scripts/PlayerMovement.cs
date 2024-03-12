@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -18,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1        2        3        mathematically.
-    private enum MovementState { idle, running, jumping, falling }
+    private enum MovementState { idle, walking, jumping, falling }
 
     // Start is called before the first frame update.
     private void Start()
@@ -37,6 +39,8 @@ public class PlayerMovement : MonoBehaviour
         // "Raw" in "GetAxisRaw" makes the player stop instantly when letting go of a directional key.
         dirX = Input.GetAxisRaw("Horizontal");
 
+        //TODO: if holding shift, multiply moveSpeed by sprint multiplier
+
         // Use dirX to create velocity on the x-axis (joy-stick compatible).
         rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
@@ -50,26 +54,23 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
-        // Call UpdateAnimationState() method.
         UpdateAnimationState();
     }
 
-    // Method to update animation states.
     private void UpdateAnimationState()
     {
-        // Variable to hold the movement state.
         MovementState state;
 
         // If moving right (positive x-axis) set running animation to true.
         if (dirX > 0f)
         {
-            state = MovementState.running;  // running animation = true
+            state = MovementState.walking;  // running animation = true
             sprite.flipX = false;   // flip animation to face right
         }
         // If moving left (negative x-axis) set running animation to true and flip animation on the x-axis.
         else if (dirX < 0f)
         {
-            state = MovementState.running;  // running animation = true
+            state = MovementState.walking;  // running animation = true
             sprite.flipX = true;    // flip animatino to face left
         }
         // If not moving set running animation to false.
