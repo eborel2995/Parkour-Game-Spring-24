@@ -183,9 +183,9 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 90
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2841,6 +2841,12 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 41f970b09533e334692a1b846c9d43f8, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: d1feb9ed51f493c498eeae63caaa5c71, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileSpriteArray:
   - m_RefCount: 20
     m_Data: {fileID: -1521905778, guid: 413986c4a668c374d8de72a47621b531, type: 3}
@@ -2882,6 +2888,12 @@ Tilemap:
     m_Data: {fileID: 2091673547, guid: 413986c4a668c374d8de72a47621b531, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 1782600592, guid: 413986c4a668c374d8de72a47621b531, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileMatrixArray:
   - m_RefCount: 247
     m_Data:
@@ -3209,7 +3221,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7820516346713839761, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
       propertyPath: jumpForce
-      value: 16
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 7820516346713839761, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
       propertyPath: moveSpeed
