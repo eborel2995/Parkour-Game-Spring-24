@@ -3207,17 +3207,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7820516346713839761, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
+      propertyPath: jumpForce
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7820516346713839761, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
+      propertyPath: moveSpeed
+      value: 13.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8333422271324557611, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8486551105524922996, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8486551105524922996, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8486551105524922996, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
+      propertyPath: m_UseAutoMass
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8486551105524922996, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
+      propertyPath: m_GravityScale
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8764311905041258841, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3
+      value: 52.11
       objectReference: {fileID: 0}
     - target: {fileID: 8764311905041258841, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.58
       objectReference: {fileID: 0}
     - target: {fileID: 8764311905041258841, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3272,6 +3296,34 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 0.44
       objectReference: {fileID: 0}
+    - target: {fileID: 1946238364956861309, guid: 70b9910a04bebaa4da719254d33b3d20, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1946238364956861309, guid: 70b9910a04bebaa4da719254d33b3d20, type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1946238364956861309, guid: 70b9910a04bebaa4da719254d33b3d20, type: 3}
+      propertyPath: m_LinearDrag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1946238364956861309, guid: 70b9910a04bebaa4da719254d33b3d20, type: 3}
+      propertyPath: m_AngularDrag
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1946238364956861309, guid: 70b9910a04bebaa4da719254d33b3d20, type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1946238364956861309, guid: 70b9910a04bebaa4da719254d33b3d20, type: 3}
+      propertyPath: m_UseAutoMass
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1946238364956861309, guid: 70b9910a04bebaa4da719254d33b3d20, type: 3}
+      propertyPath: m_GravityScale
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2586349582932331969, guid: 70b9910a04bebaa4da719254d33b3d20, type: 3}
       propertyPath: m_LocalScale.x
       value: 5
@@ -3286,11 +3338,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2586349582932331969, guid: 70b9910a04bebaa4da719254d33b3d20, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 59.54
+      value: 58.43
       objectReference: {fileID: 0}
     - target: {fileID: 2586349582932331969, guid: 70b9910a04bebaa4da719254d33b3d20, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.26
+      value: 2.47
       objectReference: {fileID: 0}
     - target: {fileID: 2586349582932331969, guid: 70b9910a04bebaa4da719254d33b3d20, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3436,7 +3488,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 01defc04538219e4ca853272a3d14b8b, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
