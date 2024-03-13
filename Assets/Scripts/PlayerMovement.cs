@@ -99,16 +99,26 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
+        //TODO: MOVE TO Respawn.cs
+        #region respawn
         if (transform.position.y <= -15f)
         {
-            //Debug.Log($"Destroyed {gameObject.name}");
-            //Destroy(gameObject);
+            //respawn coordinates, serialize this vector
+            float x, y, z;
+            x = 50;
+            y = 16;
+            z = 0;
+
+            Debug.Log($"{gameObject.name} fell out of the world!");
+            
+            // Make sure to zero the player's velocity and movement to prevent clipping into terrain
             rb.velocity = new Vector2(0, 0);
-            transform.position = new Vector3(50, 16, 0);
             movingLeft = false;
             movingRight = false;
-            //Instantiate(gameObject, new Vector3(50, 16,0), transform.rotation);
+
+            transform.position = new Vector3(x, y, z);
         }
+        #endregion respawn
 
         UpdateAnimationState();
     }
