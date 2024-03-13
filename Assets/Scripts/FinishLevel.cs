@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,6 +26,9 @@ public class NewBehaviourScript : MonoBehaviour
         // If player collides with object AND level has not been completed, return true.
         if (collision.gameObject.name == "Player" && !levelCompleted)
         {
+            //ignore user input so player stays at the goal
+            collision.gameObject.GetComponent<PlayerMovement>().ignoreUserInput = true;
+            
             // Play finish sound effect.
             //finishSound.Play();
 
@@ -33,6 +37,7 @@ public class NewBehaviourScript : MonoBehaviour
 
             // Call CompleteLevel() method with delay.
             Invoke("CompleteLevel", 2f);
+            //collision.gameObject.GetComponent<PlayerMovement>().ignoreUserInput = false;
         }
     }
 

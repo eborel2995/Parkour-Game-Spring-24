@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D coll;     
     private float dirX = 0f;        // Variable to hold direction on the x-axis (initialized to zero).
 
+    public bool ignoreUserInput = false;
+
     private bool movingLeft = false;
     private bool movingRight = false;
 
@@ -46,6 +48,9 @@ public class PlayerMovement : MonoBehaviour
         //dirX = Input.GetAxisRaw("Horizontal");
 
         //TODO: if holding shift, multiply moveSpeed by sprint multiplier
+
+        
+        if (ignoreUserInput) { return; }
 
         //if player is pressing A or D then enable movement left or right
         if (Input.GetKeyDown(KeyCode.A))
