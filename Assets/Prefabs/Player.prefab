@@ -50,8 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a0080ad392f6b24ab17ca6b5d7fd31d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
-  jumpForce: 14
+  moveSpeed: 13.5
+  jumpForce: 18
   jumpableGround:
     serializedVersion: 2
     m_Bits: 64

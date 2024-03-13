@@ -94,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
-        if (transform.position.y <= -7f)
+        if (transform.position.y <= -15f)
         {
             //Debug.Log($"Destroyed {gameObject.name}");
             //Destroy(gameObject);
