@@ -40,6 +40,8 @@ public class NewBehaviourScript : MonoBehaviour
     private void CompleteLevel()
     {
         // Load next level.
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //SceneManager.UnloadScene("LevelSelection");
+        SceneManager.LoadScene("Level 1");
     }
 }

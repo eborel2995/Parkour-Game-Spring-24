@@ -1,37 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody2D rb;         // Variable to hold our 2D rigid body (player). 
-    private Animator anim;          // Variable to hold the animator component.
-    private SpriteRenderer sprite;  // Variable to hold the sprite renderer component.
-    private BoxCollider2D coll;     // Variable to hold the 2D box collider component.
+    // Get access to the components of the current object (player) so we can modify them in code
+    private Rigidbody2D rb;
+    private Animator anim;
+    private SpriteRenderer sprite;
+    private BoxCollider2D coll;     
     private float dirX = 0f;        // Variable to hold direction on the x-axis (initialized to zero).
 
+    private bool movingLeft = false;
+    private bool movingRight = false;
+
     // "[SerializeFeild]" allows these variables to be edited in Unity.
-    [SerializeField] private float moveSpeed = 7f;          // Variable to hold the movement speed of the player.
-    [SerializeField] private float jumpForce = 14f;         // Variable to hold the jump force of the player.
+    [SerializeField] private float moveSpeed;          
+    [SerializeField] private float jumpForce;         
     [SerializeField] private LayerMask jumpableGround;      // Variable to check against IsGrounded() method.
 
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1        2        3        mathematically.
-    private enum MovementState { idle, running, jumping, falling }
+    private enum MovementState { idle, walking, jumping, falling }
+
+    private enum MovementDirection { left, right }
 
     // Start is called before the first frame update.
     private void Start()
     {
-        // Store GetComponent<Rigidbody2D>() once in rb to save memory and CPU resources.
+        // Store components once to save memory and CPU resources.
         rb = GetComponent<Rigidbody2D>();
-
-        // Store GetComponent<Animator>() once in anim to save memory and CPU resources.
         anim = GetComponent<Animator>();
-
-        // Store GetComponent<SpriteRenderer>() once in sprite to save memory and CPU resources.
         sprite = GetComponent<SpriteRenderer>();
-
-        // Store GetComponent<BoxCollider2D>(0 once in coll to save memory and CPU resources.
         coll = GetComponent<BoxCollider2D>();
     }
 
@@ -40,12 +43,48 @@ public class PlayerMovement : MonoBehaviour
     {
         // Get direction on x-axis from Input Manager in Unity and store in dirX.
         // "Raw" in "GetAxisRaw" makes the player stop instantly when letting go of a directional key.
-        dirX = Input.GetAxisRaw("Horizontal");
+        //dirX = Input.GetAxisRaw("Horizontal");
+
+        //TODO: if holding shift, multiply moveSpeed by sprint multiplier
+
+        //if player is pressing A or D then enable movement left or right
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            movingLeft = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            movingRight = true;
+        }
+
+        //stop movement when player releases the key
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            movingLeft = false;
+        }
+        else if (Input.GetKeyUp(KeyCode.D))
+        {
+            movingRight = false;
+        }
+        
+        //move the player
+        if (movingLeft && !movingRight)
+        {
+            transform.position += (Vector3.left * moveSpeed) * Time.deltaTime;
+            //sprite.flipX = true;
+        }
+        else if (movingRight && !movingLeft)
+        {
+            transform.position += (Vector3.right * moveSpeed) * Time.deltaTime;
+            //sprite.flipX = false;
+        }
 
         // Use dirX to create velocity on the x-axis (joy-stick compatible).
-        rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
+        //rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
         // If space is pressed and IsGround() method returns true, then player jumps.
+
+        //how is "Jump" defined as space??? -Drew
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
             // Play the jump sound effect.
@@ -55,26 +94,33 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
-        // Call UpdateAnimationState() method.
+        if (transform.position.y <= -7f)
+        {
+            //Debug.Log($"Destroyed {gameObject.name}");
+            //Destroy(gameObject);
+            transform.position = new Vector3(50, 16, 0);
+            movingLeft = false;
+            movingRight = false;
+            //Instantiate(gameObject, new Vector3(50, 16,0), transform.rotation);
+        }
+
         UpdateAnimationState();
     }
 
-    // Method to update animation states.
     private void UpdateAnimationState()
     {
-        // Variable to hold the movement state.
         MovementState state;
 
         // If moving right (positive x-axis) set running animation to true.
-        if (dirX > 0f)
+        if (dirX > 0f || movingRight)
         {
-            state = MovementState.running;  // running animation = true
+            state = MovementState.walking;  // running animation = true
             sprite.flipX = false;   // flip animation to face right
         }
         // If moving left (negative x-axis) set running animation to true and flip animation on the x-axis.
-        else if (dirX < 0f)
+        else if (dirX < 0f || movingLeft)
         {
-            state = MovementState.running;  // running animation = true
+            state = MovementState.walking;  // running animation = true
             sprite.flipX = true;    // flip animatino to face left
         }
         // If not moving set running animation to false.
@@ -99,7 +145,6 @@ public class PlayerMovement : MonoBehaviour
         anim.SetInteger("state", (int)state);
     }
 
-    // Method to check if player is on the ground.
     private bool IsGrounded()
     {
         // Create a box around the player model that is slightly lower than player's hitbox.
