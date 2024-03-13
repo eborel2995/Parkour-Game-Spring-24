@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Get direction on x-axis from Input Manager in Unity and store in dirX.
         // "Raw" in "GetAxisRaw" makes the player stop instantly when letting go of a directional key.
-        dirX = Input.GetAxisRaw("Horizontal");
+        //dirX = Input.GetAxisRaw("Horizontal");
 
         //TODO: if holding shift, multiply moveSpeed by sprint multiplier
 
@@ -90,6 +90,16 @@ public class PlayerMovement : MonoBehaviour
 
             // Velocity for each axis: x = velocity from previous movement and y = 14.
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        }
+
+        if (transform.position.y <= -7f)
+        {
+            //Debug.Log($"Destroyed {gameObject.name}");
+            //Destroy(gameObject);
+            transform.position = new Vector3(50, 16, 0);
+            movingLeft = false;
+            movingRight = false;
+            //Instantiate(gameObject, new Vector3(50, 16,0), transform.rotation);
         }
 
         UpdateAnimationState();
