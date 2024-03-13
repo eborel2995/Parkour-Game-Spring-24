@@ -98,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
         {
             //Debug.Log($"Destroyed {gameObject.name}");
             //Destroy(gameObject);
+            rb.velocity = new Vector2(0, 0);
             transform.position = new Vector3(50, 16, 0);
             movingLeft = false;
             movingRight = false;

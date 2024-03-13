@@ -81,6 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fc5e2242d8b948448395b73a66bc2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EquippedWeapon: {fileID: 0}
 --- !u!50 &8486551105524922996
 Rigidbody2D:
   serializedVersion: 4
@@ -96,7 +97,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 3
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
