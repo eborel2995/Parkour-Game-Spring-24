@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D coll;     
     private float dirX = 0f;        // Variable to hold direction on the x-axis (initialized to zero).
 
+    public bool ignoreUserInput = false;
+
     private bool movingLeft = false;
     private bool movingRight = false;
 
@@ -46,6 +48,9 @@ public class PlayerMovement : MonoBehaviour
         //dirX = Input.GetAxisRaw("Horizontal");
 
         //TODO: if holding shift, multiply moveSpeed by sprint multiplier
+
+        
+        if (ignoreUserInput) { return; }
 
         //if player is pressing A or D then enable movement left or right
         if (Input.GetKeyDown(KeyCode.A))
@@ -94,15 +99,26 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
-        if (transform.position.y <= -7f)
+        //TODO: MOVE TO Respawn.cs
+        #region respawn
+        if (transform.position.y <= -15f)
         {
-            //Debug.Log($"Destroyed {gameObject.name}");
-            //Destroy(gameObject);
-            transform.position = new Vector3(50, 16, 0);
+            //respawn coordinates, serialize this vector
+            float x, y, z;
+            x = 50;
+            y = 16;
+            z = 0;
+
+            Debug.Log($"{gameObject.name} fell out of the world!");
+            
+            // Make sure to zero the player's velocity and movement to prevent clipping into terrain
+            rb.velocity = new Vector2(0, 0);
             movingLeft = false;
             movingRight = false;
-            //Instantiate(gameObject, new Vector3(50, 16,0), transform.rotation);
+
+            transform.position = new Vector3(x, y, z);
         }
+        #endregion respawn
 
         UpdateAnimationState();
     }
