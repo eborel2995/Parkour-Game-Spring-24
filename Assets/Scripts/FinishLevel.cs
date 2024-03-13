@@ -12,6 +12,7 @@ public class NewBehaviourScript : MonoBehaviour
     // Variable to confirm whether player has completed level.
     // This also prevents the repeated playing of the finish sound effect.
     private bool levelCompleted = false;
+    private float sceneSwapDelayS = 1f;
 
     // Start is called before the first frame update.
     private void Start()
@@ -36,8 +37,9 @@ public class NewBehaviourScript : MonoBehaviour
             levelCompleted = true;
 
             // Call CompleteLevel() method with delay.
-            Invoke("CompleteLevel", 2f);
+            Invoke("CompleteLevel", sceneSwapDelayS);
             //collision.gameObject.GetComponent<PlayerMovement>().ignoreUserInput = false;
+            //suction(collision.gameObject);
         }
     }
 
@@ -48,5 +50,20 @@ public class NewBehaviourScript : MonoBehaviour
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         //SceneManager.UnloadScene("LevelSelection");
         SceneManager.LoadScene("Level 1");
+    }
+
+    //this is just random code I'm testing here for a suction ability / trap
+    private void suction(GameObject go)
+    {
+        bool sucking = true;
+
+        while (sucking)
+        {
+            float xDif = go.transform.position.x - GameObject.Find("Bit").transform.position.x;
+            float yDif = go.transform.position.y - GameObject.Find("Bit").transform.position.y;
+            Vector3 vec = new Vector3(xDif, yDif, 0);
+
+            go.transform.position += vec;
+        }
     }
 }
