@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 
@@ -13,14 +14,19 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D coll;     
     private float dirX = 0f;        // Variable to hold direction on the x-axis (initialized to zero).
 
+    private bool movingLeft = false;
+    private bool movingRight = false;
+
     // "[SerializeFeild]" allows these variables to be edited in Unity.
-    [SerializeField] private float moveSpeed = 7f;          
-    [SerializeField] private float jumpForce = 14f;         
+    [SerializeField] private float moveSpeed;          
+    [SerializeField] private float jumpForce;         
     [SerializeField] private LayerMask jumpableGround;      // Variable to check against IsGrounded() method.
 
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1        2        3        mathematically.
     private enum MovementState { idle, walking, jumping, falling }
+
+    private enum MovementDirection { left, right }
 
     // Start is called before the first frame update.
     private void Start()
@@ -41,10 +47,42 @@ public class PlayerMovement : MonoBehaviour
 
         //TODO: if holding shift, multiply moveSpeed by sprint multiplier
 
+        //if player is pressing A or D then enable movement left or right
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            movingLeft = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            movingRight = true;
+        }
+
+        //stop movement when player releases the key
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            movingLeft = false;
+        }
+        else if (Input.GetKeyUp(KeyCode.D))
+        {
+            movingRight = false;
+        }
+        
+        //move the player
+        if (movingLeft && !movingRight)
+        {
+            transform.position += (Vector3.left * moveSpeed) * Time.deltaTime;
+        }
+        else if (movingRight && !movingLeft)
+        {
+            transform.position += (Vector3.right * moveSpeed) * Time.deltaTime;
+        }
+
         // Use dirX to create velocity on the x-axis (joy-stick compatible).
-        rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
+        //rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
         // If space is pressed and IsGround() method returns true, then player jumps.
+
+        //how is "Jump" defined as space??? -Drew
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
             // Play the jump sound effect.
