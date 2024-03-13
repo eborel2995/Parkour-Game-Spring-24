@@ -71,10 +71,12 @@ public class PlayerMovement : MonoBehaviour
         if (movingLeft && !movingRight)
         {
             transform.position += (Vector3.left * moveSpeed) * Time.deltaTime;
+            //sprite.flipX = true;
         }
         else if (movingRight && !movingLeft)
         {
             transform.position += (Vector3.right * moveSpeed) * Time.deltaTime;
+            //sprite.flipX = false;
         }
 
         // Use dirX to create velocity on the x-axis (joy-stick compatible).
@@ -110,13 +112,13 @@ public class PlayerMovement : MonoBehaviour
         MovementState state;
 
         // If moving right (positive x-axis) set running animation to true.
-        if (dirX > 0f)
+        if (dirX > 0f || movingRight)
         {
             state = MovementState.walking;  // running animation = true
             sprite.flipX = false;   // flip animation to face right
         }
         // If moving left (negative x-axis) set running animation to true and flip animation on the x-axis.
-        else if (dirX < 0f)
+        else if (dirX < 0f || movingLeft)
         {
             state = MovementState.walking;  // running animation = true
             sprite.flipX = true;    // flip animatino to face left
