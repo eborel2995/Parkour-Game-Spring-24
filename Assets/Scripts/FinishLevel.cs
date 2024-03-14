@@ -52,19 +52,4 @@ public class NewBehaviourScript : MonoBehaviour
         //SceneManager.UnloadScene("LevelSelection");
         SceneManager.LoadScene(nextScene);
     }
-
-    //this is just random code I'm testing here for a suction ability / trap
-    private void suction(GameObject go)
-    {
-        bool sucking = true;
-
-        while (sucking)
-        {
-            float xDif = go.transform.position.x - GameObject.Find("Bit").transform.position.x;
-            float yDif = go.transform.position.y - GameObject.Find("Bit").transform.position.y;
-            Vector3 vec = new Vector3(xDif, yDif, 0);
-
-            go.transform.position += vec * Time.deltaTime;
-        }
-    }
 }
