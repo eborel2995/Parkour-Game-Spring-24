@@ -38,7 +38,7 @@ public class NewBehaviourScript : MonoBehaviour
 
             // Call CompleteLevel() method with delay.
             Invoke("CompleteLevel", sceneSwapDelayS);
-            //collision.gameObject.GetComponent<PlayerMovement>().ignoreUserInput = false;
+
             //suction(collision.gameObject);
         }
     }
