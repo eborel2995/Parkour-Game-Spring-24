@@ -50,7 +50,11 @@ public class PlayerMovement : MonoBehaviour
         //TODO: if holding shift, multiply moveSpeed by sprint multiplier
 
         
-        if (ignoreUserInput) { return; }
+        if (ignoreUserInput) 
+        {
+            rb.bodyType = RigidbodyType2D.Static; 
+            return;
+        }
 
         //if player is pressing A or D then enable movement left or right
         if (Input.GetKeyDown(KeyCode.A))

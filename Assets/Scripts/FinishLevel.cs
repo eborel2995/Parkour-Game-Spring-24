@@ -29,7 +29,7 @@ public class NewBehaviourScript : MonoBehaviour
         {
             //ignore user input so player stays at the goal
             collision.gameObject.GetComponent<PlayerMovement>().ignoreUserInput = true;
-            
+
             // Play finish sound effect.
             //finishSound.Play();
 
@@ -63,7 +63,7 @@ public class NewBehaviourScript : MonoBehaviour
             float yDif = go.transform.position.y - GameObject.Find("Bit").transform.position.y;
             Vector3 vec = new Vector3(xDif, yDif, 0);
 
-            go.transform.position += vec;
+            go.transform.position += vec * Time.deltaTime;
         }
     }
 }
