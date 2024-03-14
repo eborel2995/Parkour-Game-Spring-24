@@ -13,6 +13,7 @@ public class NewBehaviourScript : MonoBehaviour
     // This also prevents the repeated playing of the finish sound effect.
     private bool levelCompleted = false;
     private float sceneSwapDelayS = 1f;
+    [SerializeField] private string nextScene;
 
     // Start is called before the first frame update.
     private void Start()
@@ -49,7 +50,7 @@ public class NewBehaviourScript : MonoBehaviour
         // Load next level.
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         //SceneManager.UnloadScene("LevelSelection");
-        SceneManager.LoadScene("Level 1");
+        SceneManager.LoadScene(nextScene);
     }
 
     //this is just random code I'm testing here for a suction ability / trap

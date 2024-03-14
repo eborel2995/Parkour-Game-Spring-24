@@ -25985,6 +25985,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level Door
       objectReference: {fileID: 0}
+    - target: {fileID: 4486467446712469105, guid: d0104c80e631af84cbbe5a856d399cad, type: 3}
+      propertyPath: nextScene
+      value: LevelSelection
+      objectReference: {fileID: 0}
     - target: {fileID: 6338851820662550619, guid: d0104c80e631af84cbbe5a856d399cad, type: 3}
       propertyPath: m_LocalPosition.x
       value: 30
