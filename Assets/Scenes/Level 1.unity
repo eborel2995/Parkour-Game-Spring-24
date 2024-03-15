@@ -3782,26 +3782,6 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!1 &693420476 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6078786389465916868, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
-  m_PrefabInstance: {fileID: 1429182108}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &693420478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 693420476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59698ed82b4106041835766ad60fbcb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugMode: 1
-  clickedWorldCoords: {x: 0, y: 0, z: 0}
-  spawnableObject: {fileID: 7504547978237593637, guid: 21fa099b29bf4b344bc0f49292f96fa1, type: 3}
 --- !u!1001 &749389383
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4725,10 +4705,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 969760448025976511, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6078786389465916868, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 693420478}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
 --- !u!1001 &1506099119
 PrefabInstance:
