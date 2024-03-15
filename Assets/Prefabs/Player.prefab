@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 8516226445506638758}
   - component: {fileID: 2088737056157033401}
   - component: {fileID: 4518772300485314624}
+  - component: {fileID: 3824333109678856286}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -269,4 +270,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea494f9d24795f9488103c1c4ea8b401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathFloorHeight: -10
+  deathFloorHeight: -13
+--- !u!114 &3824333109678856286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8333422271324557611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59698ed82b4106041835766ad60fbcb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugMode: 1
+  clickedWorldCoords: {x: 0, y: 0, z: 0}
+  spawnableObject: {fileID: 7504547978237593637, guid: 21fa099b29bf4b344bc0f49292f96fa1, type: 3}
