@@ -4651,11 +4651,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4624870958899399365, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 59.89
       objectReference: {fileID: 0}
     - target: {fileID: 4624870958899399365, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000023841858
+      value: 2.0000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 5436545458081819774, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
+      propertyPath: maxFallSpeed
+      value: -25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6799138404392988086, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 59.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 6799138404392988086, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7666562787019972966, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -117317,7 +117329,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1429182108}
   - {fileID: 2006796898}
   - {fileID: 1346596113}
   - {fileID: 1258828553}
-  - {fileID: 1429182108}

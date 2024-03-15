@@ -10,16 +10,16 @@ GameObject:
   m_Component:
   - component: {fileID: 8764311905041258841}
   - component: {fileID: 7820516346713839761}
+  - component: {fileID: 8516226445506638758}
   - component: {fileID: 4186320662290597384}
   - component: {fileID: 7071236876839537637}
+  - component: {fileID: 2088737056157033401}
+  - component: {fileID: 4518772300485314624}
+  - component: {fileID: 3824333109678856286}
   - component: {fileID: 8486551105524922996}
   - component: {fileID: 5955321943069814395}
   - component: {fileID: 5317306760354047496}
   - component: {fileID: 5203557617992093534}
-  - component: {fileID: 8516226445506638758}
-  - component: {fileID: 2088737056157033401}
-  - component: {fileID: 4518772300485314624}
-  - component: {fileID: 3824333109678856286}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -60,6 +60,18 @@ MonoBehaviour:
   jumpableGround:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &8516226445506638758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8333422271324557611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 715083639fd2de541a98c1f2c78ef32e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4186320662290597384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,6 +99,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EquippedWeapon: {fileID: 0}
+--- !u!114 &2088737056157033401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8333422271324557611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ceb3b5e045ea142b9c236c7090abf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resize: {x: 1, y: 1, z: 1}
+  gravity: 1
+--- !u!114 &4518772300485314624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8333422271324557611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea494f9d24795f9488103c1c4ea8b401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathFloorHeight: -13
+--- !u!114 &3824333109678856286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8333422271324557611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59698ed82b4106041835766ad60fbcb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugMode: 1
+  clickedWorldCoords: {x: 0, y: 0, z: 0}
+  spawnableObject: {fileID: 7504547978237593637, guid: 21fa099b29bf4b344bc0f49292f96fa1, type: 3}
 --- !u!50 &8486551105524922996
 Rigidbody2D:
   serializedVersion: 4
@@ -232,57 +286,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8516226445506638758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8333422271324557611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 715083639fd2de541a98c1f2c78ef32e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2088737056157033401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8333422271324557611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ceb3b5e045ea142b9c236c7090abf7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resize: {x: 1, y: 1, z: 1}
-  gravity: 1
---- !u!114 &4518772300485314624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8333422271324557611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea494f9d24795f9488103c1c4ea8b401, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deathFloorHeight: -13
---- !u!114 &3824333109678856286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8333422271324557611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59698ed82b4106041835766ad60fbcb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugMode: 1
-  clickedWorldCoords: {x: 0, y: 0, z: 0}
-  spawnableObject: {fileID: 7504547978237593637, guid: 21fa099b29bf4b344bc0f49292f96fa1, type: 3}
