@@ -80,12 +80,10 @@ public class PlayerMovement : MonoBehaviour
         if (movingLeft && !movingRight)
         {
             transform.position += (Vector3.left * moveSpeed) * Time.deltaTime;
-            //sprite.flipX = true;
         }
         else if (movingRight && !movingLeft)
         {
             transform.position += (Vector3.right * moveSpeed) * Time.deltaTime;
-            //sprite.flipX = false;
         }
 
         // Use dirX to create velocity on the x-axis (joy-stick compatible).
@@ -99,8 +97,11 @@ public class PlayerMovement : MonoBehaviour
             // Play the jump sound effect.
             //jumpSoundEffect.Play();
 
-            // Velocity for each axis: x = velocity from previous movement and y = 14.
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            //using AddForce causes an unintended effect of being able to climb walls by spamming jump on the wall
+            //but its kinda fun and replicable so I'm gonna keep it for now
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+
+            //rb.velocity = new Vector2(rb.velocity.x, jumpForce); //old jump code
         }
 
         UpdateAnimationState();
@@ -143,6 +144,7 @@ public class PlayerMovement : MonoBehaviour
         // Cast enum state into int state
         anim.SetInteger("state", (int)state);
     }
+    
     /// <summary>
     /// Create a box around the player model that is slightly lower than player's hitbox.
     /// </summary>
