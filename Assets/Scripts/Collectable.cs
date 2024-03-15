@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Collectable : MonoBehaviour
 {
-    [SerializeField] private bool canBeCollected = true;
+    //[SerializeField] private bool canBeCollected = true;
+    
     // Start is called before the first frame update
     void Start()
     {

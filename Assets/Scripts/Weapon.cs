@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Weapon : ScriptableObject
 {
-    private string name;
     private float damage;
 
     // Constructor
-    public Weapon(string n, float d)
+    public Weapon(float d)
     {
-        name = n;
         damage = d;
     }
 

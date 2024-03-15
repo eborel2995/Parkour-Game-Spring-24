@@ -103,27 +103,6 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
-        //TODO: MOVE TO Respawn.cs
-        #region respawn
-        if (transform.position.y <= -15f)
-        {
-            //respawn coordinates, serialize this vector
-            float x, y, z;
-            x = 50;
-            y = 16;
-            z = 0;
-
-            Debug.Log($"{gameObject.name} fell out of the world!");
-            
-            // Make sure to zero the player's velocity and movement to prevent clipping into terrain
-            rb.velocity = new Vector2(0, 0);
-            movingLeft = false;
-            movingRight = false;
-
-            transform.position = new Vector3(x, y, z);
-        }
-        #endregion respawn
-
         UpdateAnimationState();
     }
 
@@ -164,12 +143,15 @@ public class PlayerMovement : MonoBehaviour
         // Cast enum state into int state
         anim.SetInteger("state", (int)state);
     }
-
+    /// <summary>
+    /// Create a box around the player model that is slightly lower than player's hitbox.
+    /// </summary>
+    /// <returns>
+    /// If box overlaps jumpableGround return true, then player can jump again.
+    /// If box does not overlap jumpableGround return false, then player cannot jump again.
+    /// </returns>
     private bool IsGrounded()
     {
-        // Create a box around the player model that is slightly lower than player's hitbox.
-        // If box overlaps jumpableGround return true, then player can jump again.
-        // If box does not overlap jumpableGround return false, then player cannot jump again.
         return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, 0.1f, jumpableGround);
     }
 }
