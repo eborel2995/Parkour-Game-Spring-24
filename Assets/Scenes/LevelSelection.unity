@@ -2367,6 +2367,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4518772300485314624, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
+      propertyPath: deathFloorHeight
+      value: -15
+      objectReference: {fileID: 0}
     - target: {fileID: 7820516346713839761, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
       propertyPath: rb
       value: 
@@ -2389,11 +2393,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8764311905041258841, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17
+      value: -18.04
       objectReference: {fileID: 0}
     - target: {fileID: 8764311905041258841, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12
+      value: -11.28
       objectReference: {fileID: 0}
     - target: {fileID: 8764311905041258841, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
       propertyPath: m_LocalPosition.z
