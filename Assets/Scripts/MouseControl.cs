@@ -10,6 +10,9 @@ public class MouseControl : MonoBehaviour
     [SerializeField] public Vector3 clickedWorldCoords = Vector3.zero;
     [SerializeField] GameObject spawnableObject;
 
+    Vector3 screenMousePos;
+    Vector3 worldMousePos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,8 +22,8 @@ public class MouseControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 screenMousePos = Input.mousePosition;
-        Vector3 worldMousePos = screenMousePos;
+        screenMousePos = Input.mousePosition;
+        worldMousePos = screenMousePos;
 
         //convert to world coordinates
         //worldMousePos.z = 100f;
