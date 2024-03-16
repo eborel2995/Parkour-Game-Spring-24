@@ -7,7 +7,7 @@ public class MouseControl : MonoBehaviour
 {
     Camera cam;
     [SerializeField] bool debugMode = true;
-    [SerializeField] private Vector3 clickedWorldCoords = Vector3.zero;
+    [SerializeField] public Vector3 clickedWorldCoords = Vector3.zero;
     [SerializeField] GameObject spawnableObject;
 
     // Start is called before the first frame update
@@ -32,18 +32,18 @@ public class MouseControl : MonoBehaviour
         }
 
         //if the user clicks
-        if (Input.GetMouseButtonDown(0)) 
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) 
         {
             Ray ray = cam.ScreenPointToRay(screenMousePos);
             RaycastHit2D hit = Physics2D.Raycast(worldMousePos, Vector2.zero);
 
-            if (hit.collider != null) 
+            //if (hit.collider != null) 
             {
                 worldMousePos.z = 0;
                 clickedWorldCoords = worldMousePos;
-                Debug.Log($"Clicked {hit.transform.name} at {worldMousePos}");
+                //Debug.Log($"Clicked {hit.transform.name} at {worldMousePos}");
 
-                Instantiate(spawnableObject, worldMousePos, Quaternion.identity);
+                //Instantiate(spawnableObject, worldMousePos, Quaternion.identity);
             }
         }
 

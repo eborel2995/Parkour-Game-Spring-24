@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 5203557617992093534}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,6 +60,7 @@ MonoBehaviour:
   jumpableGround:
     serializedVersion: 2
     m_Bits: 64
+  maxFallSpeed: -5
 --- !u!114 &8516226445506638758
 MonoBehaviour:
   m_ObjectHideFlags: 0
