@@ -8,6 +8,7 @@ public class PlayerLife : MonoBehaviour
     // Get access to the components of the current object (player) so we can modify them in code
     private Animator anim;
     private Rigidbody2D rb;
+    private PlayerMovement pm;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +16,7 @@ public class PlayerLife : MonoBehaviour
         // Store components once to save memory and CPU resources.
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        pm = GetComponent<PlayerMovement>();
     }
 
     // Method for player colliding with traps.
@@ -32,6 +34,7 @@ public class PlayerLife : MonoBehaviour
     {
         // Disable player movement.
         rb.bodyType = RigidbodyType2D.Static;
+        pm.ignoreUserInput = true;
 
         // Activate death animation.
         anim.SetTrigger("death");
