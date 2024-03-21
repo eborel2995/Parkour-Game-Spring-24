@@ -112,13 +112,15 @@ public class PlayerMovement : MonoBehaviour
         //rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
 
-        //jump input buffer 
+        //todo: jump input buffer 
         /*
         if (IsGrounded() && lastJumpPressed + jumpBuffer > Time.time)
         {
             jump();
         }
         */
+
+        //todo: nudge player when they bump their head
 
         //if player is holding jump and on ground, then jump
         jump();
@@ -198,6 +200,7 @@ public class PlayerMovement : MonoBehaviour
             //rb.velocity = new Vector2(rb.velocity.x, jumpForce); //old jump code
         }
 
+        //todo: jump higher / shorter based on how long player holds jump
         //if (Input.GetButtonUp("Jump") && ??? && rb.velocity.y > 0)
         //{
         //endedJumpEarly = true;
