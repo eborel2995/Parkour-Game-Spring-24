@@ -1,5 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PortalGun : MonoBehaviour
@@ -9,9 +13,12 @@ public class PortalGun : MonoBehaviour
     [SerializeField] GameObject player;
     private Vector3 clickedSpot;
 
-    private GameObject latestPortal;
+    private GameObject latestBluePortal;
+    private GameObject latestOrangePortal;
     private Vector3 BluePortalCoords;
     private Vector3 OrangePortalCoords;
+
+    private int teleportCooldown = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -27,12 +34,12 @@ public class PortalGun : MonoBehaviour
         //blue portal
         if (Input.GetMouseButtonDown(0))
         {
-            if (latestPortal != null)
+            if (latestBluePortal != null)
             {
-                Destroy(latestPortal);
+                Destroy(latestBluePortal);
             }
             clickedSpot = player.GetComponent<MouseControl>().clickedWorldCoords;
-            latestPortal = Instantiate(PortalLeft, clickedSpot, Quaternion.identity);
+            latestBluePortal = Instantiate(PortalLeft, clickedSpot, Quaternion.identity);
             BluePortalCoords = clickedSpot;
             
         }
@@ -40,13 +47,47 @@ public class PortalGun : MonoBehaviour
         //orange portal
         if (Input.GetMouseButtonDown(1)) 
         {
-            if (latestPortal != null)
+            if (latestOrangePortal != null)
             {
-                Destroy(latestPortal);
+                Destroy(latestOrangePortal);
             }
             clickedSpot = player.GetComponent<MouseControl>().clickedWorldCoords;
-            latestPortal = Instantiate(PortalRight, clickedSpot, Quaternion.identity);
+            latestOrangePortal = Instantiate(PortalRight, clickedSpot, Quaternion.identity);
             OrangePortalCoords = clickedSpot;
+        }
+
+        if (teleportCooldown == 3)
+        {
+            teleportCollision();
+        }
+
+    }
+
+
+    IEnumerator CountDown()
+    {
+        yield return new WaitForSeconds(1);
+        teleportCooldown--;
+    }
+    public void teleportCooldownTimer()
+    {
+        StartCoroutine(CountDown());
+    }
+
+
+    void teleportCollision()
+    {
+        //if (player collidesWith latestBluePortal && latestOrangePortal != null)
+        {
+            player.transform.position = latestOrangePortal.transform.position;
+            teleportCooldownTimer();
+        }
+        //else if (player collidesWith latestOrangePortal && latestBluePortal != null)
+        {
+            player.transform.position = latestBluePortal.transform.position;
+            teleportCooldownTimer();
         }
     }
 }
+
+

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Cheats : MonoBehaviour
 {
@@ -21,6 +22,12 @@ public class Cheats : MonoBehaviour
     {
         transform.localScale = resize;
         rb.gravityScale = gravity;
+
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            
+        }
         
         //fix issue of losing rb when scene changes!
 
