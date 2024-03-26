@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 public class Cheats : MonoBehaviour
 {
     [SerializeField] float resize = 1;
-    [SerializeField] float gravity;
+    [SerializeField] float gravity = 5;
     [SerializeField] MouseControl mouseControl;
 
     Rigidbody2D rb;
@@ -14,8 +14,8 @@ public class Cheats : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        gravity = rb.gravityScale;
+        //rb = GetComponent<Rigidbody2D>();
+        //gravity = rb.gravityScale;
         mouseControl = GetComponent<MouseControl>();
     }
 
@@ -23,7 +23,7 @@ public class Cheats : MonoBehaviour
     void Update()
     {
         //transform.localScale = resize;
-        rb.gravityScale = gravity;
+        //rb.gravityScale = gravity;
 
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -36,6 +36,9 @@ public class Cheats : MonoBehaviour
         if (mouseControl.selectedObject != null) //player.currentlyEquiped(resizer) == true
         {
             mouseControl.selectedObject.transform.localScale = new Vector3(resize, resize, 1);
+
+            rb = mouseControl.selectedObject.GetComponent<Rigidbody2D>();
+            rb.gravityScale = gravity;
         }
         
         //fix issue of losing rb when scene changes!
