@@ -60,7 +60,7 @@ MonoBehaviour:
   jumpableGround:
     serializedVersion: 2
     m_Bits: 64
-  maxFallSpeed: -5
+  maxFallSpeed: -500
 --- !u!114 &8516226445506638758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fc5e2242d8b948448395b73a66bc2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EquippedWeapon: {fileID: 0}
+  EquippedTool: {fileID: 0}
 --- !u!114 &2088737056157033401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,8 +112,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ceb3b5e045ea142b9c236c7090abf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resize: {x: 1, y: 1, z: 1}
+  resize: 1
   gravity: 1
+  mouseControl: {fileID: 0}
 --- !u!114 &4518772300485314624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea494f9d24795f9488103c1c4ea8b401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathFloorHeight: -13
+  deathFloorHeight: -500
 --- !u!114 &3824333109678856286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,7 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugMode: 1
   clickedWorldCoords: {x: 0, y: 0, z: 0}
-  spawnableObject: {fileID: 7504547978237593637, guid: 21fa099b29bf4b344bc0f49292f96fa1, type: 3}
+  selectedObject: {fileID: 0}
 --- !u!50 &8486551105524922996
 Rigidbody2D:
   serializedVersion: 4
