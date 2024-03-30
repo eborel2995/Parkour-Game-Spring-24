@@ -7,7 +7,7 @@ public class Cheats : MonoBehaviour
 {
     [SerializeField] float resize = 1;
     [SerializeField] float gravity = 5;
-    [SerializeField] MouseControl mouseControl;
+    MouseControl mouseControl;
 
     Rigidbody2D rb;
 
