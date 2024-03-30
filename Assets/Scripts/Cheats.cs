@@ -25,14 +25,6 @@ public class Cheats : MonoBehaviour
         //transform.localScale = resize;
         //rb.gravityScale = gravity;
 
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Debug.Log("R pressed");
-            //(toggle) player.Equip(resizer);
-
-        }
-
         if (mouseControl.selectedObject != null) //player.currentlyEquiped(resizer) == true
         {
             mouseControl.selectedObject.transform.localScale = new Vector3(resize, resize, 1);
