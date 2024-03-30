@@ -8,7 +8,8 @@ public class MouseControl : MonoBehaviour
     Camera cam;
     [SerializeField] bool debugMode = true;
     [SerializeField] public Vector3 clickedWorldCoords = Vector3.zero;
-    [SerializeField] GameObject spawnableObject;
+    [SerializeField] public GameObject selectedObject = null;
+    //[SerializeField] GameObject spawnableObject;
 
     Vector3 screenMousePos;
     Vector3 worldMousePos;
@@ -40,10 +41,16 @@ public class MouseControl : MonoBehaviour
             Ray ray = cam.ScreenPointToRay(screenMousePos);
             RaycastHit2D hit = Physics2D.Raycast(worldMousePos, Vector2.zero);
 
-            //if (hit.collider != null) 
+            worldMousePos.z = 0;
+            clickedWorldCoords = worldMousePos;
+            if (hit.collider != null)
             {
-                worldMousePos.z = 0;
-                clickedWorldCoords = worldMousePos;
+                selectedObject = hit.collider.gameObject;
+            }
+            else
+            { 
+                //deselect the object
+                selectedObject = null;
                 //Debug.Log($"Clicked {hit.transform.name} at {worldMousePos}");
 
                 //Instantiate(spawnableObject, worldMousePos, Quaternion.identity);
