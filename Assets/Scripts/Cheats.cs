@@ -16,7 +16,7 @@ public class Cheats : MonoBehaviour
     {
         //rb = GetComponent<Rigidbody2D>();
         //gravity = rb.gravityScale;
-        mouseControl = GetComponent<MouseControl>();
+        mouseControl = MouseControl.Instance;
     }
 
     // Update is called once per frame

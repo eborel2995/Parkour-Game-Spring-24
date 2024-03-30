@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8764311905041258841}
+  - component: {fileID: 2088737056157033401}
   - component: {fileID: 7820516346713839761}
   - component: {fileID: 8516226445506638758}
   - component: {fileID: 4186320662290597384}
   - component: {fileID: 7071236876839537637}
-  - component: {fileID: 2088737056157033401}
   - component: {fileID: 4518772300485314624}
   - component: {fileID: 3824333109678856286}
   - component: {fileID: 8486551105524922996}
@@ -43,6 +43,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2088737056157033401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8333422271324557611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ceb3b5e045ea142b9c236c7090abf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resize: 1
+  gravity: 1
+  mouseControl: {fileID: 0}
 --- !u!114 &7820516346713839761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,21 +116,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EquippedTool: {fileID: 0}
---- !u!114 &2088737056157033401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8333422271324557611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ceb3b5e045ea142b9c236c7090abf7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resize: 1
-  gravity: 1
-  mouseControl: {fileID: 0}
 --- !u!114 &4518772300485314624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,5 +301,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b24c21ce2d9b7b644b16fca7344a5741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseScale: 1
-  baseAnimationSpeed: 1
