@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool movingLeft = false;
     private bool movingRight = false;
+    public static PlayerMovement Instance;
 
     // "[SerializeFeild]" allows these variables to be edited in Unity.
     [SerializeField] private float moveSpeed;          
