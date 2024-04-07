@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Equipped : MonoBehaviour
 {
-    [SerializeField] private Weapon EquippedWeapon;
+    [SerializeField] public Tool EquippedTool;
     // Start is called before the first frame update
     void Start()
     {

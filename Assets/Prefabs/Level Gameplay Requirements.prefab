@@ -168,6 +168,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'ith guid: a401fd9cf9195f846b7e0363db4fd883)01fd9cf9195f846b7e0363db4fd883)'
       objectReference: {fileID: 0}
+    - target: {fileID: 2088737056157033401, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
+      propertyPath: gravity
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8333422271324557611, guid: 44b968068502cc242ad2c1f235030e03, type: 3}
       propertyPath: m_Name
       value: Player

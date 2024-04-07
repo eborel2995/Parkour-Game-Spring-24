@@ -66,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame.
     private void Update()
     {
+
         // Get direction on x-axis from Input Manager in Unity and store in dirX.
         // "Raw" in "GetAxisRaw" makes the player stop instantly when letting go of a directional key.
         //dirX = Input.GetAxisRaw("Horizontal");
@@ -132,6 +133,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         UpdateAnimationState();
+
     }
 
     private void UpdateAnimationState()
