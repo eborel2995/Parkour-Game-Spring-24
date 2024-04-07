@@ -12,4 +12,9 @@ public class MainMenuStart : MonoBehaviour
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         SceneManager.LoadScene("LevelSelection");
     }
+    
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }

@@ -7707,6 +7707,14 @@ PrefabInstance:
       propertyPath: maxFallSpeed
       value: -25
       objectReference: {fileID: 0}
+    - target: {fileID: 5925675121933782683, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5925675121933782683, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6078786389465916868, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
       propertyPath: m_TagString
       value: Player
