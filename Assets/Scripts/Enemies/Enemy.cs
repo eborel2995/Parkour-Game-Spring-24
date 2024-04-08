@@ -8,17 +8,9 @@ public class Enemy : MonoBehaviour
     protected PlayerMovement player;
     [SerializeField] protected float moveSpeed = 5f;
     
-
-    protected float recoilTimer;
     protected Rigidbody2D rb;
-
-    protected enum EnemyStates
-    {
-        //Crawler
-        Crawler_Idle,
-        Crawler_Flip,
-    }
-    protected EnemyStates currentEnemyState;
+    protected SpriteRenderer sr;
+    protected Animator anim;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -28,19 +20,14 @@ public class Enemy : MonoBehaviour
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
         player = PlayerMovement.Instance;
+        anim = GetComponent<Animator>();
     }
     // Update is called once per frame
     protected virtual void Update()
     {
         
-    }
-
-    protected virtual void UpdateEnemyStates() { }
-
-    protected void ChangeState(EnemyStates _newState)
-    {
-        currentEnemyState = _newState;
     }
 
 }
