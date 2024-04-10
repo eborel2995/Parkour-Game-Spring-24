@@ -128,6 +128,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6078786389465916868, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
   m_PrefabInstance: {fileID: 1429182108}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &89517077 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6799138404392988086, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
+  m_PrefabInstance: {fileID: 1429182108}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &108463017
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -190,6 +195,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 499398751475554198, guid: ff90f5d57245392489080a29d12a20da, type: 3}
   m_PrefabInstance: {fileID: 108463017}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &183610747
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 183610748}
+  m_Layer: 0
+  m_Name: Ground Check
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &183610748
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183610747}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.027, y: -0.968, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 89517077}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &195563864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6138586494714008602, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
@@ -8168,7 +8204,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 969760448025976511, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6799138404392988086, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 183610748}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5866006608622716964, guid: fe9185ba7776a7543baae849b15a84b3, type: 3}
       insertIndex: -1

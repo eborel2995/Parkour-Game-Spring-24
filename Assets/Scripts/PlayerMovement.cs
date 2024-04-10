@@ -9,6 +9,90 @@ using UnityEngine.ProBuilder.MeshOperations;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private float horizontal;   // horizontal input from Unity input manager
+    private float speed = 8f;   // movement speed
+    private float jumpingPower = 16f;
+    private bool isFacingRight = true;
+
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+
+    // Update is called once per frame
+    private void Update()
+    {
+        horizontal = Input.GetAxisRaw("Horizontal");
+
+        if (Input.GetButtonDown("Jump") && IsGrounded())
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+        }
+
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+        }
+
+        Flip();
+    }
+
+    //...
+
+    private void FixedUpdate()
+    {
+        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+    }
+
+    // Check if player is touching jumpable ground
+    private bool IsGrounded()
+    {
+        // Create invisible circle at player's feet to check for overlap with jumpable ground
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+
+    // Flip the player model when changing directions
+    private void Flip()
+    {
+        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
+        {
+            isFacingRight = !isFacingRight;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
     // Get access to the components of the current object (player) so we can modify them in code
     private Rigidbody2D rb;
     private Animator anim;
@@ -29,23 +113,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask jumpableGround;      // Variable to check against IsGrounded() method.
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
-
-    /*
-    // TODO: higher jump when holding jump longer
-    private bool endedJumpEarly = true;
-    private float currentTimeHoldingJump = 0f;
-    private float fallSpeed = 5;
-    private float jumpEndEarlyGravityModifer = 20;
-    */
-
-    //jump buffer
-    //private float jumpBuffer = 0.1f;
-
-    //coyote time
-    /*
-    private float timeLeftGround;
-    private float coyoteTimeThreshhold = 0.1f;
-    */
 
     //clamped fall speed
     [SerializeField] private float maxFallSpeed = -5;
@@ -68,15 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame.
     private void Update()
-    {
-
-        // Get direction on x-axis from Input Manager in Unity and store in dirX.
-        // "Raw" in "GetAxisRaw" makes the player stop instantly when letting go of a directional key.
-        //dirX = Input.GetAxisRaw("Horizontal");
-
-        //TODO: if holding shift, multiply moveSpeed by sprint multiplier
-
-        
+    {        
         if (ignoreUserInput) 
         {
             rb.bodyType = RigidbodyType2D.Static; 
@@ -114,20 +173,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         WallSlide();
-
-        // Use dirX to create velocity on the x-axis (joy-stick compatible).
-        //rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
-
-
-        //todo: jump input buffer 
-        /*
-        if (IsGrounded() && lastJumpPressed + jumpBuffer > Time.time)
-        {
-            jump();
-        }
-        */
-
-        //todo: nudge player when they bump their head
 
         //if player is holding jump and on ground, then jump
         jump();
@@ -232,20 +277,6 @@ public class PlayerMovement : MonoBehaviour
             //rb.velocity = new Vector2(rb.velocity.x, jumpForce); //old jump code
         }
 
-        //todo: jump higher / shorter based on how long player holds jump
-        //if (Input.GetButtonUp("Jump") && ??? && rb.velocity.y > 0)
-        //{
-        //endedJumpEarly = true;
-
-
-        //}
-
-        /*
-        endedJumpEarly && rb.velocity.y > 0
-            ? fallSpeed * jumpEndEarlyGravityModifer
-            : fallSpeed;
-        
-        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - (fallSpeed * Time.deltaTime));
-        */
     }
+    */
 }
