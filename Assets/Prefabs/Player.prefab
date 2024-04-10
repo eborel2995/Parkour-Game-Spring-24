@@ -61,6 +61,10 @@ MonoBehaviour:
   jumpableGround:
     serializedVersion: 2
     m_Bits: 64
+  wallCheck: {fileID: 0}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
   maxFallSpeed: -500
 --- !u!114 &8516226445506638758
 MonoBehaviour:
@@ -167,7 +171,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -301,5 +305,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b24c21ce2d9b7b644b16fca7344a5741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseScale: 1
-  baseAnimationSpeed: 1

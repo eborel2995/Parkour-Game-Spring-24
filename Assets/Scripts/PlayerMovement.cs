@@ -6,9 +6,142 @@ using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.ProBuilder.MeshOperations;
+using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private Animator anim;
+    private Rigidbody2D rb;
+    private SpriteRenderer sprite;
+
+    public bool ignoreUserInput = false;
+
+    private float horizontal;
+    private float moveSpeed = 8f;
+    private float jumpingPower = 16f;
+
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+
+    // Enum of movement state animations for our player to cycle through.
+    // Each variable equals      0     1        2        3        mathematically.
+    private enum MovementState { idle, walking, jumping, falling }
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        if (ignoreUserInput)
+        {
+            rb.bodyType = RigidbodyType2D.Static;
+            return;
+        }
+
+        horizontal = Input.GetAxisRaw("Horizontal");
+
+        if (Input.GetButtonDown("Jump") && IsGrounded())
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+        }
+
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+        }
+
+        UpdateAnimationState();
+    }
+
+    //...
+
+    private void FixedUpdate()
+    {
+        rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
+    }
+
+    // Check if player is touching jumpable ground
+    private bool IsGrounded()
+    {
+        // Create invisible circle at player's feet to check for overlap with jumpable ground
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+
+    //...
+    private void UpdateAnimationState()
+    {
+        MovementState state;
+
+        // If moving right (positive x-axis) set running animation to true.
+        if (horizontal > 0f)
+        {
+            state = MovementState.walking;  // running animation = true
+            sprite.flipX = false;   // flip animation to face right
+        }
+        // If moving left (negative x-axis) set running animation to true and flip animation on the x-axis.
+        else if (horizontal < 0f)
+        {
+            state = MovementState.walking;  // running animation = true
+            sprite.flipX = true;    // flip animation to face left
+        }
+        // If not moving set running animation to false.
+        else
+        {
+            state = MovementState.idle; // running animation = false
+        }
+
+        // We use +/-0.1f because our y-axis velocity is never perfectly zero.
+        // If moving up (positive y-axis) set jumping animation to true.
+        if (rb.velocity.y > 0.1f)
+        {
+            state = MovementState.jumping;  // jumping animation = true.
+        }
+        // If moving down (negative y-axis) set falling animation to true.
+        else if (rb.velocity.y < -0.1f)
+        {
+            state = MovementState.falling;  // falling animation = true.
+        }
+
+        // Cast enum state into int state
+        anim.SetInteger("state", (int)state);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
     // Get access to the components of the current object (player) so we can modify them in code
     private Rigidbody2D rb;
     private Animator anim;
@@ -29,23 +162,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask jumpableGround;      // Variable to check against IsGrounded() method.
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
-
-    /*
-    // TODO: higher jump when holding jump longer
-    private bool endedJumpEarly = true;
-    private float currentTimeHoldingJump = 0f;
-    private float fallSpeed = 5;
-    private float jumpEndEarlyGravityModifer = 20;
-    */
-
-    //jump buffer
-    //private float jumpBuffer = 0.1f;
-
-    //coyote time
-    /*
-    private float timeLeftGround;
-    private float coyoteTimeThreshhold = 0.1f;
-    */
 
     //clamped fall speed
     [SerializeField] private float maxFallSpeed = -5;
@@ -68,15 +184,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame.
     private void Update()
-    {
-
-        // Get direction on x-axis from Input Manager in Unity and store in dirX.
-        // "Raw" in "GetAxisRaw" makes the player stop instantly when letting go of a directional key.
-        //dirX = Input.GetAxisRaw("Horizontal");
-
-        //TODO: if holding shift, multiply moveSpeed by sprint multiplier
-
-        
+    {        
         if (ignoreUserInput) 
         {
             rb.bodyType = RigidbodyType2D.Static; 
@@ -114,20 +222,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         WallSlide();
-
-        // Use dirX to create velocity on the x-axis (joy-stick compatible).
-        //rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
-
-
-        //todo: jump input buffer 
-        /*
-        if (IsGrounded() && lastJumpPressed + jumpBuffer > Time.time)
-        {
-            jump();
-        }
-        */
-
-        //todo: nudge player when they bump their head
 
         //if player is holding jump and on ground, then jump
         jump();
@@ -232,20 +326,6 @@ public class PlayerMovement : MonoBehaviour
             //rb.velocity = new Vector2(rb.velocity.x, jumpForce); //old jump code
         }
 
-        //todo: jump higher / shorter based on how long player holds jump
-        //if (Input.GetButtonUp("Jump") && ??? && rb.velocity.y > 0)
-        //{
-        //endedJumpEarly = true;
-
-
-        //}
-
-        /*
-        endedJumpEarly && rb.velocity.y > 0
-            ? fallSpeed * jumpEndEarlyGravityModifer
-            : fallSpeed;
-        
-        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - (fallSpeed * Time.deltaTime));
-        */
     }
+    */
 }
