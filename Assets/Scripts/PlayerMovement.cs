@@ -20,11 +20,15 @@ public class PlayerMovement : MonoBehaviour
 
     private bool movingLeft = false;
     private bool movingRight = false;
+    private bool isWallSliding;
+    private float wallSlidingSpeed = 2f;
 
     // "[SerializeFeild]" allows these variables to be edited in Unity.
     [SerializeField] private float moveSpeed;          
     [SerializeField] private float jumpForce;         
     [SerializeField] private LayerMask jumpableGround;      // Variable to check against IsGrounded() method.
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private LayerMask wallLayer;
 
     /*
     // TODO: higher jump when holding jump longer
@@ -109,6 +113,8 @@ public class PlayerMovement : MonoBehaviour
             transform.position += (Vector3.right * moveSpeed) * Time.deltaTime;
         }
 
+        WallSlide();
+
         // Use dirX to create velocity on the x-axis (joy-stick compatible).
         //rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
@@ -184,6 +190,30 @@ public class PlayerMovement : MonoBehaviour
     private bool IsGrounded()
     {
         return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, 0.1f, jumpableGround);
+    }
+
+    // is player touching a wall for wall sliding
+    // Create a circle around the player that is slightly to the front of the where the player is facing.
+    // If circle overlaps wallLayer return true, then player can wall slide.
+    // If circle does not overlap wallLayer return false, then player cannot wall slide.
+    private bool IsWalled()
+    {
+        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+        //return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.right, 0.2f, wallLayer);
+    }
+
+    private void WallSlide()
+    {
+        if (IsWalled() && !IsGrounded() && dirX != 0f)
+        {
+            Debug.Log("I should be wallsliding right now");
+            isWallSliding = true;
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
+        }
+        else
+        {
+            isWallSliding = false;
+        }
     }
 
     private void jump()
