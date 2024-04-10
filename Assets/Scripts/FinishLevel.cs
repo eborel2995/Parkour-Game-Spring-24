@@ -31,7 +31,7 @@ public class NewBehaviourScript : MonoBehaviour
         if (collision.gameObject.name == "Player" && !levelCompleted)
         {
             //ignore user input so player stays at the goal
-            //collision.gameObject.GetComponent<PlayerMovement>().ignoreUserInput = true;
+            collision.gameObject.GetComponent<PlayerMovement>().ignoreUserInput = true;
 
             // Play finish sound effect.
             //finishSound.Play();

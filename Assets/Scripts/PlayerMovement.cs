@@ -10,28 +10,39 @@ using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float horizontal;   // horizontal input from Unity input manager
-    private float speed = 8f;   // movement speed
-    private float jumpingPower = 16f;
-    private bool isFacingRight = true;
+    private Animator anim;
+    private Rigidbody2D rb;
+    private SpriteRenderer sprite;
 
-    [SerializeField] private Rigidbody2D rb;
+    public bool ignoreUserInput = false;
+
+    private float horizontal;
+    private float moveSpeed = 8f;
+    private float jumpingPower = 16f;
+
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
 
-    // Start is called before the first frame update.
+    // Enum of movement state animations for our player to cycle through.
+    // Each variable equals      0     1        2        3        mathematically.
+    private enum MovementState { idle, walking, jumping, falling }
+
     private void Start()
     {
-        // Store components once to save memory and CPU resources.
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        //anim = GetComponent<Animator>();
-        //sprite = GetComponent<SpriteRenderer>();
-        //coll = GetComponent<BoxCollider2D>();
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     private void Update()
     {
+        if (ignoreUserInput)
+        {
+            rb.bodyType = RigidbodyType2D.Static;
+            return;
+        }
+
         horizontal = Input.GetAxisRaw("Horizontal");
 
         if (Input.GetButtonDown("Jump") && IsGrounded())
@@ -44,14 +55,14 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
 
-        Flip();
+        UpdateAnimationState();
     }
 
     //...
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
     }
 
     // Check if player is touching jumpable ground
@@ -61,16 +72,43 @@ public class PlayerMovement : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
 
-    // Flip the player model when changing directions
-    private void Flip()
+    //...
+    private void UpdateAnimationState()
     {
-        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
+        MovementState state;
+
+        // If moving right (positive x-axis) set running animation to true.
+        if (horizontal > 0f)
         {
-            isFacingRight = !isFacingRight;
-            Vector3 localScale = transform.localScale;
-            localScale.x *= -1f;
-            transform.localScale = localScale;
+            state = MovementState.walking;  // running animation = true
+            sprite.flipX = false;   // flip animation to face right
         }
+        // If moving left (negative x-axis) set running animation to true and flip animation on the x-axis.
+        else if (horizontal < 0f)
+        {
+            state = MovementState.walking;  // running animation = true
+            sprite.flipX = true;    // flip animation to face left
+        }
+        // If not moving set running animation to false.
+        else
+        {
+            state = MovementState.idle; // running animation = false
+        }
+
+        // We use +/-0.1f because our y-axis velocity is never perfectly zero.
+        // If moving up (positive y-axis) set jumping animation to true.
+        if (rb.velocity.y > 0.1f)
+        {
+            state = MovementState.jumping;  // jumping animation = true.
+        }
+        // If moving down (negative y-axis) set falling animation to true.
+        else if (rb.velocity.y < -0.1f)
+        {
+            state = MovementState.falling;  // falling animation = true.
+        }
+
+        // Cast enum state into int state
+        anim.SetInteger("state", (int)state);
     }
 
 
