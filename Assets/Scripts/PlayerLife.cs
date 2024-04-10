@@ -34,7 +34,7 @@ public class PlayerLife : MonoBehaviour
     {
         // Disable player movement.
         rb.bodyType = RigidbodyType2D.Static;
-        pm.ignoreUserInput = true;
+        //pm.ignoreUserInput = true;
 
         // Activate death animation.
         anim.SetTrigger("death");

@@ -6,6 +6,7 @@ using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.ProBuilder.MeshOperations;
+using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -17,6 +18,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+
+    // Start is called before the first frame update.
+    private void Start()
+    {
+        // Store components once to save memory and CPU resources.
+        rb = GetComponent<Rigidbody2D>();
+        //anim = GetComponent<Animator>();
+        //sprite = GetComponent<SpriteRenderer>();
+        //coll = GetComponent<BoxCollider2D>();
+    }
 
     // Update is called once per frame
     private void Update()
