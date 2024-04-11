@@ -23,10 +23,10 @@ public class PlayerMovement : MonoBehaviour
     public bool ignoreUserInput = false;
 
     // Movement and jump variables
-    private float horizontal;
+    [SerializeField] private float horizontal;
     private float moveSpeed = 8f;
     private float jumpingPower = 16f;
-    private bool isFacingRight = true;
+    [SerializeField] private bool isFacingRight = true;
 
     // Wall sliding variables
     private bool isWallSliding = false;
@@ -180,38 +180,41 @@ public class PlayerMovement : MonoBehaviour
     // Switch between player animations based on movement
     private void UpdateAnimationState()
     {
-        bool flipped = horizontal < 0f;
+        if (!isWallJumping)
+        {
+            // If moving right (positive x-axis) set running animation to true.
+            if (horizontal > 0.1f)
+            {
+                state = MovementState.running;  // running animation = true
+                sprite.flipX = false;
+                isFacingRight = true;
+                //Flip();
+            }
+            // If moving left (negative x-axis) set running animation to true and flip animation on the x-axis.
+            else if (horizontal < 0.1f)
+            {
+                state = MovementState.running;  // running animation = true
+                sprite.flipX = true;
+                isFacingRight = false;
+                //Flip();
+            }
+            // If not moving set running animation to false.
+            else if (horizontal == 0f)
+            {
+                state = MovementState.idle;     // running animation = false
+            }
 
-        // If moving right (positive x-axis) set running animation to true.
-        if (horizontal > 0.1f && isFacingRight)
-        {
-            //isFacingRight = true;
-            state = MovementState.running;  // running animation = true
-            Flip();
-        }
-        // If moving left (negative x-axis) set running animation to true and flip animation on the x-axis.
-        else if (horizontal < 0.1f && !isFacingRight)
-        {
-            //isFacingRight = false;
-            state = MovementState.running;  // running animation = true
-            Flip();
-        }
-        // If not moving set running animation to false.
-        else
-        {
-            state = MovementState.idle;     // running animation = false
-        }
-
-        // We use +/-0.1f because our y-axis velocity is never perfectly zero.
-        // If moving up (positive y-axis) set jumping animation to true.
-        if (rb.velocity.y > 0.1f)
-        {
-            state = MovementState.jumping;  // jumping animation = true.
-        }
-        // If moving down (negative y-axis) set falling animation to true.
-        else if (rb.velocity.y < -0.1f)
-        {
-            state = MovementState.falling;  // falling animation = true.
+            // We use +/-0.1f because our y-axis velocity is never perfectly zero.
+            // If moving up (positive y-axis) set jumping animation to true.
+            if (rb.velocity.y > 0.1f)
+            {
+                state = MovementState.jumping;  // jumping animation = true.
+            }
+            // If moving down (negative y-axis) set falling animation to true.
+            else if (rb.velocity.y < -0.1f)
+            {
+                state = MovementState.falling;  // falling animation = true.
+            }
         }
     }
 }
