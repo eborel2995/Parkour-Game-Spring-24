@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.VisualScripting.ReorderableList;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.ProBuilder.MeshOperations;
@@ -10,19 +11,36 @@ using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //...
     private Animator anim;
     private Rigidbody2D rb;
+    private BoxCollider2D coll;
     private SpriteRenderer sprite;
 
+
+    //...
     public bool ignoreUserInput = false;
 
+    // Movement and jump variables
     private float horizontal;
     private float moveSpeed = 8f;
     private float jumpingPower = 16f;
+    private bool isFacingRight = true;
 
+    // Wall sliding variables
     private bool isWallSliding;
     private float wallSlidingSpeed = 2f;
 
+    // Wall jumping variables
+    private bool isWallJumping;
+    private bool canWallJump;
+    private float wallJumpingDirection;
+    private float wallJumpingTime = 0.2f;
+    private float wallJumpingCounter;
+    private float wallJumpingDuration = 0.4f;
+    private Vector2 wallJumpingPower = new Vector2(8f, 16f);
+
+    // "[SerializeFeild]" allows these variables to be edited in Unity.
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
@@ -32,10 +50,12 @@ public class PlayerMovement : MonoBehaviour
     // Each variable equals      0     1        2        3        mathematically.
     private enum MovementState { idle, walking, jumping, falling }
 
+    // Start is called before the first frame update.
     private void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        coll = GetComponent<BoxCollider2D>();
         sprite = GetComponent<SpriteRenderer>();
     }
 
@@ -61,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         WallSlide();
+        WallJump();
         UpdateAnimationState();
     }
 
@@ -68,7 +89,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
+        if (!isWallJumping)
+        {
+            rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
+        }
     }
 
     // Check if player is touching jumpable ground
@@ -82,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
     private bool IsWalled()
     {
         // Create invisible circle at player side to check for overlap with walls
-        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+        return Physics2D.OverlapCircle(wallCheck.position, 1f, wallLayer);
     }
 
     //...
@@ -100,42 +124,105 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //...
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // if player touches a wall (layer 8)
+        if (collision.gameObject.layer == 8)
+        {
+            canWallJump = true;
+            Debug.Log("touching wall");
+            Debug.Log(canWallJump);
+        }
+    }
+
+    //...
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        // if player stops touching a wall (layer 8)
+        if (collision.gameObject.layer == 8)
+        {
+            canWallJump = false;
+            Debug.Log("NOT touching wall");
+            Debug.Log(canWallJump);
+        }
+    }
+
+    //...
+    private void WallJump()
+    {
+        if (isWallSliding)
+        {
+            isWallJumping = false;
+            wallJumpingCounter = wallJumpingTime;
+
+            //Debug.Log(wallJumpingCounter);         
+
+            CancelInvoke(nameof(StopWallJumping));
+        }
+        else
+        {
+            wallJumpingCounter -= Time.deltaTime;
+        }
+
+        //if (Input.GetButtonDown("Jump") && wallJumpingCounter > 0f)
+        if (Input.GetButtonDown("Jump") && canWallJump)
+        {
+            isWallJumping = true;
+            rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+            wallJumpingCounter = 0f;
+
+            Invoke(nameof(StopWallJumping), wallJumpingDuration);
+        }
+    }
+
+    //...
+    private void StopWallJumping()
+    {
+        isWallJumping = false;
+    }
+
+    //...
     private void UpdateAnimationState()
     {
         MovementState state;
 
-        // If moving right (positive x-axis) set running animation to true.
-        if (horizontal > 0f)
+        if (!isWallJumping)
         {
-            state = MovementState.walking;  // running animation = true
-            sprite.flipX = false;   // flip animation to face right
-        }
-        // If moving left (negative x-axis) set running animation to true and flip animation on the x-axis.
-        else if (horizontal < 0f)
-        {
-            state = MovementState.walking;  // running animation = true
-            sprite.flipX = true;    // flip animation to face left
-        }
-        // If not moving set running animation to false.
-        else
-        {
-            state = MovementState.idle; // running animation = false
-        }
+            // If moving right (positive x-axis) set running animation to true.
+            if (horizontal > 0f)
+            {
+                isFacingRight = true;
+                state = MovementState.walking;  // running animation = true
+                sprite.flipX = false;           // flip animation to face right
+            }
+            // If moving left (negative x-axis) set running animation to true and flip animation on the x-axis.
+            else if (horizontal < 0f)
+            {
+                isFacingRight = false;
+                state = MovementState.walking;  // running animation = true
+                sprite.flipX = true;            // flip animation to face left
+            }
+            // If not moving set running animation to false.
+            else
+            {
+                state = MovementState.idle;     // running animation = false
+            }
 
-        // We use +/-0.1f because our y-axis velocity is never perfectly zero.
-        // If moving up (positive y-axis) set jumping animation to true.
-        if (rb.velocity.y > 0.1f)
-        {
-            state = MovementState.jumping;  // jumping animation = true.
-        }
-        // If moving down (negative y-axis) set falling animation to true.
-        else if (rb.velocity.y < -0.1f)
-        {
-            state = MovementState.falling;  // falling animation = true.
-        }
+            // We use +/-0.1f because our y-axis velocity is never perfectly zero.
+            // If moving up (positive y-axis) set jumping animation to true.
+            if (rb.velocity.y > 0.1f)
+            {
+                state = MovementState.jumping;  // jumping animation = true.
+            }
+            // If moving down (negative y-axis) set falling animation to true.
+            else if (rb.velocity.y < -0.1f)
+            {
+                state = MovementState.falling;  // falling animation = true.
+            }
 
-        // Cast enum state into int state
-        anim.SetInteger("state", (int)state);
+            // Cast enum state into int state
+            anim.SetInteger("state", (int)state);
+        }
     }
 
 
