@@ -20,8 +20,13 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed = 8f;
     private float jumpingPower = 16f;
 
+    private bool isWallSliding;
+    private float wallSlidingSpeed = 2f;
+
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private LayerMask wallLayer;
 
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1        2        3        mathematically.
@@ -55,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
 
+        WallSlide();
         UpdateAnimationState();
     }
 
@@ -70,6 +76,27 @@ public class PlayerMovement : MonoBehaviour
     {
         // Create invisible circle at player's feet to check for overlap with jumpable ground
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+
+    // Check if player is touching a wall
+    private bool IsWalled()
+    {
+        // Create invisible circle at player side to check for overlap with walls
+        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+    }
+
+    //...
+    private void WallSlide()
+    {
+        if (IsWalled() && !IsGrounded() && horizontal != 0f)
+        {
+            isWallSliding = true;
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
+        }
+        else
+        {
+            isWallSliding = false;
+        }
     }
 
     //...
