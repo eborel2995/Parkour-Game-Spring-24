@@ -3,12 +3,259 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.VisualScripting.ReorderableList;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.ProBuilder.MeshOperations;
+using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //...
+    private Animator anim;
+    private Rigidbody2D rb;
+    private BoxCollider2D coll;
+    private SpriteRenderer sprite;
+
+
+    //...
+    public bool ignoreUserInput = false;
+
+    // Movement and jump variables
+    private float horizontal;
+    private float moveSpeed = 8f;
+    private float jumpingPower = 16f;
+    private bool isFacingRight = true;
+
+    // Wall sliding variables
+    private bool isWallSliding;
+    private float wallSlidingSpeed = 2f;
+
+    // Wall jumping variables
+    private bool isWallJumping;
+    private bool canWallJump;
+    private float wallJumpingDirection;
+    private float wallJumpingTime = 0.2f;
+    private float wallJumpingCounter;
+    private float wallJumpingDuration = 0.4f;
+    private Vector2 wallJumpingPower = new Vector2(8f, 16f);
+
+    // "[SerializeFeild]" allows these variables to be edited in Unity.
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private LayerMask wallLayer;
+
+    // Enum of movement state animations for our player to cycle through.
+    // Each variable equals      0     1        2        3        mathematically.
+    private enum MovementState { idle, walking, jumping, falling }
+
+    // Start is called before the first frame update.
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        coll = GetComponent<BoxCollider2D>();
+        sprite = GetComponent<SpriteRenderer>();
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        if (ignoreUserInput)
+        {
+            rb.bodyType = RigidbodyType2D.Static;
+            return;
+        }
+
+        horizontal = Input.GetAxisRaw("Horizontal");
+
+        if (Input.GetButtonDown("Jump") && IsGrounded())
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+        }
+
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+        }
+
+        WallSlide();
+        WallJump();
+        UpdateAnimationState();
+    }
+
+    //...
+
+    private void FixedUpdate()
+    {
+        if (!isWallJumping)
+        {
+            rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
+        }
+    }
+
+    // Check if player is touching jumpable ground
+    private bool IsGrounded()
+    {
+        // Create invisible circle at player's feet to check for overlap with jumpable ground
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+
+    // Check if player is touching a wall
+    private bool IsWalled()
+    {
+        // Create invisible circle at player side to check for overlap with walls
+        return Physics2D.OverlapCircle(wallCheck.position, 1f, wallLayer);
+    }
+
+    //...
+    private void WallSlide()
+    {
+        if (IsWalled() && !IsGrounded() && horizontal != 0f)
+        {
+            isWallSliding = true;
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
+        }
+        else
+        {
+            isWallSliding = false;
+        }
+    }
+
+    //...
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // if player touches a wall (layer 8)
+        if (collision.gameObject.layer == 8)
+        {
+            canWallJump = true;
+            Debug.Log("touching wall");
+            Debug.Log(canWallJump);
+        }
+    }
+
+    //...
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        // if player stops touching a wall (layer 8)
+        if (collision.gameObject.layer == 8)
+        {
+            canWallJump = false;
+            Debug.Log("NOT touching wall");
+            Debug.Log(canWallJump);
+        }
+    }
+
+    //...
+    private void WallJump()
+    {
+        if (isWallSliding)
+        {
+            isWallJumping = false;
+            wallJumpingCounter = wallJumpingTime;
+
+            //Debug.Log(wallJumpingCounter);         
+
+            CancelInvoke(nameof(StopWallJumping));
+        }
+        else
+        {
+            wallJumpingCounter -= Time.deltaTime;
+        }
+
+        //if (Input.GetButtonDown("Jump") && wallJumpingCounter > 0f)
+        if (Input.GetButtonDown("Jump") && canWallJump)
+        {
+            isWallJumping = true;
+            rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+            wallJumpingCounter = 0f;
+
+            Invoke(nameof(StopWallJumping), wallJumpingDuration);
+        }
+    }
+
+    //...
+    private void StopWallJumping()
+    {
+        isWallJumping = false;
+    }
+
+    //...
+    private void UpdateAnimationState()
+    {
+        MovementState state;
+
+        if (!isWallJumping)
+        {
+            // If moving right (positive x-axis) set running animation to true.
+            if (horizontal > 0f)
+            {
+                isFacingRight = true;
+                state = MovementState.walking;  // running animation = true
+                sprite.flipX = false;           // flip animation to face right
+            }
+            // If moving left (negative x-axis) set running animation to true and flip animation on the x-axis.
+            else if (horizontal < 0f)
+            {
+                isFacingRight = false;
+                state = MovementState.walking;  // running animation = true
+                sprite.flipX = true;            // flip animation to face left
+            }
+            // If not moving set running animation to false.
+            else
+            {
+                state = MovementState.idle;     // running animation = false
+            }
+
+            // We use +/-0.1f because our y-axis velocity is never perfectly zero.
+            // If moving up (positive y-axis) set jumping animation to true.
+            if (rb.velocity.y > 0.1f)
+            {
+                state = MovementState.jumping;  // jumping animation = true.
+            }
+            // If moving down (negative y-axis) set falling animation to true.
+            else if (rb.velocity.y < -0.1f)
+            {
+                state = MovementState.falling;  // falling animation = true.
+            }
+
+            // Cast enum state into int state
+            anim.SetInteger("state", (int)state);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
     // Get access to the components of the current object (player) so we can modify them in code
     private Rigidbody2D rb;
     private Animator anim;
@@ -29,23 +276,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask jumpableGround;      // Variable to check against IsGrounded() method.
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
-
-    /*
-    // TODO: higher jump when holding jump longer
-    private bool endedJumpEarly = true;
-    private float currentTimeHoldingJump = 0f;
-    private float fallSpeed = 5;
-    private float jumpEndEarlyGravityModifer = 20;
-    */
-
-    //jump buffer
-    //private float jumpBuffer = 0.1f;
-
-    //coyote time
-    /*
-    private float timeLeftGround;
-    private float coyoteTimeThreshhold = 0.1f;
-    */
 
     //clamped fall speed
     [SerializeField] private float maxFallSpeed = -5;
@@ -68,15 +298,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame.
     private void Update()
-    {
-
-        // Get direction on x-axis from Input Manager in Unity and store in dirX.
-        // "Raw" in "GetAxisRaw" makes the player stop instantly when letting go of a directional key.
-        //dirX = Input.GetAxisRaw("Horizontal");
-
-        //TODO: if holding shift, multiply moveSpeed by sprint multiplier
-
-        
+    {        
         if (ignoreUserInput) 
         {
             rb.bodyType = RigidbodyType2D.Static; 
@@ -114,20 +336,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         WallSlide();
-
-        // Use dirX to create velocity on the x-axis (joy-stick compatible).
-        //rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
-
-
-        //todo: jump input buffer 
-        /*
-        if (IsGrounded() && lastJumpPressed + jumpBuffer > Time.time)
-        {
-            jump();
-        }
-        */
-
-        //todo: nudge player when they bump their head
 
         //if player is holding jump and on ground, then jump
         jump();
@@ -232,20 +440,6 @@ public class PlayerMovement : MonoBehaviour
             //rb.velocity = new Vector2(rb.velocity.x, jumpForce); //old jump code
         }
 
-        //todo: jump higher / shorter based on how long player holds jump
-        //if (Input.GetButtonUp("Jump") && ??? && rb.velocity.y > 0)
-        //{
-        //endedJumpEarly = true;
-
-
-        //}
-
-        /*
-        endedJumpEarly && rb.velocity.y > 0
-            ? fallSpeed * jumpEndEarlyGravityModifer
-            : fallSpeed;
-        
-        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - (fallSpeed * Time.deltaTime));
-        */
     }
+    */
 }
