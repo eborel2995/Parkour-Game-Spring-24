@@ -13,7 +13,7 @@ using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Access components of player object.
+    // Access components for player object.
     private Animator anim;
     private Rigidbody2D rb;
     private BoxCollider2D coll;
@@ -23,10 +23,10 @@ public class PlayerMovement : MonoBehaviour
     public bool ignoreUserInput = false;
 
     // Movement and jump variables.
-    [SerializeField] private float horizontal;
+    private bool isFacingRight = true;
+    private float horizontal;
     private float moveSpeed = 10f;
     private float jumpingPower = 21f;
-    [SerializeField] private bool isFacingRight = true;
 
     // Wall sliding variables.
     private bool isWallSliding = false;
@@ -34,9 +34,9 @@ public class PlayerMovement : MonoBehaviour
 
     // Wall jumping variables.
     private bool isWallJumping = false;
+    private float wallJumpingCounter;
     private float wallJumpingDirection;
     private float wallJumpingTime = 0.2f;
-    private float wallJumpingCounter;
     private float wallJumpingDuration = 0.4f;
     private Vector2 wallJumpingPower = new Vector2(10f, 20f);
 
@@ -54,12 +54,11 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update.
     private void Start()
     {
+        // Access components once to save processing power.
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
         sprite = GetComponent<SpriteRenderer>();
-
-        //Animator.recorderMode != AnimatorRecorderMode.Offline;
     }
 
     // Update is called once per frame.
@@ -68,19 +67,22 @@ public class PlayerMovement : MonoBehaviour
         // Cast enum state into int state.
         anim.SetInteger("state", (int)state);
 
+        // Make player static when ignoreUserInput is true.
         if (ignoreUserInput)
         {
             rb.bodyType = RigidbodyType2D.Static;
             return;
         }
 
+        // Set horizontal input via Unity Input Manager.
         horizontal = Input.GetAxisRaw("Horizontal");
 
+        // Jump if on jumpable ground.
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
-
+        // Holding jump will let the player jump higher.
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
@@ -90,6 +92,7 @@ public class PlayerMovement : MonoBehaviour
         WallSlide();
         WallJump();
 
+        // Get horizontal movement when not wall jumping.
         if (!isWallJumping)
         {
             Flip();
@@ -117,6 +120,8 @@ public class PlayerMovement : MonoBehaviour
         if (IsWalled() && !IsGrounded() && horizontal != 0f)
         {
             isWallSliding = true;
+
+            // Clamp player to wall and set wall slide speed.
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
         }
         else
@@ -131,24 +136,38 @@ public class PlayerMovement : MonoBehaviour
         if (isWallSliding)
         {
             isWallJumping = false;
+
+            // Wall jumping direction is the direction opposite of where the player is facing.
             wallJumpingDirection = -transform.localScale.x;
+
+            // Set wall jumping counter.
             wallJumpingCounter = wallJumpingTime;
 
+            // Stop invoking the method StopWallJumping().
             CancelInvoke(nameof(StopWallJumping));
         }
         else
         {
+            // Decrement wall jumping counter.
             wallJumpingCounter -= Time.deltaTime;
         }
 
+        // If the player jumps while wall sliding they will wall jump.
         if (Input.GetButtonDown("Jump") && wallJumpingCounter > 0f)
         {
             isWallJumping = true;
+
+            // Apply wall jump physics.
             rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+
+            // Reset wall jumping counter.
             wallJumpingCounter = 0f;
 
+            // Invoke the method StopWallJumping().
             Invoke(nameof(StopWallJumping), wallJumpingDuration);
 
+            // Check if player is facing the correct direction to wall jump off the next wall.
+            // If not, change the direction the player is facing.
             if (transform.localScale.x != wallJumpingDirection)
             {
                 isFacingRight = !isFacingRight;
@@ -183,35 +202,36 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isWallJumping)
         {
-            // If not moving set running animation to false.
+            // If not moving set state to idle animation.
             if (horizontal == 0f)
             {
                 state = MovementState.idle;
             }
-            // If moving right (positive x-axis) set runningRight animation to true.
+            // If moving right (positive x-axis) set state to runningRight animation.
+            // *It just works with != instead of > so DO NOT change this*
             else if (horizontal != 0f)
             {
                 state = MovementState.runningRight;
             }
-            // If moving left (negative x-axis) set runningLeft animation to true and flip animation on the x-axis.
+            // If moving left (negative x-axis) set state to runningLeft animation.
             else if (horizontal < 0f)
             {
                 state = MovementState.runningLeft;
             }
             
-            // We use +/-0.1f because our y-axis velocity is never perfectly zero.
-            // If moving up (positive y-axis) set jumping animation to true.
+            // We use +/-0.1f because our y-axis velocity is rarely perfectly zero.
+            // If moving up (positive y-axis) set state to jumping animation.
             if (rb.velocity.y > 0.1f)
             {
                 state = MovementState.jumping;
             }
-            // If moving down (negative y-axis) set falling animation to true.
+            // If moving down (negative y-axis) set state to falling animation.
             else if (rb.velocity.y < -0.1f)
             {
                 state = MovementState.falling;
             }
 
-            // If wall sliding set wallSliding animation to true.
+            // If wall sliding set state to wallSliding animation.
             if (isWallSliding)
             {
                 state = MovementState.wallSliding;
