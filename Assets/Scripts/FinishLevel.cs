@@ -50,17 +50,6 @@ public class NewBehaviourScript : MonoBehaviour
     private void CompleteLevel()
     {
         // Load next level.
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        //SceneManager.UnloadScene("LevelSelection");
-        if (nextScene != null)
-        {
-            SceneManager.LoadScene(nextScene);
-        }
-        else
-        {
-            Debug.Log("Next scene not defined in Inspector window!");
-            return;
-        }
-        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
