@@ -47,8 +47,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
 
     // Enum of movement state animations for our player to cycle through.
-    // Each variable equals      0     1        2        3        4        5            mathematically.
-    private enum MovementState { idle, running, jumping, falling, dashing, wallSliding }
+    // Each variable equals      0     1             2            3        4        5        6          mathematically.
+    private enum MovementState { idle, runningRight, runningLeft, jumping, falling, dashing, wallSliding }
     MovementState state;
     
 
@@ -182,28 +182,22 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isWallJumping)
         {
-            // If moving right (positive x-axis) set running animation to true.
-            if (horizontal > 0.1f)
-            {
-                state = MovementState.running;  // running animation = true
-                sprite.flipX = false;
-                isFacingRight = true;
-                //Flip();
-            }
-            // If moving left (negative x-axis) set running animation to true and flip animation on the x-axis.
-            else if (horizontal < 0.1f)
-            {
-                state = MovementState.running;  // running animation = true
-                sprite.flipX = true;
-                isFacingRight = false;
-                //Flip();
-            }
             // If not moving set running animation to false.
-            else if (horizontal == 0f)
+            if (horizontal == 0f)
             {
                 state = MovementState.idle;     // running animation = false
             }
-
+            // If moving right (positive x-axis) set runningRight animation to true.
+            else if (horizontal != 0f)
+            {
+                state = MovementState.runningRight;  // running animation = true
+            }
+            // If moving left (negative x-axis) set runningLeft animation to true and flip animation on the x-axis.
+            else if (horizontal < 0f)
+            {
+                state = MovementState.runningLeft;  // running animation = true
+            }
+            
             // We use +/-0.1f because our y-axis velocity is never perfectly zero.
             // If moving up (positive y-axis) set jumping animation to true.
             if (rb.velocity.y > 0.1f)

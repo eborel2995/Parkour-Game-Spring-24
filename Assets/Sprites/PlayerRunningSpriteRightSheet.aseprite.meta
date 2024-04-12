@@ -304,20 +304,20 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   asepriteLayers:
   - layerIndex: 0
-    guid: -1457574838
-    name: PlayerRunningSpriteSheet
+    guid: 1373708122
+    name: PlayerRunningSpriteRightSheet
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: PlayerRunningSpriteSheet
+    - name: PlayerRunningSpriteRightSheet
       frameIndex: 0
       cellRect:
         x: 1
         y: 7
         width: 452
         height: 56
-      spriteId: 864de2f48b71dd642a57a44d5136b250
+      spriteId: 4bd31b1ad6eaa5546829aeb95b8dd0b4
     linkedCells: []
     parentIndex: -1
   platformSettings:
