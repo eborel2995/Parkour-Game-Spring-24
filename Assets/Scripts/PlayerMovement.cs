@@ -24,13 +24,13 @@ public class PlayerMovement : MonoBehaviour
 
     // Movement and jump variables.
     [SerializeField] private float horizontal;
-    private float moveSpeed = 8f;
-    private float jumpingPower = 16f;
+    private float moveSpeed = 10f;
+    private float jumpingPower = 21f;
     [SerializeField] private bool isFacingRight = true;
 
     // Wall sliding variables.
     private bool isWallSliding = false;
-    private float wallSlidingSpeed = 2f;
+    private float wallSlidingSpeed = 3f;
 
     // Wall jumping variables.
     private bool isWallJumping = false;
@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     private float wallJumpingTime = 0.2f;
     private float wallJumpingCounter;
     private float wallJumpingDuration = 0.4f;
-    private Vector2 wallJumpingPower = new Vector2(8f, 16f);
+    private Vector2 wallJumpingPower = new Vector2(10f, 20f);
 
     // "[SerializeFeild]" allows these variables to be edited in Unity.
     [SerializeField] private Transform groundCheck;
@@ -50,7 +50,6 @@ public class PlayerMovement : MonoBehaviour
     // Each variable equals      0     1             2            3        4        5        6          mathematically.
     private enum MovementState { idle, runningRight, runningLeft, jumping, falling, dashing, wallSliding }
     MovementState state;
-    
 
     // Start is called before the first frame update.
     private void Start()
@@ -59,6 +58,8 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
         sprite = GetComponent<SpriteRenderer>();
+
+        //Animator.recorderMode != AnimatorRecorderMode.Offline;
     }
 
     // Update is called once per frame.
@@ -107,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
     private bool IsWalled()
     {
         // Create invisible circle at player side to check for overlap with walls.
-        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+        return Physics2D.OverlapCircle(wallCheck.position, 0.1f, wallLayer);
     }
 
     // Check if player can wall slide and do it if so.
