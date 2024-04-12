@@ -13,26 +13,26 @@ using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Access components of player object
+    // Access components of player object.
     private Animator anim;
     private Rigidbody2D rb;
     private BoxCollider2D coll;
     private SpriteRenderer sprite;
 
-    // Shut off user input at death/goal
+    // Shut off user input at death/goal.
     public bool ignoreUserInput = false;
 
-    // Movement and jump variables
+    // Movement and jump variables.
     [SerializeField] private float horizontal;
     private float moveSpeed = 8f;
     private float jumpingPower = 16f;
     [SerializeField] private bool isFacingRight = true;
 
-    // Wall sliding variables
+    // Wall sliding variables.
     private bool isWallSliding = false;
     private float wallSlidingSpeed = 2f;
 
-    // Wall jumping variables
+    // Wall jumping variables.
     private bool isWallJumping = false;
     private float wallJumpingDirection;
     private float wallJumpingTime = 0.2f;
@@ -61,10 +61,10 @@ public class PlayerMovement : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
+    // Update is called once per frame.
     private void Update()
     {
-        // Cast enum state into int state
+        // Cast enum state into int state.
         anim.SetInteger("state", (int)state);
 
         if (ignoreUserInput)
@@ -96,21 +96,21 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Check if player is touching jumpable ground
+    // Check if player is touching jumpable ground.
     private bool IsGrounded()
     {
-        // Create invisible circle at player's feet to check for overlap with jumpable ground
+        // Create invisible circle at player's feet to check for overlap with jumpable ground.
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
 
-    // Check if player is touching a wall
+    // Check if player is touching a wall.
     private bool IsWalled()
     {
-        // Create invisible circle at player side to check for overlap with walls
+        // Create invisible circle at player side to check for overlap with walls.
         return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
     }
 
-    // Check if player can wall slide and do it if so
+    // Check if player can wall slide and do it if so.
     private void WallSlide()
     {
         if (IsWalled() && !IsGrounded() && horizontal != 0f)
@@ -124,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Check if player can wall jump and do it if so
+    // Check if player can wall jump and do it if so.
     private void WallJump()
     {
         if (isWallSliding)
@@ -158,16 +158,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Stop allowing player to wall jump
+    // Stop allowing player to wall jump.
     private void StopWallJumping()
     {
         isWallJumping = false;
     }
 
-    // Flip the player when they move in that direction
+    // Flip the player when they move in that direction.
     private void Flip()
     {
-        // If facing right and moving left OR If facing left and moving right THEN flip
+        // If facing right and moving left OR If facing left and moving right THEN flip.
         if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
         {
             isFacingRight = !isFacingRight;
@@ -177,7 +177,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Switch between player animations based on movement
+    // Switch between player animations based on movement.
     private void UpdateAnimationState()
     {
         if (!isWallJumping)
@@ -185,29 +185,35 @@ public class PlayerMovement : MonoBehaviour
             // If not moving set running animation to false.
             if (horizontal == 0f)
             {
-                state = MovementState.idle;     // running animation = false
+                state = MovementState.idle;
             }
             // If moving right (positive x-axis) set runningRight animation to true.
             else if (horizontal != 0f)
             {
-                state = MovementState.runningRight;  // running animation = true
+                state = MovementState.runningRight;
             }
             // If moving left (negative x-axis) set runningLeft animation to true and flip animation on the x-axis.
             else if (horizontal < 0f)
             {
-                state = MovementState.runningLeft;  // running animation = true
+                state = MovementState.runningLeft;
             }
             
             // We use +/-0.1f because our y-axis velocity is never perfectly zero.
             // If moving up (positive y-axis) set jumping animation to true.
             if (rb.velocity.y > 0.1f)
             {
-                state = MovementState.jumping;  // jumping animation = true.
+                state = MovementState.jumping;
             }
             // If moving down (negative y-axis) set falling animation to true.
             else if (rb.velocity.y < -0.1f)
             {
-                state = MovementState.falling;  // falling animation = true.
+                state = MovementState.falling;
+            }
+
+            // If wall sliding set wallSliding animation to true.
+            if (isWallSliding)
+            {
+                state = MovementState.wallSliding;
             }
         }
     }
