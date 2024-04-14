@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isDashing;
     private float dashingPower = 24f;
     private float dashingTime = 0.2f;
-    private float dashingCooldown = 1f;
+    private float dashingCooldown = 0.75f;
 
     // "[SerializeFeild]" allows these variables to be edited in Unity.
     [SerializeField] private Transform groundCheck;
