@@ -40,23 +40,28 @@ public class PlayerMovement : MonoBehaviour
     private float wallJumpingDuration = 0.4f;
     private Vector2 wallJumpingPower = new Vector2(10f, 20f);
 
+    // Dashing variables.
+    private bool canDash = true;
+    private bool isDashing;
+    private float dashingPower = 24f;
+    private float dashingTime = 0.2f;
+    private float dashingCooldown = 0.75f;
+
     // "[SerializeFeild]" allows these variables to be edited in Unity.
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
 
-    //Used for game audio
-    [SerializeField] private AudioSource JumpSoundEffect;
-    [SerializeField] private AudioSource WallJumpSoundEffect;
-
+    // Create an Instance of PlayerMovement to reference in other scripts.
     public static PlayerMovement Instance { get; private set; }
+
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1             2            3        4        5        6          mathematically.
     private enum MovementState { idle, runningRight, runningLeft, jumping, falling, dashing, wallSliding }
     MovementState state;
 
-    // Start is called before the first frame update.
+    // Start() is called before the first frame update.
     private void Start()
     {
         // Access components once to save processing power.
@@ -66,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame.
+    // Update() is called once per frame.
     private void Update()
     {
         // Cast enum state into int state.
@@ -78,6 +83,9 @@ public class PlayerMovement : MonoBehaviour
             rb.bodyType = RigidbodyType2D.Static;
             return;
         }
+
+        // Prevent player from moving, jumping, and flipping while dashing.
+        if (isDashing) { return; }
 
         // Set horizontal input via Unity Input Manager.
         horizontal = Input.GetAxisRaw("Horizontal");
@@ -94,14 +102,31 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
 
+        // Dash by hitting leftShift if canDash is true.
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !isWallSliding)
+        {
+            StartCoroutine(Dash());
+        }
+
         UpdateAnimationState();
         WallSlide();
         WallJump();
 
         // Get horizontal movement when not wall jumping.
+        if (!isWallJumping) { Flip(); }
+    }
+
+    // FixedUpdate() can run once, zero, or several times per frame, depending on
+    // how mnay physics frames per second are set in the time settings, and how
+    // fast/slow the framerate is.
+    private void FixedUpdate()
+    {
+        // Prevent player from moving, jumping, and flipping while dashing.
+        if (isDashing) { return; }
+
+        // Get horizontal movement when not wall jumping.
         if (!isWallJumping)
         {
-            Flip();
             rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
         }
     }
@@ -186,10 +211,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Stop allowing player to wall jump.
-    private void StopWallJumping()
-    {
-        isWallJumping = false;
-    }
+    private void StopWallJumping() { isWallJumping = false; }
 
     // Flip the player when they move in that direction.
     private void Flip()
@@ -204,45 +226,58 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // Dashing phyics, mechanics, and trail emitter.
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+
+        // Preserve original gravity value and set gravity to zero while dashing.
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+
+        // Dashing physics.
+        rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+
+        // Dash for the as long as dashingTime.
+        yield return new WaitForSeconds(dashingTime);
+
+        // Restore gravity after dashing.
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+        
+        // Player can dash again after dashingCooldown.
+        yield return new WaitForSeconds(dashingCooldown);
+        canDash = true;
+    }
+
     // Switch between player animations based on movement.
     private void UpdateAnimationState()
     {
         if (!isWallJumping)
         {
             // If not moving set state to idle animation.
-            if (horizontal == 0f)
-            {
-                state = MovementState.idle;
-            }
+            if (horizontal == 0f) { state = MovementState.idle; }
+
             // If moving right (positive x-axis) set state to runningRight animation.
             // *It just works with != instead of > so DO NOT change this*
-            else if (horizontal != 0f)
-            {
-                state = MovementState.runningRight;
-            }
+            else if (horizontal != 0f) { state = MovementState.runningRight; }
+
             // If moving left (negative x-axis) set state to runningLeft animation.
-            else if (horizontal < 0f)
-            {
-                state = MovementState.runningLeft;
-            }
-            
+            else if (horizontal < 0f) { state = MovementState.runningLeft; }
+
             // We use +/-0.1f because our y-axis velocity is rarely perfectly zero.
             // If moving up (positive y-axis) set state to jumping animation.
-            if (rb.velocity.y > 0.1f)
-            {
-                state = MovementState.jumping;
-            }
+            if (rb.velocity.y > 0.1f) { state = MovementState.jumping; }
+
             // If moving down (negative y-axis) set state to falling animation.
-            else if (rb.velocity.y < -0.1f)
-            {
-                state = MovementState.falling;
-            }
+            else if (rb.velocity.y < -0.1f) { state = MovementState.falling; }
 
             // If wall sliding set state to wallSliding animation.
-            if (isWallSliding)
-            {
-                state = MovementState.wallSliding;
-            }
+            if (isWallSliding) { state = MovementState.wallSliding; }
+
+            // If dashing set state to dashing animation.
+            if (isDashing) { state = MovementState.dashing; }
         }
     }
 }
