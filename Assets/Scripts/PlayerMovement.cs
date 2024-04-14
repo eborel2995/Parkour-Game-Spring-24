@@ -53,6 +53,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
 
+    //This is for the player movement sounds
+    [SerializeField] private AudioSource JumpSoundEffect;
+    [SerializeField] private AudioSource WallJumpSoundEffect;
+    [SerializeField] private AudioSource DashingSoundEffect;
+
     // Create an Instance of PlayerMovement to reference in other scripts.
     public static PlayerMovement Instance { get; private set; }
 
@@ -105,6 +110,7 @@ public class PlayerMovement : MonoBehaviour
         // Dash by hitting leftShift if canDash is true.
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !isWallSliding)
         {
+            DashingSoundEffect.Play();
             StartCoroutine(Dash());
         }
 
