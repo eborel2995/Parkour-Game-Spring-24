@@ -52,7 +52,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private TrailRenderer tr;
 
     // Create an Instance of PlayerMovement to reference in other scripts.
     public static PlayerMovement Instance { get; private set; }
@@ -75,7 +74,6 @@ public class PlayerMovement : MonoBehaviour
     // Update() is called once per frame.
     private void Update()
     {
-        Debug.Log(rb.velocity.x);
         // Cast enum state into int state.
         anim.SetInteger("state", (int)state);
 
@@ -211,10 +209,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Stop allowing player to wall jump.
-    private void StopWallJumping()
-    {
-        isWallJumping = false;
-    }
+    private void StopWallJumping() { isWallJumping = false; }
 
     // Flip the player when they move in that direction.
     private void Flip()
@@ -239,15 +234,13 @@ public class PlayerMovement : MonoBehaviour
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
 
-        // Dashing physics and emit trail.
+        // Dashing physics.
         rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
-        tr.emitting = true;
 
         // Dash for the as long as dashingTime.
         yield return new WaitForSeconds(dashingTime);
 
-        // Stop emitting trail and restore gravity after dashing.
-        tr.emitting = false;
+        // Restore gravity after dashing.
         rb.gravityScale = originalGravity;
         isDashing = false;
         
@@ -262,39 +255,27 @@ public class PlayerMovement : MonoBehaviour
         if (!isWallJumping)
         {
             // If not moving set state to idle animation.
-            if (horizontal == 0f)
-            {
-                state = MovementState.idle;
-            }
+            if (horizontal == 0f) { state = MovementState.idle; }
+
             // If moving right (positive x-axis) set state to runningRight animation.
             // *It just works with != instead of > so DO NOT change this*
-            else if (horizontal != 0f)
-            {
-                state = MovementState.runningRight;
-            }
+            else if (horizontal != 0f) { state = MovementState.runningRight; }
+
             // If moving left (negative x-axis) set state to runningLeft animation.
-            else if (horizontal < 0f)
-            {
-                state = MovementState.runningLeft;
-            }
-            
+            else if (horizontal < 0f) { state = MovementState.runningLeft; }
+
             // We use +/-0.1f because our y-axis velocity is rarely perfectly zero.
             // If moving up (positive y-axis) set state to jumping animation.
-            if (rb.velocity.y > 0.1f)
-            {
-                state = MovementState.jumping;
-            }
+            if (rb.velocity.y > 0.1f) { state = MovementState.jumping; }
+
             // If moving down (negative y-axis) set state to falling animation.
-            else if (rb.velocity.y < -0.1f)
-            {
-                state = MovementState.falling;
-            }
+            else if (rb.velocity.y < -0.1f) { state = MovementState.falling; }
 
             // If wall sliding set state to wallSliding animation.
-            if (isWallSliding)
-            {
-                state = MovementState.wallSliding;
-            }
+            if (isWallSliding) { state = MovementState.wallSliding; }
+
+            // If dashing set state to dashing animation.
+            if (isDashing) { state = MovementState.dashing; }
         }
     }
 }
