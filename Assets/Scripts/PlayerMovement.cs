@@ -75,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
     // Update() is called once per frame.
     private void Update()
     {
-        Debug.Log(rb.velocity.x);
+        //Debug.Log(rb.velocity.x);
         // Cast enum state into int state.
         anim.SetInteger("state", (int)state);
 
