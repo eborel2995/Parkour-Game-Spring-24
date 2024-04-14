@@ -65,6 +65,9 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame.
     private void Update()
     {
+        //Debug.Log(rb.velocity.x);
+        // Cast enum state into int state.
+        //anim.SetInteger("state", (int)state);
 
         // Get direction on x-axis from Input Manager in Unity and store in dirX.
         // "Raw" in "GetAxisRaw" makes the player stop instantly when letting go of a directional key.
