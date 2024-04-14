@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.SceneManagement;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -50,6 +52,15 @@ public class NewBehaviourScript : MonoBehaviour
         // Load next level.
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         //SceneManager.UnloadScene("LevelSelection");
-        SceneManager.LoadScene(nextScene);
+        if (nextScene != null)
+        {
+            SceneManager.LoadScene(nextScene);
+        }
+        else
+        {
+            Debug.Log("Next scene not defined in Inspector window!");
+            return;
+        }
+        
     }
 }

@@ -2,8 +2,7 @@
     <Style src="project://database/Assets/UI/UI%20Classes/Toolbar%20button.uss?fileID=7433441132597879392&amp;guid=8c3ff20452a32494697ce0380870b579&amp;type=3#Toolbar button" />
     <ui:VisualElement name="Toolbox" focusable="false" style="flex-grow: 1; padding-top: 16px; padding-right: 16px; padding-bottom: 16px; padding-left: 16px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; max-height: 15%; flex-direction: row; flex-wrap: nowrap; flex-basis: auto;">
         <ui:ProgressBar value="50" name="ResourceBar" low-value="0" style="flex-wrap: nowrap; align-self: flex-start; align-items: flex-start; justify-content: flex-start; height: auto; width: auto; font-size: 19px; display: flex; visibility: visible; overflow: visible; position: relative; flex-direction: column; min-width: 200px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px; max-width: none; -unity-background-scale-mode: stretch-to-fill; translate: 1px 0; scale: 1 1; rotate: 0;" />
-        <ui:Button text="Select" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonSelect" focusable="false" class="button" />
-        <ui:Button text="Move" parse-escape-sequences="true" display-tooltip-when-elided="true" focusable="false" name="ButtonMove" class="button" />
+        <ui:Button text="Drag" parse-escape-sequences="true" display-tooltip-when-elided="true" focusable="false" name="ButtonDrag" class="button" />
         <ui:Button text="Rotate" parse-escape-sequences="true" display-tooltip-when-elided="true" focusable="false" name="ButtonRotate" class="button" />
         <ui:Button text="Resize" parse-escape-sequences="true" display-tooltip-when-elided="true" focusable="false" name="ButtonResize" class="button" />
         <ui:Button text="Duplicate" parse-escape-sequences="true" display-tooltip-when-elided="true" focusable="false" name="ButtonDuplicate" class="button" />

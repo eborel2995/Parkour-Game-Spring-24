@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -24,6 +26,26 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce;         
     [SerializeField] private LayerMask jumpableGround;      // Variable to check against IsGrounded() method.
 
+    /*
+    // TODO: higher jump when holding jump longer
+    private bool endedJumpEarly = true;
+    private float currentTimeHoldingJump = 0f;
+    private float fallSpeed = 5;
+    private float jumpEndEarlyGravityModifer = 20;
+    */
+
+    //jump buffer
+    //private float jumpBuffer = 0.1f;
+
+    //coyote time
+    /*
+    private float timeLeftGround;
+    private float coyoteTimeThreshhold = 0.1f;
+    */
+
+    //clamped fall speed
+    [SerializeField] private float maxFallSpeed = -5;
+
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1        2        3        mathematically.
     private enum MovementState { idle, walking, jumping, falling }
@@ -43,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame.
     private void Update()
     {
+
         // Get direction on x-axis from Input Manager in Unity and store in dirX.
         // "Raw" in "GetAxisRaw" makes the player stop instantly when letting go of a directional key.
         //dirX = Input.GetAxisRaw("Horizontal");
@@ -80,30 +103,36 @@ public class PlayerMovement : MonoBehaviour
         if (movingLeft && !movingRight)
         {
             transform.position += (Vector3.left * moveSpeed) * Time.deltaTime;
-            //sprite.flipX = true;
         }
         else if (movingRight && !movingLeft)
         {
             transform.position += (Vector3.right * moveSpeed) * Time.deltaTime;
-            //sprite.flipX = false;
         }
 
         // Use dirX to create velocity on the x-axis (joy-stick compatible).
         //rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
-        // If space is pressed and IsGround() method returns true, then player jumps.
 
-        //how is "Jump" defined as space??? -Drew
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        //todo: jump input buffer 
+        /*
+        if (IsGrounded() && lastJumpPressed + jumpBuffer > Time.time)
         {
-            // Play the jump sound effect.
-            //jumpSoundEffect.Play();
+            jump();
+        }
+        */
 
-            // Velocity for each axis: x = velocity from previous movement and y = 14.
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        //todo: nudge player when they bump their head
+
+        //if player is holding jump and on ground, then jump
+        jump();
+        
+        if (rb.velocity.y < maxFallSpeed)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, maxFallSpeed);
         }
 
         UpdateAnimationState();
+
     }
 
     private void UpdateAnimationState()
@@ -143,6 +172,8 @@ public class PlayerMovement : MonoBehaviour
         // Cast enum state into int state
         anim.SetInteger("state", (int)state);
     }
+    
+
     /// <summary>
     /// Create a box around the player model that is slightly lower than player's hitbox.
     /// </summary>
@@ -153,5 +184,38 @@ public class PlayerMovement : MonoBehaviour
     private bool IsGrounded()
     {
         return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, 0.1f, jumpableGround);
+    }
+
+    private void jump()
+    {
+        //DateTime now = DateTime.Now;
+        // If space is pressed and IsGround() method returns true, then player jumps.
+        if (Input.GetButtonDown("Jump") && IsGrounded())
+        {
+            //jumpSoundEffect.Play();
+
+
+            //using AddForce causes an unintended effect of being able to climb walls by spamming jump on the wall
+            //but its kinda fun and replicable so I'm gonna keep it for now
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+
+            //rb.velocity = new Vector2(rb.velocity.x, jumpForce); //old jump code
+        }
+
+        //todo: jump higher / shorter based on how long player holds jump
+        //if (Input.GetButtonUp("Jump") && ??? && rb.velocity.y > 0)
+        //{
+        //endedJumpEarly = true;
+
+
+        //}
+
+        /*
+        endedJumpEarly && rb.velocity.y > 0
+            ? fallSpeed * jumpEndEarlyGravityModifer
+            : fallSpeed;
+        
+        rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - (fallSpeed * Time.deltaTime));
+        */
     }
 }

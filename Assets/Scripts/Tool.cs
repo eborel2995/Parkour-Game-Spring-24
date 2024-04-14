@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : ScriptableObject
+public class Tool : ScriptableObject
 {
     private float damage;
 
     // Constructor
-    public Weapon(float d)
+    public Tool(float d)
     {
         damage = d;
     }

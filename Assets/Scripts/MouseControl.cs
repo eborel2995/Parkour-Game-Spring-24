@@ -7,8 +7,12 @@ public class MouseControl : MonoBehaviour
 {
     Camera cam;
     [SerializeField] bool debugMode = true;
-    [SerializeField] private Vector3 clickedWorldCoords = Vector3.zero;
-    [SerializeField] GameObject spawnableObject;
+    [SerializeField] public Vector3 clickedWorldCoords = Vector3.zero;
+    [SerializeField] public GameObject selectedObject = null;
+    //[SerializeField] GameObject spawnableObject;
+
+    Vector3 screenMousePos;
+    Vector3 worldMousePos;
 
     // Start is called before the first frame update
     void Start()
@@ -19,8 +23,8 @@ public class MouseControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 screenMousePos = Input.mousePosition;
-        Vector3 worldMousePos = screenMousePos;
+        screenMousePos = Input.mousePosition;
+        worldMousePos = screenMousePos;
 
         //convert to world coordinates
         //worldMousePos.z = 100f;
@@ -32,18 +36,24 @@ public class MouseControl : MonoBehaviour
         }
 
         //if the user clicks
-        if (Input.GetMouseButtonDown(0)) 
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) 
         {
             Ray ray = cam.ScreenPointToRay(screenMousePos);
             RaycastHit2D hit = Physics2D.Raycast(worldMousePos, Vector2.zero);
 
-            if (hit.collider != null) 
+            worldMousePos.z = 0;
+            clickedWorldCoords = worldMousePos;
+            if (hit.collider != null)
             {
-                worldMousePos.z = 0;
-                clickedWorldCoords = worldMousePos;
-                Debug.Log($"Clicked {hit.transform.name} at {worldMousePos}");
+                selectedObject = hit.collider.gameObject;
+            }
+            else
+            { 
+                //deselect the object
+                selectedObject = null;
+                //Debug.Log($"Clicked {hit.transform.name} at {worldMousePos}");
 
-                Instantiate(spawnableObject, worldMousePos, Quaternion.identity);
+                //Instantiate(spawnableObject, worldMousePos, Quaternion.identity);
             }
         }
 
