@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2287713623031257355}
   - component: {fileID: 2070317924776957147}
-  - component: {fileID: 2131188548678063049}
   - component: {fileID: 5499193673446803551}
   - component: {fileID: 1281490685567522134}
   - component: {fileID: 7804846782657544873}
+  - component: {fileID: 2969363364931748543}
   m_Layer: 0
   m_Name: Charger
   m_TagString: Enemy
@@ -89,41 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &2131188548678063049
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3025754283569081783}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.043050766, y: -0.11192918}
-  serializedVersion: 2
-  m_Radius: 0.5044613
 --- !u!50 &5499193673446803551
 Rigidbody2D:
   serializedVersion: 4
@@ -185,11 +150,61 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  castPos: {fileID: 0}
-  baseCastDist: 0
-  chargeSpeedMultiplier: 0
-  chargeDuration: 0
-  jumpForce: 0
+  castPos: {fileID: 6685505270904855716}
+  baseCastDist: 0.2
+  chargeSpeedMultiplier: 2
+  chargeDistance: 10
+  jumpForce: 3
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 64
+  detectionDistance: 5
+  jumpCooldown: 0.5
+--- !u!61 &2969363364931748543
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3025754283569081783}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.058782578, y: -0.111037314}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.0625, y: 1.375}
+    newSize: {x: 1.25, y: 1.1875}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.6836662, y: 0.9961668}
+  m_EdgeRadius: 0
 --- !u!1 &5845533420094946620
 GameObject:
   m_ObjectHideFlags: 0

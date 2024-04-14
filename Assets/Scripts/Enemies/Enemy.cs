@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     protected Rigidbody2D rb;
     protected SpriteRenderer sr;
     protected Animator anim;
+    
 
     // Start is called before the first frame update
     protected virtual void Start()

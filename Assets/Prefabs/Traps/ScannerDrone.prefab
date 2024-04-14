@@ -162,8 +162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3748da23efe0d1d4ca4a756efa16349b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 20
-  chaseDistance: 10
+  moveSpeed: 25
+  chaseDistance: 7
 --- !u!95 &6044433006789600754
 Animator:
   serializedVersion: 5
