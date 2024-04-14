@@ -122,6 +122,9 @@ public class PlayerMovement : MonoBehaviour
     // fast/slow the framerate is.
     private void FixedUpdate()
     {
+        //if the player is temporarily Static, stop trying to do anything
+        if (rb.bodyType == RigidbodyType2D.Static) {return;}
+
         // Prevent player from moving, jumping, and flipping while dashing.
         if (isDashing) { return; }
 
