@@ -46,7 +46,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
 
+    //...
     public static PlayerMovement Instance { get; private set; }
+
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1             2            3        4        5        6          mathematically.
     private enum MovementState { idle, runningRight, runningLeft, jumping, falling, dashing, wallSliding }
