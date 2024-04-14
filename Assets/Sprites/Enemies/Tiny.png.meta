@@ -1,16 +1,7 @@
 fileFormatVersion: 2
-guid: 3c112a44cc7dc7a468f4d132c2e7611c
+guid: d7ea91b874015b04b92f233aec967148
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -4039912110816036059
-    second: On (16x32)_0
-  - first:
-      213: 6853643782822115200
-    second: On (16x32)_1
-  - first:
-      213: -3538277728090221592
-    second: On (16x32)_2
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -43,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,16 +63,16 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -94,7 +85,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -107,7 +98,20 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -119,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: On (16x32)_0
+      name: Tiny_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 16
-        width: 16
-        height: 16
+        x: 10
+        y: 9
+        width: 14
+        height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -133,20 +137,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 09e4fd137c9d2644fa37a5e8f1e9f748
-      internalID: -4039912110816036059
+      spriteID: 6de4e23e38ccbeb4ebb682d3d31bc5b7
+      internalID: 706038374
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: On (16x32)_1
+      name: Tiny_1
       rect:
         serializedVersion: 2
-        x: 16
-        y: 16
-        width: 16
-        height: 16
+        x: 42
+        y: 8
+        width: 14
+        height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,20 +158,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f69aa87246b5b3846b23589cce3db583
-      internalID: 6853643782822115200
+      spriteID: 253a23e4f2cc24e459586ac6c8a929e6
+      internalID: 263368
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: On (16x32)_2
+      name: Tiny_2
       rect:
         serializedVersion: 2
-        x: 32
-        y: 16
-        width: 16
-        height: 16
+        x: 74
+        y: 9
+        width: 14
+        height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -175,20 +179,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14bb27f3678a51d44bb0cf1456d2057b
-      internalID: -3538277728090221592
+      spriteID: 67f8f1c6404ee234486f97c7119ba51e
+      internalID: -756061009
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: On (16x32)_3
+      name: Tiny_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 16
-        height: 16
+        x: 106
+        y: 10
+        width: 14
+        height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -196,20 +200,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 825ba6c1faadc534fa93227f11e8ef4f
-      internalID: -144078251
+      spriteID: 24c504bff4388c843bcbf7d4a412cabc
+      internalID: -1678434064
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: On (16x32)_4
+      name: Tiny_4
       rect:
         serializedVersion: 2
-        x: 16
-        y: 0
-        width: 16
-        height: 16
+        x: 138
+        y: 11
+        width: 14
+        height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -217,20 +221,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a4b87ce35b24e9c4880a194561eaaf05
-      internalID: -608495183
+      spriteID: f2c58c329aef2e54795f4a4e49a9c1d2
+      internalID: 135367237
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: On (16x32)_5
+      name: Tiny_5
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
-        width: 16
-        height: 16
+        x: 170
+        y: 10
+        width: 14
+        height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -238,8 +242,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fee153a921d306a4a9dbf1b9a7759603
-      internalID: -763827391
+      spriteID: 94daf6f09e5a78e449493eaba9eb9786
+      internalID: 895506370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tiny_6
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 9
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efdd40260de451846a0d5abe243fd03a
+      internalID: -1884935302
       vertices: []
       indices: 
       edges: []
@@ -255,12 +280,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      On (16x32)_0: -4039912110816036059
-      On (16x32)_1: 6853643782822115200
-      On (16x32)_2: -3538277728090221592
-      On (16x32)_3: -144078251
-      On (16x32)_4: -608495183
-      On (16x32)_5: -763827391
+      Tiny_0: 706038374
+      Tiny_1: 263368
+      Tiny_2: -756061009
+      Tiny_3: -1678434064
+      Tiny_4: 135367237
+      Tiny_5: 895506370
+      Tiny_6: -1884935302
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

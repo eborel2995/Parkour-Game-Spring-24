@@ -1,16 +1,7 @@
 fileFormatVersion: 2
-guid: 3c112a44cc7dc7a468f4d132c2e7611c
+guid: 7d80627d93ccba44882206b4dc378bb8
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -4039912110816036059
-    second: On (16x32)_0
-  - first:
-      213: 6853643782822115200
-    second: On (16x32)_1
-  - first:
-      213: -3538277728090221592
-    second: On (16x32)_2
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -43,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,16 +63,16 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -94,7 +85,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -107,7 +98,20 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -119,76 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: On (16x32)_0
+      name: 5 - Robot_Walky_Movement (32 x 32)_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 09e4fd137c9d2644fa37a5e8f1e9f748
-      internalID: -4039912110816036059
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: On (16x32)_1
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f69aa87246b5b3846b23589cce3db583
-      internalID: 6853643782822115200
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: On (16x32)_2
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 14bb27f3678a51d44bb0cf1456d2057b
-      internalID: -3538277728090221592
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: On (16x32)_3
-      rect:
-        serializedVersion: 2
-        x: 0
+        x: 7
         y: 0
-        width: 16
-        height: 16
+        width: 19
+        height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -196,20 +137,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 825ba6c1faadc534fa93227f11e8ef4f
-      internalID: -144078251
+      spriteID: 3e097c46cea9efc46a63dbd7468af814
+      internalID: -355784751
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: On (16x32)_4
+      name: 5 - Robot_Walky_Movement (32 x 32)_1
       rect:
         serializedVersion: 2
-        x: 16
+        x: 39
         y: 0
-        width: 16
-        height: 16
+        width: 18
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -217,20 +158,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a4b87ce35b24e9c4880a194561eaaf05
-      internalID: -608495183
+      spriteID: f3985a7b3f390e44087c657c4c519378
+      internalID: -1570315004
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: On (16x32)_5
+      name: 5 - Robot_Walky_Movement (32 x 32)_2
       rect:
         serializedVersion: 2
-        x: 32
+        x: 70
         y: 0
-        width: 16
-        height: 16
+        width: 19
+        height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -238,8 +179,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fee153a921d306a4a9dbf1b9a7759603
-      internalID: -763827391
+      spriteID: adeb5a24f5df7ba428670a918dca21be
+      internalID: 936103607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 5 - Robot_Walky_Movement (32 x 32)_3
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 0
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a449dc8a1587d64fa71d166f8f2ea37
+      internalID: 1597981198
       vertices: []
       indices: 
       edges: []
@@ -255,12 +217,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      On (16x32)_0: -4039912110816036059
-      On (16x32)_1: 6853643782822115200
-      On (16x32)_2: -3538277728090221592
-      On (16x32)_3: -144078251
-      On (16x32)_4: -608495183
-      On (16x32)_5: -763827391
+      5 - Robot_Walky_Movement (32 x 32)_0: -355784751
+      5 - Robot_Walky_Movement (32 x 32)_1: -1570315004
+      5 - Robot_Walky_Movement (32 x 32)_2: 936103607
+      5 - Robot_Walky_Movement (32 x 32)_3: 1597981198
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
