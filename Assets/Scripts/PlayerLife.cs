@@ -10,6 +10,9 @@ public class PlayerLife : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerMovement pm;
 
+    //Death sound effect
+    [SerializeField] private AudioSource DeathSoundEffect;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,7 @@ public class PlayerLife : MonoBehaviour
         // If player touches trap, return true and play death animation.
         if (collision.gameObject.CompareTag("Trap") || collision.gameObject.CompareTag("Enemy"))
         {
+            DeathSoundEffect.Play();
             Die();  // Death animation.
         }
     }

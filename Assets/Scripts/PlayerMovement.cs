@@ -46,6 +46,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
 
+    //Used for game audio
+    [SerializeField] private AudioSource JumpSoundEffect;
+    [SerializeField] private AudioSource WallJumpSoundEffect;
+
     public static PlayerMovement Instance { get; private set; }
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1             2            3        4        5        6          mathematically.
@@ -81,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
         // Jump if on jumpable ground.
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
+            JumpSoundEffect.Play();
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
         // Holding jump will let the player jump higher.
@@ -137,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
         if (isWallSliding)
         {
             isWallJumping = false;
+            WallJumpSoundEffect.Play();
 
             // Wall jumping direction is the direction opposite of where the player is facing.
             wallJumpingDirection = -transform.localScale.x;
