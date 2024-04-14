@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Resources;
 using System.Security.Cryptography;
 using Unity.VisualScripting.ReorderableList;
 using UnityEditor.Tilemaps;
@@ -74,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
     // Update() is called once per frame.
     private void Update()
     {
+        Debug.Log(rb.velocity.x);
         // Cast enum state into int state.
         anim.SetInteger("state", (int)state);
 
@@ -209,7 +211,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Stop allowing player to wall jump.
-    private void StopWallJumping() { isWallJumping = false; }
+    private void StopWallJumping()
+    {
+        isWallJumping = false;
+    }
 
     // Flip the player when they move in that direction.
     private void Flip()
