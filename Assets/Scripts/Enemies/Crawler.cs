@@ -22,10 +22,9 @@ public class Crawler : Enemy
         facingDirection = RIGHT;
         
     }
-    // Update is called once per frame
-    protected override void Update()
+    protected override void Awake()
     {
-
+        base.Awake();
     }
 
     protected void FixedUpdate()

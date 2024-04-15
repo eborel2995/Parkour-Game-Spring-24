@@ -122,7 +122,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 738890fca44edba4f9681c8d4e0febc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 2
+  recoilLength: 50
+  recoilFactor: 50
+  isRecoiling: 0
   moveSpeed: 5
+  damage: 1
   castPos: {fileID: 2725107464866525067}
   baseCastDist: 0.2
 --- !u!58 &6813717244527533527

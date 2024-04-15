@@ -105,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Destroy(gameObject);  // Ensures there's only one instance of the PlayerMovement object
         }
+        Health = maxHealth;
     }
     // Start() is called before the first frame update.
     private void Start()
@@ -165,6 +166,9 @@ public class PlayerMovement : MonoBehaviour
 
         // Get horizontal movement when not wall jumping.
         if (!isWallJumping) { Flip(); }
+        Attack();
+        RestoreTimeScale();
+        FlashWhileInvincible();
     }
 
     // FixedUpdate() can run once, zero, or several times per frame, depending on
