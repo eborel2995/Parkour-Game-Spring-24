@@ -62,6 +62,18 @@ public class PlayerMovement : MonoBehaviour
     private enum MovementState { idle, runningRight, runningLeft, jumping, falling, dashing, wallSliding }
     MovementState state;
 
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);  // Optional: Only if you want the player to persist across scenes
+        }
+        else
+        {
+            Destroy(gameObject);  // Ensures there's only one instance of the PlayerMovement object
+        }
+    }
     // Start() is called before the first frame update.
     private void Start()
     {
@@ -75,7 +87,6 @@ public class PlayerMovement : MonoBehaviour
     // Update() is called once per frame.
     private void Update()
     {
-        //Debug.Log(rb.velocity.x);
         // Cast enum state into int state.
         anim.SetInteger("state", (int)state);
 
