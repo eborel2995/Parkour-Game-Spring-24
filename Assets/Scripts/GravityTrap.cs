@@ -11,7 +11,7 @@ public class GravityTrap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //player = the player, stop using serializefield 
     }
 
     // Update is called once per frame

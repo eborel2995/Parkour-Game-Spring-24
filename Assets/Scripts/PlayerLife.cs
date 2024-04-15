@@ -9,6 +9,8 @@ public class PlayerLife : MonoBehaviour
     private Animator anim;
     private Rigidbody2D rb;
     private PlayerMovement pm;
+    private Cheats cheats;
+    private Respawn respawn;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +19,8 @@ public class PlayerLife : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         pm = GetComponent<PlayerMovement>();
+        cheats = GetComponent<Cheats>();
+        respawn = GetComponent<Respawn>();
     }
 
     // Method for player colliding with traps.
@@ -25,7 +29,11 @@ public class PlayerLife : MonoBehaviour
         // If player touches trap, return true and play death animation.
         if (collision.gameObject.CompareTag("Trap") || collision.gameObject.CompareTag("Enemy"))
         {
-            Die();  // Death animation.
+            if (cheats.invincible == false)
+            {
+                Die();  // Death animation.
+            }
+            
         }
     }
 
@@ -38,6 +46,7 @@ public class PlayerLife : MonoBehaviour
 
         // Activate death animation.
         anim.SetTrigger("death");
+
     }
 
     // Method to restart the level upon player's death.

@@ -5,6 +5,19 @@ using UnityEngine;
 
 public class MouseControl : MonoBehaviour
 {
+    private static MouseControl _instance;
+    public static MouseControl Instance
+    {
+        get
+        {
+            if(_instance == null)
+            {
+                _instance = FindObjectOfType<MouseControl>();
+            }
+            return _instance;
+        }
+    }
+
     Camera cam;
     [SerializeField] bool debugMode = true;
     [SerializeField] public Vector3 clickedWorldCoords = Vector3.zero;
@@ -13,6 +26,19 @@ public class MouseControl : MonoBehaviour
 
     Vector3 screenMousePos;
     Vector3 worldMousePos;
+
+    private void Awake()
+    {
+        if (_instance != null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        /*else if (_instance != this)
+        {
+            Destroy(this);
+        }*/
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +53,6 @@ public class MouseControl : MonoBehaviour
         worldMousePos = screenMousePos;
 
         //convert to world coordinates
-        //worldMousePos.z = 100f;
         worldMousePos = cam.ScreenToWorldPoint(worldMousePos);
 
         if (debugMode)
@@ -51,9 +76,6 @@ public class MouseControl : MonoBehaviour
             { 
                 //deselect the object
                 selectedObject = null;
-                //Debug.Log($"Clicked {hit.transform.name} at {worldMousePos}");
-
-                //Instantiate(spawnableObject, worldMousePos, Quaternion.identity);
             }
         }
 

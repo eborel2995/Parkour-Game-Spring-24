@@ -9,6 +9,7 @@ public class Respawn : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //get the default coordinates set in Unity as the respawn coordinates
         respawnCoords = transform.position;
     }
 
@@ -27,7 +28,13 @@ public class Respawn : MonoBehaviour
             //movingLeft = false;
             //movingRight = false;
 
-            transform.position = respawnCoords;
+            respawn();
         }
+    }
+
+    public void respawn()
+    {
+        //instantly teleport back to initial coordinates
+        transform.position = respawnCoords;
     }
 }
