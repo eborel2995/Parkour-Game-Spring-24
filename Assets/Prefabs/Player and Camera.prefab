@@ -159,6 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 3044709169830785820}
   healthAmount: 100
+  deathFloorHeight: 0
 --- !u!1 &3293875147550402044
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,13 +600,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1474088957329560946, guid: 2497df001fc9f36479c4bb9ad0a452b9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2873040241702596703}
   m_SourcePrefab: {fileID: 100100000, guid: 2497df001fc9f36479c4bb9ad0a452b9, type: 3}
 --- !u!4 &7222935451162616150 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2193904212644158720, guid: 2497df001fc9f36479c4bb9ad0a452b9, type: 3}
   m_PrefabInstance: {fileID: 8813357312664992854}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7942750912769468708 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1474088957329560946, guid: 2497df001fc9f36479c4bb9ad0a452b9, type: 3}
+  m_PrefabInstance: {fileID: 8813357312664992854}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2873040241702596703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7942750912769468708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4c893ef43377ff4784047963f4374e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8936416314918290684
 PrefabInstance:
   m_ObjectHideFlags: 0

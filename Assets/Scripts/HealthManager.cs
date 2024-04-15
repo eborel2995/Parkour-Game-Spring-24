@@ -6,11 +6,28 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
+    private GameObject player;
+    private Animator anim;
+    private Rigidbody2D rb;
+    private PlayerMovement pm;
+
     public Image healthBar;
-    public float healthAmount = 100f; 
+    private static float baseHealth = 100f;
+    public float healthAmount = baseHealth;
+
+    private Vector3 respawnCoords;
+    [SerializeField] private float deathFloorHeight;
     // Start is called before the first frame update
     void Start()
     {
+        //get the default coordinates set in Unity as the respawn coordinates
+        respawnCoords = transform.position;
+
+        //can't access these due to HealthManager not being a child of the player
+        player = GameObject.Find("Player");
+        anim = player.GetComponent<Animator>();
+        rb = player.GetComponent<Rigidbody2D>();
+        pm = player.GetComponent<PlayerMovement>();
         
     }
 
@@ -20,32 +37,67 @@ public class HealthManager : MonoBehaviour
         //if the player dies
         if (healthAmount <= 0)
         {
-            RestartLevel();
+            Debug.Log("Player ran out of health!");
+            Die();
+            //delay to play death animation
+            //Respawn();
+            //RestartLevel();
         }
 
+        //FOR TESTING PURPOSES
         if (Input.GetKeyDown(KeyCode.Return))
-        {
-            TakeDamage(20);
-        }
+        { TakeDamage(20); }
 
         if (Input.GetKeyDown(KeyCode.Backspace))
+        { Heal(10); }
+        //////////////////////
+        
+        if (transform.position.y <= deathFloorHeight)
         {
-            Heal(10);
+            Debug.Log($"{gameObject.name} fell out of the world!");
+
+            // Make sure to zero the player's velocity and movement to prevent clipping into terrain
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector2(0, 0);
+
+            Respawn();
         }
+
+        UpdateHealthbar();
     }
 
     public void TakeDamage(float amount)
     {
         healthAmount -= amount;
-        healthBar.fillAmount = healthAmount / 100f;
     }
 
     public void Heal(float amount)
     {
         healthAmount += amount;
         healthAmount = Mathf.Clamp(healthAmount, 0, 100);
+    }
 
+    public void UpdateHealthbar()
+    {
         healthBar.fillAmount = healthAmount / 100f;
+    }
+
+    public void Die()
+    {
+        // Disable player movement.
+        rb.bodyType = RigidbodyType2D.Static;
+        pm.ignoreUserInput = true;
+
+        // Activate death animation.
+        anim.SetTrigger("death");
+
+    }
+
+    public void Respawn()
+    {
+        //instantly teleport back to initial coordinates
+        transform.position = respawnCoords;
+        healthAmount = baseHealth;
     }
 
     private void RestartLevel()
