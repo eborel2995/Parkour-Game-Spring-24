@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1888499677661891649}
   - component: {fileID: 5170438592165883148}
   - component: {fileID: 6044433006789600754}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ScannerDrone
   m_TagString: Enemy
   m_Icon: {fileID: 0}
