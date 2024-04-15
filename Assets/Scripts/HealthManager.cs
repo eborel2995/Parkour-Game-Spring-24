@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
@@ -16,9 +17,10 @@ public class HealthManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if the player dies
         if (healthAmount <= 0)
         {
-            Application.LoadLevel(Application.loadedLevel); //restart level
+            RestartLevel();
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
@@ -44,5 +46,11 @@ public class HealthManager : MonoBehaviour
         healthAmount = Mathf.Clamp(healthAmount, 0, 100);
 
         healthBar.fillAmount = healthAmount / 100f;
+    }
+
+    private void RestartLevel()
+    {
+        // Restart level.
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

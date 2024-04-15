@@ -38,7 +38,7 @@ public class PlayerLife : MonoBehaviour
     }
 
     // Method to activate death animation and disable player movement.
-    private void Die()
+    public void Die()
     {
         // Disable player movement.
         rb.bodyType = RigidbodyType2D.Static;
