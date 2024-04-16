@@ -119658,6 +119658,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2533826535281193039, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2742280287832588091, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: m_LocalPosition.x
       value: -41.57
@@ -119670,6 +119674,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player and Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 5737086136115556963, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1474088957329560946, guid: 2497df001fc9f36479c4bb9ad0a452b9, type: 3}
+    - target: {fileID: 5737086136115556963, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: deathFloorHeight
+      value: -80
+      objectReference: {fileID: 0}
+    - target: {fileID: 7122876917973590319, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7191744702287263699, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -119686,7 +119702,15 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -13.17
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7760727370639362985, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7760727370639362985, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+    - {fileID: 2533826535281193039, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+    - {fileID: 9204802115799643114, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+    - {fileID: 2847645842714410503, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

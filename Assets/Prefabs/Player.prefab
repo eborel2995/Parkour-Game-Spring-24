@@ -9,11 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2193904212644158720}
-  - component: {fileID: 818328370870148296}
-  - component: {fileID: 1296176510429870079}
+  - component: {fileID: 2835347677360910413}
   - component: {fileID: 8876568712622778336}
-  - component: {fileID: 6442012276543720473}
   - component: {fileID: 5963194494990490631}
+  - component: {fileID: 7588080149277582163}
   - component: {fileID: 1302963316785135149}
   - component: {fileID: 3852489452187724322}
   - component: {fileID: 3321854616533656145}
@@ -42,7 +41,7 @@ Transform:
   - {fileID: 4723030902068796873}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &818328370870148296
+--- !u!114 &2835347677360910413
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -51,7 +50,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1474088957329560946}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a0080ad392f6b24ab17ca6b5d7fd31d, type: 3}
+  m_Script: {fileID: 11500000, guid: fbe0d409782891c4694f2d82b28c12ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ignoreUserInput: 0
@@ -63,18 +62,6 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 256
---- !u!114 &1296176510429870079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474088957329560946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 715083639fd2de541a98c1f2c78ef32e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8876568712622778336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,19 +78,6 @@ MonoBehaviour:
   gravity: 5
   mouseControl: {fileID: 0}
   invincible: 0
---- !u!114 &6442012276543720473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474088957329560946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea494f9d24795f9488103c1c4ea8b401, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deathFloorHeight: -80
 --- !u!114 &5963194494990490631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,6 +93,18 @@ MonoBehaviour:
   debugMode: 1
   clickedWorldCoords: {x: 0, y: 0, z: 0}
   selectedObject: {fileID: 0}
+--- !u!114 &7588080149277582163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474088957329560946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4c893ef43377ff4784047963f4374e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &1302963316785135149
 Rigidbody2D:
   serializedVersion: 4
