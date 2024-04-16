@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BossScript : MonoBehaviour
@@ -33,13 +34,16 @@ public class BossScript : MonoBehaviour
     {
         if (timeSinceLastJump > 3) 
         {
+            var rand = Random.Range(0, 100);
+            if ( rand > 95)
+            {
+                Vector3 playerPosition = PlayerMovement.Instance.transform.position;
+                Vector3 myPosition = transform.position;
+                Vector2 direction = (playerPosition - myPosition);
 
-            Vector3 playerPosition = PlayerMovement.Instance.transform.position;
-            Vector3 myPosition = transform.position;
-            Vector2 direction = (playerPosition - myPosition);
-
-            rb.velocity = new Vector2(rb.velocity.x + (direction.x), rb.velocity.y + jumpForce);
-            timeSinceLastJump = 0;
+                rb.velocity = new Vector2(rb.velocity.x + (direction.x), rb.velocity.y + jumpForce);
+                timeSinceLastJump = 0;
+            }
         }
 
         timeSinceLastJump += Time.deltaTime;

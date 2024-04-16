@@ -57,6 +57,8 @@ public class PlayerMovement : MonoBehaviour
     // Create an Instance of PlayerMovement to reference in other scripts.
     public static PlayerMovement Instance { get; private set; }
 
+    public bool isEngulfed = false;
+
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1             2            3        4        5        6          mathematically.
     private enum MovementState { idle, runningRight, runningLeft, jumping, falling, dashing, wallSliding }
@@ -95,6 +97,15 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.bodyType = RigidbodyType2D.Static;
             return;
+        }
+
+        if (isEngulfed)
+        {
+            moveSpeed = 5f;
+        }
+        else
+        {
+            moveSpeed = 10f;
         }
 
         // Prevent player from moving, jumping, and flipping while dashing.

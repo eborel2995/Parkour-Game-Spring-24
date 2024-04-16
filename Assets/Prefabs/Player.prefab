@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 3321854616533656145}
   - component: {fileID: 3451313581032147719}
   - component: {fileID: 7106350574695558220}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -277,7 +277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4723030902068796873}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall Check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,7 +309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2090184461044244367}
   - component: {fileID: 7243879197432292094}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Gameplay UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 656483708103794318}
   - component: {fileID: 3942410063135525442}
   - component: {fileID: 5069071986260724596}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -461,7 +461,7 @@ GameObject:
   - component: {fileID: 7379800450407165984}
   - component: {fileID: 4868482197021795014}
   - component: {fileID: 1822829072225284825}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -536,7 +536,7 @@ GameObject:
   - component: {fileID: 6861520842092292572}
   - component: {fileID: 2889703669770835596}
   - component: {fileID: 5769022182946475850}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -609,7 +609,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1188277345214144823}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ground Check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -640,7 +640,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3387891329388351627}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Healthbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -680,7 +680,7 @@ GameObject:
   - component: {fileID: 3910871162428021712}
   - component: {fileID: 5040889023686010254}
   - component: {fileID: 6795750076960700336}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
