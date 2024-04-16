@@ -7,15 +7,12 @@ public class BossScript : Enemy
 {
     [SerializeField] private int bitCount;
 
-    private Rigidbody2D rb;
-
     private float timeSinceLastJump = 2f;
     private float jumpForce = 20f;
 
     // Start is called before the first frame update
     protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
     }
     private new void Update()
     {

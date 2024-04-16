@@ -24,9 +24,6 @@ public class Cheats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.localScale = resize;
-        //rb.gravityScale = gravity;
-
         if (mouseControl.selectedObject != null) //player.currentlyEquiped(resizer) == true
         {
             mouseControl.selectedObject.transform.localScale = new Vector3(resize, resize, 1);

@@ -92,7 +92,7 @@ public class HealthManager : MonoBehaviour
     public void UpdateHealthbar()
     {
         healthBar.fillAmount = healthAmount / 100f;
-        Debug.Log($"{gameObject.name} has {healthAmount} health");
+        //Debug.Log($"{gameObject.name} has {healthAmount} health");
     }
 
     public void Die()
