@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 public class Cheats : MonoBehaviour
 {
+    [SerializeField] public bool debugMode = true;
     [SerializeField] float resize = 1;
     [SerializeField] float gravity = 5;
     [SerializeField] MouseControl mouseControl;

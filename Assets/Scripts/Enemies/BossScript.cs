@@ -14,10 +14,8 @@ public class BossScript : MonoBehaviour
 
     private float timeSinceLastJump = 2f;
     private float jumpForce = 20f;
-    private float moveForce = 10f;
-    // For Attack Up and Down Stage
-    // For Attack Player Stage
-    // Other
+    //private float moveForce = 10f;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +26,7 @@ public class BossScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void FixedUpdate()
@@ -38,12 +36,9 @@ public class BossScript : MonoBehaviour
 
             Vector3 playerPosition = PlayerMovement.Instance.transform.position;
             Vector3 myPosition = transform.position;
-            Vector2 direction = (playerPosition - myPosition).normalized;
+            Vector2 direction = (playerPosition - myPosition);
 
-            //bug: player can sit between moveForce distance and the slime will never hit the player
-            //adjust moveForce based on distance
-
-            rb.velocity = new Vector2(rb.velocity.x + (direction.x * moveForce), rb.velocity.y + jumpForce);
+            rb.velocity = new Vector2(rb.velocity.x + (direction.x), rb.velocity.y + jumpForce);
             timeSinceLastJump = 0;
         }
 

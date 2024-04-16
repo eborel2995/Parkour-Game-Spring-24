@@ -10,6 +10,7 @@ public class HealthManager : MonoBehaviour
     private Animator anim;
     private Rigidbody2D rb;
     private PlayerMovement pm;
+    private Cheats cheats;
 
     public Image healthBar;
     private static float baseHealth = 100f;
@@ -28,7 +29,7 @@ public class HealthManager : MonoBehaviour
         anim = player.GetComponent<Animator>();
         rb = player.GetComponent<Rigidbody2D>();
         pm = player.GetComponent<PlayerMovement>();
-        
+        cheats = player.GetComponent<Cheats>();
     }
 
     // Update is called once per frame
@@ -40,18 +41,23 @@ public class HealthManager : MonoBehaviour
             Debug.Log("Player ran out of health!");
             Die();
             //delay to play death animation
+            Invoke(nameof(Respawn), 1f);
             //Respawn();
             //RestartLevel();
         }
 
-        //FOR TESTING PURPOSES
-        if (Input.GetKeyDown(KeyCode.Return))
-        { TakeDamage(20); }
+        if (cheats.debugMode == true)
+        {
+            //FOR TESTING PURPOSES
+            if (Input.GetKeyDown(KeyCode.Return))
+            { TakeDamage(20); }
 
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        { Heal(10); }
-        //////////////////////
-        
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            { Heal(10); }
+            //////////////////////
+        }
+
+
         if (transform.position.y <= deathFloorHeight)
         {
             Debug.Log($"{gameObject.name} fell out of the world!");
@@ -84,13 +90,12 @@ public class HealthManager : MonoBehaviour
 
     public void Die()
     {
-        // Disable player movement.
-        rb.bodyType = RigidbodyType2D.Static;
-        pm.ignoreUserInput = true;
-
         // Activate death animation.
         anim.SetTrigger("death");
 
+        // Disable player movement.
+        //rb.bodyType = RigidbodyType2D.Static;
+        pm.ignoreUserInput = true;
     }
 
     public void Respawn()
