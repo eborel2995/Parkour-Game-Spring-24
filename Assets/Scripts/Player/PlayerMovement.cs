@@ -118,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isEngulfed = false;
     private float engulfSlowRatio = 0.5f;
 
-    private void Awake()
+    public int Health
     {
         // Get player health.
         get { return health; }
