@@ -10,16 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2193904212644158720}
   - component: {fileID: 818328370870148296}
-  - component: {fileID: 1296176510429870079}
-  - component: {fileID: 6758648539504493137}
-  - component: {fileID: 428214727227510716}
-  - component: {fileID: 8876568712622778336}
-  - component: {fileID: 6442012276543720473}
-  - component: {fileID: 5963194494990490631}
   - component: {fileID: 1302963316785135149}
   - component: {fileID: 3852489452187724322}
   - component: {fileID: 3321854616533656145}
   - component: {fileID: 3451313581032147719}
+  - component: {fileID: 718437829802605155}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -81,96 +76,13 @@ MonoBehaviour:
   slashEffect: {fileID: 179692507045510015, guid: dcb8e5e627510164887dd6bd0d5daeeb, type: 3}
   recoilXSteps: 5
   recoilYSteps: 5
-  recoilXSpeed: 100
-  recoilYSpeed: 100
+  recoilXSpeed: 75
+  recoilYSpeed: 32
   health: 0
   maxHealth: 10
   bloodSpurt: {fileID: 662869163059739363, guid: 1f8f294acf09c9945ad6363e0e5dc625, type: 3}
   hitFlashSpeed: 1
   pState: {fileID: 0}
---- !u!114 &1296176510429870079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474088957329560946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 715083639fd2de541a98c1f2c78ef32e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6758648539504493137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474088957329560946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fbf6b0438ad5ba4c8d4f410803ced19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bitCount: 0
-  health: 100
---- !u!114 &428214727227510716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474088957329560946}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fc5e2242d8b948448395b73a66bc2f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EquippedTool: {fileID: 0}
---- !u!114 &8876568712622778336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474088957329560946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ceb3b5e045ea142b9c236c7090abf7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resize: 1
-  gravity: 5
-  mouseControl: {fileID: 0}
-  invincible: 0
---- !u!114 &6442012276543720473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474088957329560946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea494f9d24795f9488103c1c4ea8b401, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deathFloorHeight: -80
---- !u!114 &5963194494990490631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474088957329560946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59698ed82b4106041835766ad60fbcb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugMode: 1
-  clickedWorldCoords: {x: 0, y: 0, z: 0}
-  selectedObject: {fileID: 0}
 --- !u!50 &1302963316785135149
 Rigidbody2D:
   serializedVersion: 4
@@ -316,6 +228,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &718437829802605155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474088957329560946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5db091ce33509cd4aa5c39e4a2fa4430, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumping: 0
+  dashing: 0
+  recoilingX: 0
+  recoilingY: 0
+  lookingRight: 0
+  invincible: 0
 --- !u!1 &1664186760508678048
 GameObject:
   m_ObjectHideFlags: 0

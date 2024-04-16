@@ -111,6 +111,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         // Access components once to save processing power.
+        pState = GetComponent<PlayerStatesList>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
@@ -127,6 +128,8 @@ public class PlayerMovement : MonoBehaviour
     // Update() is called once per frame.
     private void Update()
     {
+        yAxis = Input.GetAxisRaw("Vertical");
+        attack = Input.GetButtonDown("Attack");
         // Cast enum state into int state.
         anim.SetInteger("state", (int)state);
 
@@ -155,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Dash by hitting leftShift if canDash is true.
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !isWallSliding)
+        if (Input.GetButtonDown("Dash") && canDash && !isWallSliding)
         {
             StartCoroutine(Dash());
         }
@@ -187,6 +190,7 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
         }
+        Recoil();
     }
 
     // Check if player is touching jumpable ground.
@@ -377,9 +381,9 @@ public class PlayerMovement : MonoBehaviour
         }
         for (int i = 0; i < objectsToHit.Length; i++)
         {
-            if (objectsToHit[i].GetComponent<Enemy2>() != null)
+            if (objectsToHit[i].GetComponent<Enemy>() != null)
             {
-                objectsToHit[i].GetComponent<Enemy2>().EnemyHit(damage,
+                objectsToHit[i].GetComponent<Enemy>().EnemyHit(damage,
                     (transform.position - objectsToHit[i].transform.position).normalized, _recoilStrength);
             }
         }
@@ -496,6 +500,17 @@ public class PlayerMovement : MonoBehaviour
     // flashing and invinciblity time from being attacked
     void FlashWhileInvincible()
     {
+        if (sprite == null)
+        {
+            Debug.LogError("SpriteRenderer not assigned in PlayerMovement.");
+            return; // Exit if sprite is null to prevent further errors
+        }
+
+        if (pState == null)
+        {
+            Debug.LogError("PlayerStatesList not assigned in PlayerMovement.");
+            return; // Exit if pState is null to prevent further errors
+        }
         sprite.material.color = pState.invincible ?
             Color.Lerp(Color.white, Color.black, Mathf.PingPong(Time.time * hitFlashSpeed, 1.0f)) : Color.white;
     }

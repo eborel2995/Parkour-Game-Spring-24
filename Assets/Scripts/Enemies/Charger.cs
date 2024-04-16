@@ -52,6 +52,7 @@ public class Charger : Enemy
     // Update is called once per frame
     protected override void Update()
     {
+        base.Update();
         Debug.Log($"Current State: {currentChargerState}, Y Velocity: {rb.velocity.y}, Grounded: {IsGrounded()}");
 
         switch (currentChargerState)

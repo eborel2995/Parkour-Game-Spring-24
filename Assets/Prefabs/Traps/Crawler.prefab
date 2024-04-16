@@ -123,8 +123,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 2
-  recoilLength: 50
-  recoilFactor: 50
+  recoilLength: 75
+  recoilFactor: 75
   isRecoiling: 0
   moveSpeed: 5
   damage: 1

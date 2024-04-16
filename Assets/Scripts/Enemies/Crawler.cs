@@ -29,6 +29,7 @@ public class Crawler : Enemy
 
     protected void FixedUpdate()
     {
+        base.Update();
         float vX = moveSpeed;
 
         if(facingDirection == LEFT)
@@ -123,5 +124,9 @@ public class Crawler : Enemy
         }
 
         return val;
+    }
+    public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
+    {
+        base.EnemyHit(_damageDone, _hitDirection, _hitForce);
     }
 }
