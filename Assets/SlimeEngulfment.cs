@@ -6,8 +6,9 @@ public class SlimeEngulfment : MonoBehaviour
 {
     [SerializeField] private GameObject player;
     private PlayerMovement pm;
-    private bool Engulfed = false;
     private HealthManager healthManager;
+
+    private bool Engulfed = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +26,7 @@ public class SlimeEngulfment : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        //slow player while overlapping
         Engulfed = true;
 
         healthManager.TakeDamage(20);
@@ -32,6 +34,7 @@ public class SlimeEngulfment : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        //return player to regular speed
         Engulfed = false;
     }
 }

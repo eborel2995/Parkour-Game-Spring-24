@@ -26,7 +26,8 @@ public class PlayerMovement : MonoBehaviour
     // Movement and jump variables.
     private bool isFacingRight = true;
     private float horizontal;
-    private float moveSpeed = 10f;
+    private static float defaultMoveSpeed = 10f;
+    private float moveSpeed = defaultMoveSpeed;
     private float jumpingPower = 21f;
 
     // Wall sliding variables.
@@ -58,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
     public static PlayerMovement Instance { get; private set; }
 
     public bool isEngulfed = false;
+    private float engulfSlowRatio = 0.5f;
 
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1             2            3        4        5        6          mathematically.
@@ -101,11 +103,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (isEngulfed)
         {
-            moveSpeed = 5f;
+            moveSpeed = defaultMoveSpeed * engulfSlowRatio;
         }
         else
         {
-            moveSpeed = 10f;
+            moveSpeed = defaultMoveSpeed;
         }
 
         // Prevent player from moving, jumping, and flipping while dashing.
