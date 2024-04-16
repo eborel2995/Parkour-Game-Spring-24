@@ -6,17 +6,11 @@ using UnityEngine;
 public class BossScript : MonoBehaviour
 {
     [SerializeField] private int bitCount;
-    // For Idle Stage
-    [Header("Idle")]
-    [SerializeField] float idleMoveSpeed;
-    [SerializeField] Vector2 idleMoveDirection;
 
     private Rigidbody2D rb;
 
     private float timeSinceLastJump = 2f;
     private float jumpForce = 20f;
-    //private float moveForce = 10f;
-    
 
     // Start is called before the first frame update
     void Start()
@@ -24,9 +18,17 @@ public class BossScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        //if the slime is at the apex of its jump (plus slight delay), increase gravity to simulate ground slam
+        if (rb.velocity.y < -5)
+        {
+            rb.gravityScale = 100;
+        }
+        else
+        {
+            rb.gravityScale = 5;
+        }
 
     }
 
@@ -34,8 +36,9 @@ public class BossScript : MonoBehaviour
     {
         if (timeSinceLastJump > 3) 
         {
+            //make it so there is a chance the slime doesn't jump
             var rand = Random.Range(0, 100);
-            if ( rand > 95)
+            if ( rand > 95 )
             {
                 Vector3 playerPosition = PlayerMovement.Instance.transform.position;
                 Vector3 myPosition = transform.position;

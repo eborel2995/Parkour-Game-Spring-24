@@ -29,7 +29,7 @@ public class SlimeEngulfment : MonoBehaviour
         //slow player while overlapping
         Engulfed = true;
 
-        healthManager.TakeDamage(20);
+        healthManager.TakeDamage(25);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
