@@ -101,10 +101,10 @@ public class PlayerMovement : MonoBehaviour
     private int stepsXRecoiled;
     private int stepsYRecoiled;
     [Header("Attack Recoil Settings:")]
-    [SerializeField] int recoilXSteps = 5;
-    [SerializeField] int recoilYSteps = 5;
-    [SerializeField] float recoilXSpeed = 100;
-    [SerializeField] float recoilYSpeed = 100;
+    [SerializeField] int recoilXSteps = 3;
+    [SerializeField] int recoilYSteps = 3;
+    [SerializeField] float recoilXSpeed = 25;
+    [SerializeField] float recoilYSpeed = 25;
     [Space(5)]
 
     // Player health variables.
@@ -491,7 +491,7 @@ public class PlayerMovement : MonoBehaviour
         if (pState.recoilingX)
         {
             // If facing right.
-            if (pState.lookingRight)
+            if (isFacingRight)
             {
                 // Apply left recoil to player hit.
                 rb.velocity = new Vector2(-recoilXSpeed, 0);
