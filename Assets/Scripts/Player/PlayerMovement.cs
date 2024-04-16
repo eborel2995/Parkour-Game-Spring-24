@@ -14,110 +14,160 @@ using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // Create an Instance of PlayerMovement to reference in other scripts.
+    public static PlayerMovement Instance { get; private set; }
+
+    // Class of bools that handle player states like jumping, dashing, and direction.
+    [HideInInspector] public PlayerStatesList pState;
+
+    // Sets player health and handles player health loss.
+    public delegate void OnHealthChangedDelegate();
+    [HideInInspector] public OnHealthChangedDelegate onHealthChangedCallback;
+
+    // Enum of movement state animations for our player to cycle through.
+    // Each variable equals      0     1             2            3        4        5        6          mathematically.
+    private enum MovementState { idle, runningRight, runningLeft, jumping, falling, dashing, wallSliding }
+    MovementState state;
+
     // Access components for player object.
     private Animator anim;
     private Rigidbody2D rb;
     private BoxCollider2D coll;
     private SpriteRenderer sprite;
 
+    // "[SerializeFeild]" allows these variables to be edited in Unity.
     // Shut off user input at death/goal.
-    public bool ignoreUserInput = false;
+    [Header("Player Settings:")]
+    [SerializeField] public bool ignoreUserInput = false;
+
+    // Ground check transform and layer for player jumping.
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+
+    // Wall check transform and layer for player wall-jumping.
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private LayerMask wallLayer;
+    [Space(5)]
 
     // Movement and jump variables.
     private bool isFacingRight = true;
+    private float vertical;
     private float horizontal;
-    private float moveSpeed = 10f;
-    private float jumpingPower = 21f;
-    private float gravity;
+    [Header("Player Movement Settings:")]
+    [SerializeField] private float moveSpeed = 10f;
+    [SerializeField] private float jumpingPower = 21f;
+    [SerializeField] private float gravity;
 
     // Wall sliding variables.
     private bool isWallSliding = false;
-    private float wallSlidingSpeed = 3f;
+    [SerializeField] private float wallSlidingSpeed = 3f;
 
     // Wall jumping variables.
     private bool isWallJumping = false;
     private float wallJumpingCounter;
     private float wallJumpingDirection;
-    private float wallJumpingTime = 0.2f;
-    private float wallJumpingDuration = 0.4f;
     private Vector2 wallJumpingPower = new Vector2(10f, 20f);
+    [SerializeField] private float wallJumpingTime = 0.2f;
+    [SerializeField] private float wallJumpingDuration = 0.4f;
 
     // Dashing variables.
     private bool canDash = true;
     private bool isDashing;
-    private float dashingPower = 24f;
-    private float dashingTime = 0.2f;
-    private float dashingCooldown = 0.75f;
+    [SerializeField] private float dashingPower = 24f;
+    [SerializeField] private float dashingTime = 0.2f;
+    [SerializeField] private float dashingCooldown = 0.75f;
+    [Space(5)]
 
-    // "[SerializeFeild]" allows these variables to be edited in Unity.
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Transform wallCheck;
-    [SerializeField] private LayerMask wallLayer;
+    // AttackAttacking variables.
+    // Handles player attack permissions and holds attack key from Unity Input Manager.
+    bool attack = false;
+    bool restoreTime;
+    float timeSinceAttack;
+    float restoreTimeSpeed;
+    float timeBetweenAttack;
+    [Header("Player Attack Settings:")]
+    [SerializeField] float damage;
 
-    // possiable attack vars and stuff
-    [Header("Attacking Setting")]
-    float timeBetweenAttack, timeSinceAttack;
-    //for attack animations and attack area and attackable layers
+    // Attack transform, attack area, attackable layers, and attack animations.
     [SerializeField] Transform SideAttackTransform, UpAttackTransform, DownAttackTransform;
     [SerializeField] Vector2 SideAttackArea, UpAttackArea, DownAttackArea;
     [SerializeField] LayerMask attackableLayer;
-    [SerializeField] float damage;
     [SerializeField] GameObject slashEffect;
-    bool restoreTime;
-    float restoreTimeSpeed;
     [Space(5)]
 
-    [Header("Recoil Settings")]
+    // Player attack recoil variables.
+    private int stepsXRecoiled;
+    private int stepsYRecoiled;
+    [Header("Attack Recoil Settings:")]
     [SerializeField] int recoilXSteps = 5;
     [SerializeField] int recoilYSteps = 5;
     [SerializeField] float recoilXSpeed = 100;
     [SerializeField] float recoilYSpeed = 100;
-    private int stepsXRecoiled, stepsYRecoiled;
     [Space(5)]
 
-    [Header("Health Settings")]
+    // Player health variables.
+    [Header("Player Health Settings:")]
     public int health;
     public int maxHealth;
-    [SerializeField] GameObject bloodSpurt;
     [SerializeField] float hitFlashSpeed;
-    public delegate void OnHealthChangedDelegate();
-    [HideInInspector] public OnHealthChangedDelegate onHealthChangedCallback;
+    [SerializeField] GameObject bloodSpurt;
 
-    bool attack = false;
-    private float xAxis, yAxis;
-    // Create an Instance of PlayerMovement to reference in other scripts.
-    public static PlayerMovement Instance { get; private set; }
-    [HideInInspector] public PlayerStatesList pState;
-    // Enum of movement state animations for our player to cycle through.
-    // Each variable equals      0     1             2            3        4        5        6          mathematically.
-    private enum MovementState { idle, runningRight, runningLeft, jumping, falling, dashing, wallSliding }
-    MovementState state;
-
-    private void Awake()
+    // Player health property.
+    public int Health
     {
-        if (Instance == null)
+        // Get player health.
+        get { return health; }
+
+        // Set player health.
+        set
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);  // Optional: Only if you want the player to persist across scenes
+            // Limit player health to a maxHealth value.
+            if (health != value)
+            {
+                health = Mathf.Clamp(value, 0, maxHealth);
+
+                // If player health is changed then update player health value.
+                if (onHealthChangedCallback != null)
+                {
+                    onHealthChangedCallback.Invoke();
+                }
+            }
         }
+    }
+
+    // Awake() is called when the script instance is being loaded.
+    // Awake is used to initialize any variables or game states before the game starts.
+    private void Awake()
+    { 
+
+        // Error checking for the PlayerMovement instance.
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // Destroy game object if instance is inaccessible.
+        }
+        // If no PlayerMovement instance is accessible then destroy game object.
         else
         {
-            Destroy(gameObject);  // Ensures there's only one instance of the PlayerMovement object
+            Instance = this;
         }
+
+        // Set player health.
         Health = maxHealth;
     }
+
     // Start() is called before the first frame update.
     private void Start()
     {
         // Access components once to save processing power.
         pState = GetComponent<PlayerStatesList>();
-        anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-        coll = GetComponent<BoxCollider2D>();
         sprite = GetComponent<SpriteRenderer>();
+        coll = GetComponent<BoxCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         gravity = rb.gravityScale;
     }
+
+    // Draw three red rectangles for player melee attack area.
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -126,11 +176,9 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawWireCube(DownAttackTransform.position, DownAttackArea);
     }
 
-    // Update is called once per frame
+    // Update() is called once per frame
     void Update()
     {
-        yAxis = Input.GetAxisRaw("Vertical");
-        attack = Input.GetButtonDown("Attack");
         // Cast enum state into int state.
         anim.SetInteger("state", (int)state);
 
@@ -144,9 +192,11 @@ public class PlayerMovement : MonoBehaviour
         // Prevent player from moving, jumping, and flipping while dashing.
         if (isDashing) { return; }
 
-        // Set horizontal input via Unity Input Manager.
+        // Set attack, vertical, and horizontal input via Unity Input Manager.
+        attack = Input.GetButtonDown("Attack");
+        vertical = Input.GetAxisRaw("Vertical");
         horizontal = Input.GetAxisRaw("Horizontal");
-
+        
         // Jump if on jumpable ground.
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
@@ -164,15 +214,16 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(Dash());
         }
 
-        UpdateAnimationState();
-        WallSlide();
-        WallJump();
-
-        // Get horizontal movement when not wall jumping.
-        if (!isWallJumping) { Flip(); }
+        // Function calls.
         Attack();
         RestoreTimeScale();
         FlashWhileInvincible();
+        WallSlide();
+        WallJump();
+        UpdateAnimationState();
+
+        // Flip player direction when not wall jumping.
+        if (!isWallJumping) { Flip(); }
     }
 
     // FixedUpdate() can run once, zero, or several times per frame, depending on
@@ -180,9 +231,6 @@ public class PlayerMovement : MonoBehaviour
     // fast/slow the framerate is.
     private void FixedUpdate()
     {
-        //if the player is temporarily Static, stop trying to do anything
-        if (rb.bodyType == RigidbodyType2D.Static) { return; }
-
         // Prevent player from moving, jumping, and flipping while dashing.
         if (isDashing) { return; }
 
@@ -191,6 +239,8 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
         }
+
+        // Apply recoil to attacks and damage.
         Recoil();
     }
 
@@ -293,7 +343,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Dashing phyics, mechanics, and trail emitter.
+    // Handles player dashing permissions and execution.
     private IEnumerator Dash()
     {
         canDash = false;
@@ -317,7 +367,6 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
-
 
     // Switch between player animations based on movement.
     private void UpdateAnimationState()
@@ -348,160 +397,199 @@ public class PlayerMovement : MonoBehaviour
             if (isDashing) { state = MovementState.dashing; }
         }
     }
-    // how attacks are handled
+
+    // Player attack handler.
     void Attack()
     {
+        // Set the time since the last attack.
         timeSinceAttack = Time.deltaTime;
+
+        // If the player can attack.
         if (attack && timeSinceAttack >= timeBetweenAttack)
         {
-            timeSinceAttack = 0;
-            anim.SetTrigger("Attacking");
+            timeSinceAttack = 0;    // Reset time since last attack.
+            anim.SetTrigger("Attacking");   // Set attacking animation trigger.
 
-            if (yAxis == 0 || yAxis < 0 && IsGrounded())
+            // If player is on the ground then side attack and display slash effect.
+            if (vertical == 0 || vertical < 0 && IsGrounded())
             {
                 Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
                 Instantiate(slashEffect, SideAttackTransform);
             }
-            else if (yAxis > 0)
+            // If player's vertical input > 0 then up attack and display slash effect.
+            else if (vertical > 0)
             {
                 Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
                 SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
             }
-            else if (yAxis < 0 && !IsGrounded())
+            // If player's vertical input < 0 then down attack and display slash effect.
+            else if (vertical < 0 && !IsGrounded())
             {
                 Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
                 SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
             }
         }
     }
-    //hit with recoil
+
+    // Handles player hit and recoil on enemies.
     private void Hit(Transform _attackTransform, Vector2 _attackArea, ref bool _recoilDir, float _recoilStrength)
     {
+        // Holds an array of colliders for objects that can be hit.
         Collider2D[] objectsToHit = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0, attackableLayer);
 
+        // If there is an object to hit then recoil.
         if (objectsToHit.Length > 0)
         {
             _recoilDir = true;
         }
+        
+        // Loop through objectsToHit array and deal damage accordingly.
         for (int i = 0; i < objectsToHit.Length; i++)
         {
+            // If enemy game object has not been destroyed.
             if (objectsToHit[i].GetComponent<Enemy>() != null)
             {
-                objectsToHit[i].GetComponent<Enemy>().EnemyHit(damage,
-                    (transform.position - objectsToHit[i].transform.position).normalized, _recoilStrength);
+                // Apply hit damage to enemy, decrement enemy health, and recoil player.
+                objectsToHit[i].GetComponent<Enemy>().EnemyHit(damage, (transform.position - objectsToHit[i].transform.position).normalized, _recoilStrength);
             }
         }
     }
-    // slach animations
+
+    // Handles slash animations according to direction.
     void SlashEffectAtAngle(GameObject _slashEffect, int _effectAngle, Transform _attackTransform)
     {
+        // Create slash effect.
         _slashEffect = Instantiate(_slashEffect, _attackTransform);
+
+        // Handle slash effect positioning.
         _slashEffect.transform.eulerAngles = new Vector3(0, 0, _effectAngle);
+
+        // Handle slash effect scale.
         _slashEffect.transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y);
     }
+
+    // Handles player recoil.
     void Recoil()
     {
-        //Debug.Log("Recoil from update");
+        // If player is recoiling on the x-axis.
         if (pState.recoilingX)
         {
-
+            // If facing right.
             if (pState.lookingRight)
             {
-                Debug.Log("If looking right");
+                // Apply left recoil to player hit.
                 rb.velocity = new Vector2(-recoilXSpeed, 0);
-
             }
+            // If facing left.
             else
             {
-                Debug.Log("Looking Left");
+                // Apply right recoil to player hit.
                 rb.velocity = new Vector2(recoilXSpeed, 0);
-
             }
         }
+
+        // If player is recoiling on the y-axis.
         if (pState.recoilingY)
         {
+            // Disable player gravity.
             rb.gravityScale = 0;
-            if (yAxis < 0)
+
+            // If player vertical input < 0.
+            if (vertical < 0)
             {
+                // Apply upward recoil to player hit.
                 rb.velocity = new Vector2(rb.velocity.x, recoilYSpeed);
             }
+            // If player vertical input > 0.
             else
             {
+                // Apply downward recoil to player hit.
                 rb.velocity = new Vector2(rb.velocity.x, -recoilYSpeed);
             }
-            //airJumpCounter = 0;
         }
+        // If player is not recoiling.
         else
         {
+            // Set player gravity to original gravity value.
             rb.gravityScale = gravity;
         }
 
-        //stop recoil
+        // If player is recoiling on the x-axis AND player still has steps left to recoil.
         if (pState.recoilingX && stepsXRecoiled < recoilXSteps)
         {
+            // Increment steps recoiled.
             stepsXRecoiled++;
         }
+        // If player is out of steps to recoil then stop recoiling.
         else
         {
             StopRecoilX();
         }
+
+        // If player is recoiling on the y-axis AND player still has steps left to recoil.
         if (pState.recoilingY && stepsYRecoiled < recoilYSteps)
         {
+            // Increment steps recoiled.
             stepsYRecoiled++;
         }
+        // If player is out of steps to recoil then stop recoiling.
         else
         {
             StopRecoilY();
         }
 
+        // If player is touching jumpable ground then stop recoiling.
         if (IsGrounded())
         {
             StopRecoilY();
         }
     }
+
+    // Stop player from recoiling on the x-axis.
     void StopRecoilX()
     {
         stepsXRecoiled = 0;
         pState.recoilingX = false;
     }
+
+    // Stop player from recoiling on the y-axis.
     void StopRecoilY()
     {
         stepsYRecoiled = 0;
         pState.recoilingY = false;
     }
-    //player taking damage 
+
+    // Handles player taking damage.
     public void TakeDamage(float _damage)
     {
+        // Decrement player health.
         Health -= Mathf.RoundToInt(_damage);
+
+        // Stop taking damage (invincibility-frames).
         StartCoroutine(StopTakingDamage());
     }
+
+    // Handles player invincibility-frames and TakeDamage animation.
     IEnumerator StopTakingDamage()
     {
+        // Enable player invincibility-frames.
         pState.invincible = true;
+
+        // Create bloodspurt effect.
         GameObject _bloodSpurtParticles = Instantiate(bloodSpurt, transform.position, Quaternion.identity);
+
+        // Destroy bloodspurt effect.
         Destroy(_bloodSpurtParticles, 1.5f);
+
+        // Set TakeDamage animation trigger.
         anim.SetTrigger("TakeDamage");
+
+        // Delay disabling invincibility-frames.
         yield return new WaitForSeconds(1f);
         pState.invincible = false;
-
     }
-    public int Health
-    {
-        get { return health; }
-        set
-        {
-            if (health != value)
-            {
-                health = Mathf.Clamp(value, 0, maxHealth);
 
-                if (onHealthChangedCallback != null)
-                {
-                    onHealthChangedCallback.Invoke();
-                }
-            }
-        }
-    }
-    // flashing and invinciblity time from being attacked
+    // Cause player sprite to flash when player is invincible.
     void FlashWhileInvincible()
     {
         if (sprite == null)
@@ -515,17 +603,24 @@ public class PlayerMovement : MonoBehaviour
             Debug.LogError("PlayerStatesList not assigned in PlayerMovement.");
             return; // Exit if pState is null to prevent further errors
         }
+
+        // Change player sprite color if player is invincible and don't change if not.
         sprite.material.color = pState.invincible ?
             Color.Lerp(Color.white, Color.black, Mathf.PingPong(Time.time * hitFlashSpeed, 1.0f)) : Color.white;
     }
+
+    // Restores time scale if it has been modified.
     void RestoreTimeScale()
     {
+        // If time scale needs to be restored.
         if (restoreTime)
         {
+            // If time scale < 1 then summation time scale.
             if (Time.timeScale < 1)
             {
                 Time.timeScale += Time.deltaTime * restoreTimeSpeed;
             }
+            // Stop restoring time scale when time scale = 1.
             else
             {
                 Time.timeScale = 1;
@@ -533,20 +628,27 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
+    // Initiates change in time scale based on when player takes damage.
     public void HitStopTime(float _newTimeScale, int _restoreSpeed, float _delay)
     {
         restoreTimeSpeed = _restoreSpeed;
         Time.timeScale = _newTimeScale;
+
+        // Check if time scale has a delay.
         if (_delay > 0)
         {
             StopCoroutine(StartTimeAgain(_delay));
             StartCoroutine(StartTimeAgain(_delay));
         }
+        // If time scale has delay then restore time scale.
         else
         {
             restoreTime = true;
         }
     }
+
+    // Handles delay times.
     IEnumerator StartTimeAgain(float _delay)
     {
         restoreTime = true;

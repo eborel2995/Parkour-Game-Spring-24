@@ -105408,9 +105408,13 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1670473564}
-  m_Text: 'Use ''LEFT CLICK''
+  m_Text: 'Use ''LEFT CLICK'' to attack.
 
-    to attack.'
+
+    Use ''W'', ''A'', ''S'', and ''D''
+    to
+
+    attack in that direction.'
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
