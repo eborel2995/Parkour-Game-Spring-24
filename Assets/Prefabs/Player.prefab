@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 3451313581032147719}
   - component: {fileID: 7106350574695558220}
   m_Layer: 10
+  - component: {fileID: 718437829802605155}
+  m_Layer: 0
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -34,11 +36,14 @@ Transform:
   m_GameObject: {fileID: 1474088957329560946}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -41.167, y: -13.179, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2090184461044244367}
+  - {fileID: 8429665651921188807}
+  - {fileID: 1367155910052703321}
+  - {fileID: 5364444290136464923}
   - {fileID: 1188277345214144823}
   - {fileID: 4723030902068796873}
   m_Father: {fileID: 0}
@@ -65,6 +70,26 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   isEngulfed: 0
+  SideAttackTransform: {fileID: 8429665651921188807}
+  UpAttackTransform: {fileID: 1367155910052703321}
+  DownAttackTransform: {fileID: 5364444290136464923}
+  SideAttackArea: {x: 4.5, y: 3.5}
+  UpAttackArea: {x: 3.5, y: 4.5}
+  DownAttackArea: {x: 3.5, y: 4.5}
+  attackableLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  damage: 2
+  slashEffect: {fileID: 179692507045510015, guid: dcb8e5e627510164887dd6bd0d5daeeb, type: 3}
+  recoilXSteps: 5
+  recoilYSteps: 5
+  recoilXSpeed: 100
+  recoilYSpeed: 100
+  health: 0
+  maxHealth: 10
+  bloodSpurt: {fileID: 662869163059739363, guid: 1f8f294acf09c9945ad6363e0e5dc625, type: 3}
+  hitFlashSpeed: 1
+  pState: {fileID: 0}
 --- !u!114 &8876568712622778336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,6 +280,7 @@ Animator:
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &7106350574695558220
+--- !u!114 &718437829802605155
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -269,6 +295,15 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   healthAmount: 100
   deathFloorHeight: -80
+  m_Script: {fileID: 11500000, guid: 5db091ce33509cd4aa5c39e4a2fa4430, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumping: 0
+  dashing: 0
+  recoilingX: 0
+  recoilingY: 0
+  lookingRight: 0
+  invincible: 0
 --- !u!1 &1664186760508678048
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,6 +336,7 @@ Transform:
   m_Father: {fileID: 2193904212644158720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1771848791706164601
+--- !u!1 &1901250677816503244
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -312,12 +348,16 @@ GameObject:
   - component: {fileID: 7243879197432292094}
   m_Layer: 10
   m_Name: Gameplay UI
+  - component: {fileID: 5364444290136464923}
+  m_Layer: 0
+  m_Name: 'Down Attack Transform '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &2090184461044244367
+--- !u!4 &5364444290136464923
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -325,7 +365,6 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1771848791706164601}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 41.167, y: 13.179, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -350,9 +389,17 @@ MonoBehaviour:
   sourceAsset: {fileID: 9197481963319205126, guid: 6722b8b785cf0804480fdce2233759dc, type: 3}
   m_SortingOrder: 0
 --- !u!1 &3712223087464397728
+  m_GameObject: {fileID: 1901250677816503244}
+  serializedVersion: 2
+  m_LocalPosition: {x: 0, y: -3.45, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2193904212644158720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5203247054183887874
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
@@ -363,6 +410,9 @@ GameObject:
   - component: {fileID: 5069071986260724596}
   m_Layer: 10
   m_Name: Canvas
+  - component: {fileID: 8429665651921188807}
+  m_Layer: 0
+  m_Name: Side Attack Transform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -370,6 +420,8 @@ GameObject:
   m_IsActive: 1
 --- !u!224 &5391502130133856161
 RectTransform:
+--- !u!4 &8429665651921188807
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -601,6 +653,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1.87
+  m_GameObject: {fileID: 5203247054183887874}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.75, y: -0.7, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2193904212644158720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6672448959297669275
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,6 +694,7 @@ Transform:
   m_Father: {fileID: 2193904212644158720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7826134511179000982
+--- !u!1 &7165044490490722315
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -643,6 +705,9 @@ GameObject:
   - component: {fileID: 3387891329388351627}
   m_Layer: 10
   m_Name: Healthbar
+  - component: {fileID: 1367155910052703321}
+  m_Layer: 0
+  m_Name: 'Up Attack Transform '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -650,6 +715,8 @@ GameObject:
   m_IsActive: 1
 --- !u!224 &3387891329388351627
 RectTransform:
+--- !u!4 &1367155910052703321
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -745,3 +812,12 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_GameObject: {fileID: 7165044490490722315}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2193904212644158720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

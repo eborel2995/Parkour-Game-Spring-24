@@ -22,14 +22,14 @@ public class Crawler : Enemy
         facingDirection = RIGHT;
         
     }
-    // Update is called once per frame
-    protected override void Update()
+    protected override void Awake()
     {
-
+        base.Awake();
     }
 
     protected void FixedUpdate()
     {
+        base.Update();
         float vX = moveSpeed;
 
         if(facingDirection == LEFT)
@@ -124,5 +124,9 @@ public class Crawler : Enemy
         }
 
         return val;
+    }
+    public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
+    {
+        base.EnemyHit(_damageDone, _hitDirection, _hitForce);
     }
 }
