@@ -59,9 +59,9 @@ public class Enemy : MonoBehaviour
             rb.AddForce(-_hitForce * recoilFactor * _hitDirection);
         }
     }
-    protected void OnTriggerStay2D(Collider2D _other)
+    protected void OnCollisionEnter2D(Collision2D collision)
     {
-        if (_other.CompareTag("Player") && !PlayerMovement.Instance.pState.invincible)
+        if (collision.gameObject.CompareTag("Player") && !PlayerMovement.Instance.pState.invincible)
         {
             Attack();
             PlayerMovement.Instance.HitStopTime(0, 5, 0.5f);
