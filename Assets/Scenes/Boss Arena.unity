@@ -981,9 +981,34 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5317382255275755510, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: m_Name
+      value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6707681149259320347, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: UpAttackTransform
+      value: 
+      objectReference: {fileID: 2036102511}
+    - target: {fileID: 6707681149259320347, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: DownAttackTransform
+      value: 
+      objectReference: {fileID: 2036102511}
+    - target: {fileID: 6707681149259320347, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: SideAttackTransform
+      value: 
+      objectReference: {fileID: 2036102511}
+    - target: {fileID: 6707681149259320347, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: attackableLayer.m_Bits
+      value: 2560
+      objectReference: {fileID: 0}
+    - target: {fileID: 8338188904543471157, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 542241528}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1911622794659490778, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+    - {fileID: 7122876917973590319, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
@@ -7517,6 +7542,11 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!4 &2036102511 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4306785204380115359, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+  m_PrefabInstance: {fileID: 1120744551}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -123,6 +123,7 @@ public class PlayerMovement : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         gravity = rb.gravityScale;
     }
+    
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
