@@ -125,8 +125,9 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawWireCube(UpAttackTransform.position, UpAttackArea);
         Gizmos.DrawWireCube(DownAttackTransform.position, DownAttackArea);
     }
-    // Update() is called once per frame.
-    private void Update()
+
+    // Update is called once per frame
+    void Update()
     {
         yAxis = Input.GetAxisRaw("Vertical");
         attack = Input.GetButtonDown("Attack");
@@ -180,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         //if the player is temporarily Static, stop trying to do anything
-        if (rb.bodyType == RigidbodyType2D.Static) {return;}
+        if (rb.bodyType == RigidbodyType2D.Static) { return; }
 
         // Prevent player from moving, jumping, and flipping while dashing.
         if (isDashing) { return; }
@@ -192,6 +193,7 @@ public class PlayerMovement : MonoBehaviour
         }
         Recoil();
     }
+
 
     // Check if player is touching jumpable ground.
     private bool IsGrounded()
@@ -271,6 +273,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
     // Stop allowing player to wall jump.
     private void StopWallJumping()
     {
@@ -309,11 +312,12 @@ public class PlayerMovement : MonoBehaviour
         // Restore gravity after dashing.
         rb.gravityScale = originalGravity;
         isDashing = false;
-        
+
         // Player can dash again after dashingCooldown.
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
+
 
     // Switch between player animations based on movement.
     private void UpdateAnimationState()

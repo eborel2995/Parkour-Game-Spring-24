@@ -9,7 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2193904212644158720}
-  - component: {fileID: 818328370870148296}
+  - component: {fileID: 2835347677360910413}
+  - component: {fileID: 8876568712622778336}
+  - component: {fileID: 5963194494990490631}
+  - component: {fileID: 7588080149277582163}
   - component: {fileID: 1302963316785135149}
   - component: {fileID: 3852489452187724322}
   - component: {fileID: 3321854616533656145}
@@ -42,7 +45,7 @@ Transform:
   - {fileID: 4723030902068796873}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &818328370870148296
+--- !u!114 &2835347677360910413
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -51,7 +54,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1474088957329560946}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a0080ad392f6b24ab17ca6b5d7fd31d, type: 3}
+  m_Script: {fileID: 11500000, guid: fbe0d409782891c4694f2d82b28c12ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ignoreUserInput: 0
@@ -63,26 +66,49 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 256
-  SideAttackTransform: {fileID: 8429665651921188807}
-  UpAttackTransform: {fileID: 1367155910052703321}
-  DownAttackTransform: {fileID: 5364444290136464923}
-  SideAttackArea: {x: 4.5, y: 3.5}
-  UpAttackArea: {x: 3.5, y: 4.5}
-  DownAttackArea: {x: 3.5, y: 4.5}
-  attackableLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  damage: 2
-  slashEffect: {fileID: 179692507045510015, guid: dcb8e5e627510164887dd6bd0d5daeeb, type: 3}
-  recoilXSteps: 5
-  recoilYSteps: 5
-  recoilXSpeed: 75
-  recoilYSpeed: 32
-  health: 0
-  maxHealth: 10
-  bloodSpurt: {fileID: 662869163059739363, guid: 1f8f294acf09c9945ad6363e0e5dc625, type: 3}
-  hitFlashSpeed: 1
-  pState: {fileID: 0}
+--- !u!114 &8876568712622778336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474088957329560946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ceb3b5e045ea142b9c236c7090abf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resize: 1
+  gravity: 5
+  mouseControl: {fileID: 0}
+  invincible: 0
+--- !u!114 &5963194494990490631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474088957329560946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59698ed82b4106041835766ad60fbcb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugMode: 1
+  clickedWorldCoords: {x: 0, y: 0, z: 0}
+  selectedObject: {fileID: 0}
+--- !u!114 &7588080149277582163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474088957329560946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4c893ef43377ff4784047963f4374e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &1302963316785135149
 Rigidbody2D:
   serializedVersion: 4
