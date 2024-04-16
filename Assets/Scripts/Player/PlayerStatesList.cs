@@ -8,5 +8,5 @@ public class PlayerStatesList : MonoBehaviour
     public bool dashing = false;
     public bool recoilingX, recoilingY;
     public bool lookingRight;
-    public bool invincible;
+    public bool invincible; //remove, this is in Cheats.cs
 }

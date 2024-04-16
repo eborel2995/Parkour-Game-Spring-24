@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BossScript : MonoBehaviour
+public class BossScript : Enemy
 {
     [SerializeField] private int bitCount;
 
@@ -13,12 +13,11 @@ public class BossScript : MonoBehaviour
     private float jumpForce = 20f;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
-
-    private void Update()
+    private new void Update()
     {
         //if the slime is at the apex of its jump (plus slight delay), increase gravity to simulate ground slam
         if (rb.velocity.y < -5)
@@ -29,11 +28,12 @@ public class BossScript : MonoBehaviour
         {
             rb.gravityScale = 5;
         }
-
     }
 
     private void FixedUpdate()
     {
+        base.Update();
+
         if (timeSinceLastJump > 3) 
         {
             //make it so there is a chance the slime doesn't jump

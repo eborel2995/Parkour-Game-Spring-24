@@ -20,8 +20,8 @@ public class Crawler : Enemy
         baseScale = transform.localScale;
 
         facingDirection = RIGHT;
-        
     }
+
     protected override void Awake()
     {
         base.Awake();

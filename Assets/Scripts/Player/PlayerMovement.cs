@@ -422,13 +422,13 @@ public class PlayerMovement : MonoBehaviour
 
             if (pState.lookingRight)
             {
-                Debug.Log("If looking right");
+                //Debug.Log("Looking right");
                 rb.velocity = new Vector2(-recoilXSpeed, 0);
 
             }
             else
             {
-                Debug.Log("Looking Left");
+                //Debug.Log("Looking Left");
                 rb.velocity = new Vector2(recoilXSpeed, 0);
 
             }

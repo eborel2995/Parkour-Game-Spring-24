@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MouseControl : MonoBehaviour
 {
+    private Cheats cheats;
     private static MouseControl _instance;
     public static MouseControl Instance
     {
@@ -19,7 +20,6 @@ public class MouseControl : MonoBehaviour
     }
 
     Camera cam;
-    [SerializeField] bool debugMode = true;
     [SerializeField] public Vector3 clickedWorldCoords = Vector3.zero;
     [SerializeField] public GameObject selectedObject = null;
     //[SerializeField] GameObject spawnableObject;
@@ -43,6 +43,7 @@ public class MouseControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        cheats = GetComponent<Cheats>();
         cam = Camera.main;
     }
 
@@ -55,7 +56,7 @@ public class MouseControl : MonoBehaviour
         //convert to world coordinates
         worldMousePos = cam.ScreenToWorldPoint(worldMousePos);
 
-        if (debugMode)
+        if (cheats.debugMode)
         {
             Debug.DrawRay(transform.position, worldMousePos - transform.position, Color.blue);
         }

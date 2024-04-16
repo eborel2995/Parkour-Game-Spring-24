@@ -31,11 +31,16 @@ public class Cheats : MonoBehaviour
         {
             mouseControl.selectedObject.transform.localScale = new Vector3(resize, resize, 1);
 
-            rb = mouseControl.selectedObject.GetComponent<Rigidbody2D>();
-            rb.gravityScale = gravity;
+            try
+            {
+                rb = mouseControl.selectedObject.GetComponent<Rigidbody2D>();
+                rb.gravityScale = gravity;
+            }
+            catch 
+            {
+                Debug.Log($"Cheats.cs: {gameObject.name} doesn't have a rigidbody component");
+            }
+            
         }
-        
-        //fix issue of losing rb when scene changes!
-
     }
 }

@@ -141,6 +141,7 @@ GameObject:
   - component: {fileID: 251568649}
   - component: {fileID: 251568651}
   - component: {fileID: 251568652}
+  - component: {fileID: 251568654}
   m_Layer: 9
   m_Name: Boss
   m_TagString: Enemy
@@ -304,7 +305,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67d9407cf9eab2248bc97bd0544f5eae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 6
+  recoilLength: 0
+  recoilFactor: 0
+  isRecoiling: 0
+  moveSpeed: 5
+  damage: 0
   bitCount: 0
+--- !u!114 &251568654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 251568648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76527a0f02f591545a8a1ba3e9a73e25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
+  healthAmount: 100
+  deathFloorHeight: -80
 --- !u!114 &542241528 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3044709169830785820, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
