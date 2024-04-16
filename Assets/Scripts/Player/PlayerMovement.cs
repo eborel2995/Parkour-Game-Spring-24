@@ -84,8 +84,8 @@ public class PlayerMovement : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
     }
 
-    // Update() is called once per frame.
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
         // Cast enum state into int state.
         anim.SetInteger("state", (int)state);
@@ -134,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         //if the player is temporarily Static, stop trying to do anything
-        if (rb.bodyType == RigidbodyType2D.Static) {return;}
+        if (rb.bodyType == RigidbodyType2D.Static) { return; }
 
         // Prevent player from moving, jumping, and flipping while dashing.
         if (isDashing) { return; }
@@ -145,6 +145,7 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
         }
     }
+
 
     // Check if player is touching jumpable ground.
     private bool IsGrounded()
@@ -224,6 +225,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
     // Stop allowing player to wall jump.
     private void StopWallJumping()
     {
@@ -262,11 +264,12 @@ public class PlayerMovement : MonoBehaviour
         // Restore gravity after dashing.
         rb.gravityScale = originalGravity;
         isDashing = false;
-        
+
         // Player can dash again after dashingCooldown.
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
+
 
     // Switch between player animations based on movement.
     private void UpdateAnimationState()
