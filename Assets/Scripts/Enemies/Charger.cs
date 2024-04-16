@@ -45,9 +45,14 @@ public class Charger : Enemy
         lastDirectionChangeTime = Time.time;
         Debug.Log("Initial Detection Distance: " + detectionDistance);
     }
+    protected override void Awake()
+    {
+        base.Awake();
+    }
     // Update is called once per frame
     protected override void Update()
     {
+        base.Update();
         Debug.Log($"Current State: {currentChargerState}, Y Velocity: {rb.velocity.y}, Grounded: {IsGrounded()}");
 
         switch (currentChargerState)
@@ -263,5 +268,9 @@ public class Charger : Enemy
                     break;
             }
         }
+    }
+    public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
+    {
+        base.EnemyHit(_damageDone, _hitDirection, _hitForce);
     }
 }

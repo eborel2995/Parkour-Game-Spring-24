@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     private float horizontal;
     private float moveSpeed = 10f;
     private float jumpingPower = 21f;
+    private float gravity;
 
     // Wall sliding variables.
     private bool isWallSliding = false;
@@ -54,9 +55,40 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
 
+    // possiable attack vars and stuff
+    [Header("Attacking Setting")]
+    float timeBetweenAttack, timeSinceAttack;
+    //for attack animations and attack area and attackable layers
+    [SerializeField] Transform SideAttackTransform, UpAttackTransform, DownAttackTransform;
+    [SerializeField] Vector2 SideAttackArea, UpAttackArea, DownAttackArea;
+    [SerializeField] LayerMask attackableLayer;
+    [SerializeField] float damage;
+    [SerializeField] GameObject slashEffect;
+    bool restoreTime;
+    float restoreTimeSpeed;
+    [Space(5)]
+
+    [Header("Recoil Settings")]
+    [SerializeField] int recoilXSteps = 5;
+    [SerializeField] int recoilYSteps = 5;
+    [SerializeField] float recoilXSpeed = 100;
+    [SerializeField] float recoilYSpeed = 100;
+    private int stepsXRecoiled, stepsYRecoiled;
+    [Space(5)]
+
+    [Header("Health Settings")]
+    public int health;
+    public int maxHealth;
+    [SerializeField] GameObject bloodSpurt;
+    [SerializeField] float hitFlashSpeed;
+    public delegate void OnHealthChangedDelegate();
+    [HideInInspector] public OnHealthChangedDelegate onHealthChangedCallback;
+
+    bool attack = false;
+    private float xAxis, yAxis;
     // Create an Instance of PlayerMovement to reference in other scripts.
     public static PlayerMovement Instance { get; private set; }
-
+    [HideInInspector] public PlayerStatesList pState;
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1             2            3        4        5        6          mathematically.
     private enum MovementState { idle, runningRight, runningLeft, jumping, falling, dashing, wallSliding }
@@ -73,20 +105,32 @@ public class PlayerMovement : MonoBehaviour
         {
             Destroy(gameObject);  // Ensures there's only one instance of the PlayerMovement object
         }
+        Health = maxHealth;
     }
     // Start() is called before the first frame update.
     private void Start()
     {
         // Access components once to save processing power.
+        pState = GetComponent<PlayerStatesList>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
         sprite = GetComponent<SpriteRenderer>();
+        gravity = rb.gravityScale;
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(SideAttackTransform.position, SideAttackArea);
+        Gizmos.DrawWireCube(UpAttackTransform.position, UpAttackArea);
+        Gizmos.DrawWireCube(DownAttackTransform.position, DownAttackArea);
     }
 
     // Update is called once per frame
     void Update()
     {
+        yAxis = Input.GetAxisRaw("Vertical");
+        attack = Input.GetButtonDown("Attack");
         // Cast enum state into int state.
         anim.SetInteger("state", (int)state);
 
@@ -115,7 +159,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Dash by hitting leftShift if canDash is true.
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !isWallSliding)
+        if (Input.GetButtonDown("Dash") && canDash && !isWallSliding)
         {
             StartCoroutine(Dash());
         }
@@ -126,6 +170,9 @@ public class PlayerMovement : MonoBehaviour
 
         // Get horizontal movement when not wall jumping.
         if (!isWallJumping) { Flip(); }
+        Attack();
+        RestoreTimeScale();
+        FlashWhileInvincible();
     }
 
     // FixedUpdate() can run once, zero, or several times per frame, depending on
@@ -144,6 +191,7 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
         }
+        Recoil();
     }
 
 
@@ -299,5 +347,209 @@ public class PlayerMovement : MonoBehaviour
             // If dashing set state to dashing animation.
             if (isDashing) { state = MovementState.dashing; }
         }
+    }
+    // how attacks are handled
+    void Attack()
+    {
+        timeSinceAttack = Time.deltaTime;
+        if (attack && timeSinceAttack >= timeBetweenAttack)
+        {
+            timeSinceAttack = 0;
+            anim.SetTrigger("Attacking");
+
+            if (yAxis == 0 || yAxis < 0 && IsGrounded())
+            {
+                Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
+                Instantiate(slashEffect, SideAttackTransform);
+            }
+            else if (yAxis > 0)
+            {
+                Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
+                SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
+            }
+            else if (yAxis < 0 && !IsGrounded())
+            {
+                Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
+                SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
+            }
+        }
+    }
+    //hit with recoil
+    private void Hit(Transform _attackTransform, Vector2 _attackArea, ref bool _recoilDir, float _recoilStrength)
+    {
+        Collider2D[] objectsToHit = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0, attackableLayer);
+
+        if (objectsToHit.Length > 0)
+        {
+            _recoilDir = true;
+        }
+        for (int i = 0; i < objectsToHit.Length; i++)
+        {
+            if (objectsToHit[i].GetComponent<Enemy>() != null)
+            {
+                objectsToHit[i].GetComponent<Enemy>().EnemyHit(damage,
+                    (transform.position - objectsToHit[i].transform.position).normalized, _recoilStrength);
+            }
+        }
+    }
+    // slach animations
+    void SlashEffectAtAngle(GameObject _slashEffect, int _effectAngle, Transform _attackTransform)
+    {
+        _slashEffect = Instantiate(_slashEffect, _attackTransform);
+        _slashEffect.transform.eulerAngles = new Vector3(0, 0, _effectAngle);
+        _slashEffect.transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y);
+    }
+    void Recoil()
+    {
+        //Debug.Log("Recoil from update");
+        if (pState.recoilingX)
+        {
+
+            if (pState.lookingRight)
+            {
+                Debug.Log("If looking right");
+                rb.velocity = new Vector2(-recoilXSpeed, 0);
+
+            }
+            else
+            {
+                Debug.Log("Looking Left");
+                rb.velocity = new Vector2(recoilXSpeed, 0);
+
+            }
+        }
+        if (pState.recoilingY)
+        {
+            rb.gravityScale = 0;
+            if (yAxis < 0)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, recoilYSpeed);
+            }
+            else
+            {
+                rb.velocity = new Vector2(rb.velocity.x, -recoilYSpeed);
+            }
+            //airJumpCounter = 0;
+        }
+        else
+        {
+            rb.gravityScale = gravity;
+        }
+
+        //stop recoil
+        if (pState.recoilingX && stepsXRecoiled < recoilXSteps)
+        {
+            stepsXRecoiled++;
+        }
+        else
+        {
+            StopRecoilX();
+        }
+        if (pState.recoilingY && stepsYRecoiled < recoilYSteps)
+        {
+            stepsYRecoiled++;
+        }
+        else
+        {
+            StopRecoilY();
+        }
+
+        if (IsGrounded())
+        {
+            StopRecoilY();
+        }
+    }
+    void StopRecoilX()
+    {
+        stepsXRecoiled = 0;
+        pState.recoilingX = false;
+    }
+    void StopRecoilY()
+    {
+        stepsYRecoiled = 0;
+        pState.recoilingY = false;
+    }
+    //player taking damage 
+    public void TakeDamage(float _damage)
+    {
+        Health -= Mathf.RoundToInt(_damage);
+        StartCoroutine(StopTakingDamage());
+    }
+    IEnumerator StopTakingDamage()
+    {
+        pState.invincible = true;
+        GameObject _bloodSpurtParticles = Instantiate(bloodSpurt, transform.position, Quaternion.identity);
+        Destroy(_bloodSpurtParticles, 1.5f);
+        anim.SetTrigger("TakeDamage");
+        yield return new WaitForSeconds(1f);
+        pState.invincible = false;
+
+    }
+    public int Health
+    {
+        get { return health; }
+        set
+        {
+            if (health != value)
+            {
+                health = Mathf.Clamp(value, 0, maxHealth);
+
+                if (onHealthChangedCallback != null)
+                {
+                    onHealthChangedCallback.Invoke();
+                }
+            }
+        }
+    }
+    // flashing and invinciblity time from being attacked
+    void FlashWhileInvincible()
+    {
+        if (sprite == null)
+        {
+            Debug.LogError("SpriteRenderer not assigned in PlayerMovement.");
+            return; // Exit if sprite is null to prevent further errors
+        }
+
+        if (pState == null)
+        {
+            Debug.LogError("PlayerStatesList not assigned in PlayerMovement.");
+            return; // Exit if pState is null to prevent further errors
+        }
+        sprite.material.color = pState.invincible ?
+            Color.Lerp(Color.white, Color.black, Mathf.PingPong(Time.time * hitFlashSpeed, 1.0f)) : Color.white;
+    }
+    void RestoreTimeScale()
+    {
+        if (restoreTime)
+        {
+            if (Time.timeScale < 1)
+            {
+                Time.timeScale += Time.deltaTime * restoreTimeSpeed;
+            }
+            else
+            {
+                Time.timeScale = 1;
+                restoreTime = false;
+            }
+        }
+    }
+    public void HitStopTime(float _newTimeScale, int _restoreSpeed, float _delay)
+    {
+        restoreTimeSpeed = _restoreSpeed;
+        Time.timeScale = _newTimeScale;
+        if (_delay > 0)
+        {
+            StopCoroutine(StartTimeAgain(_delay));
+            StartCoroutine(StartTimeAgain(_delay));
+        }
+        else
+        {
+            restoreTime = true;
+        }
+    }
+    IEnumerator StartTimeAgain(float _delay)
+    {
+        restoreTime = true;
+        yield return new WaitForSeconds(_delay);
     }
 }
