@@ -5,9 +5,11 @@ using UnityEngine.UIElements;
 
 public class Cheats : MonoBehaviour
 {
+    [SerializeField] public bool debugMode = true;
     [SerializeField] float resize = 1;
     [SerializeField] float gravity = 5;
     [SerializeField] MouseControl mouseControl;
+    [SerializeField] public bool invincible = false;
 
     Rigidbody2D rb;
 
@@ -16,7 +18,7 @@ public class Cheats : MonoBehaviour
     {
         //rb = GetComponent<Rigidbody2D>();
         //gravity = rb.gravityScale;
-        mouseControl = GetComponent<MouseControl>();
+        mouseControl = MouseControl.Instance;
     }
 
     // Update is called once per frame
@@ -24,14 +26,6 @@ public class Cheats : MonoBehaviour
     {
         //transform.localScale = resize;
         //rb.gravityScale = gravity;
-
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Debug.Log("R pressed");
-            //(toggle) player.Equip(resizer);
-
-        }
 
         if (mouseControl.selectedObject != null) //player.currentlyEquiped(resizer) == true
         {
