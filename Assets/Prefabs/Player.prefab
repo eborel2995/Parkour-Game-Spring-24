@@ -118,7 +118,7 @@ MonoBehaviour:
   DownAttackArea: {x: 3.5, y: 4.5}
   attackableLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2560
   slashEffect: {fileID: 179692507045510015, guid: dcb8e5e627510164887dd6bd0d5daeeb, type: 3}
   recoilXSteps: 5
   recoilYSteps: 5
@@ -344,6 +344,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1110841fc79bdf45b673eaeac285202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alive: 1
+  jumping: 0
+  dashing: 0
+  recoilingX: 0
+  recoilingY: 0
+  lookingRight: 0
+  invincible: 0
 --- !u!1 &1664186760508678048
 GameObject:
   m_ObjectHideFlags: 0
