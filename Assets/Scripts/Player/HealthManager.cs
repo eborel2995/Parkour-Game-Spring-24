@@ -116,11 +116,11 @@ public class HealthManager : MonoBehaviour
         pm.ignoreUserInput = false;
     }
 
-    /*
+    
     private void RestartLevel()
     {
         // Restart level.
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    */
+    
 }
