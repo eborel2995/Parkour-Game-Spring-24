@@ -73,8 +73,8 @@ public class Enemy : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            healthManager = gameObject.gameObject.GetComponent<HealthManager>();
-            Debug.Log($"{gameObject.name} hit Player!");
+            healthManager = collision.gameObject.GetComponent<HealthManager>();
+            Debug.Log($"{gameObject.name} hit {collision.gameObject.name}!");
             healthManager.TakeDamage(damage);
         }
     }
