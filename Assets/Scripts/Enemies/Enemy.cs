@@ -19,11 +19,15 @@ public class Enemy : MonoBehaviour
     protected Animator anim;
 
     protected float recoilTimer;
+
+    protected HealthManager healthManager;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
         
     }
+    
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -59,16 +63,27 @@ public class Enemy : MonoBehaviour
             rb.AddForce(-_hitForce * recoilFactor * _hitDirection);
         }
     }
-    protected void OnCollisionEnter2D(Collision2D collision)
+    protected void OnCollisionEnter2D(GameObject collision)
     {
         if (collision.gameObject.CompareTag("Player") && !PlayerMovement.Instance.pState.invincible)
         {
-            Attack();
+            EnemyAttack(collision);
             PlayerMovement.Instance.HitStopTime(0, 5, 0.5f);
         }
     }
-    protected virtual void Attack()
+    protected virtual void EnemyAttack(GameObject entity)
     {
-        PlayerMovement.Instance.TakeDamage(damage);
+        //PlayerMovement.Instance.TakeDamage(damage);
+
+        //if the collision is with a player that is not invincible, and the player is alive
+        if (entity.gameObject.CompareTag("Player")
+            && !PlayerMovement.Instance.pState.invincible
+            && PlayerMovement.Instance.pState.alive
+            )
+        {
+            healthManager = entity.gameObject.GetComponent<HealthManager>();
+            Debug.Log($"{gameObject.name} hit {entity.gameObject.name}!");
+            healthManager.TakeDamage(damage);
+        }
     }
 }

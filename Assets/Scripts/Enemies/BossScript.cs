@@ -1,50 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class BossScript : MonoBehaviour
+public class BossScript : Enemy
 {
     [SerializeField] private int bitCount;
-    // For Idle Stage
-    [Header("Idle")]
-    [SerializeField] float idleMoveSpeed;
-    [SerializeField] Vector2 idleMoveDirection;
-
-    private Rigidbody2D rb;
 
     private float timeSinceLastJump = 2f;
     private float jumpForce = 20f;
-    private float moveForce = 10f;
-    // For Attack Up and Down Stage
-    // For Attack Player Stage
-    // Other
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
     }
-
-    // Update is called once per frame
-    void Update()
+    private new void Update()
     {
-        
+        //if the slime is at the apex of its jump (plus slight delay), increase gravity to simulate ground slam
+        if (rb.velocity.y < -5)
+        {
+            rb.gravityScale = 100;
+        }
+        else
+        {
+            rb.gravityScale = 5;
+        }
     }
 
     private void FixedUpdate()
     {
+        base.Update();
+
         if (timeSinceLastJump > 3) 
         {
+            //make it so there is a chance the slime doesn't jump
+            var rand = Random.Range(0, 100);
+            if ( rand > 95 )
+            {
+                Vector3 playerPosition = PlayerMovement.Instance.transform.position;
+                Vector3 myPosition = transform.position;
+                Vector2 direction = (playerPosition - myPosition);
 
-            Vector3 playerPosition = PlayerMovement.Instance.transform.position;
-            Vector3 myPosition = transform.position;
-            Vector2 direction = (playerPosition - myPosition).normalized;
-
-            //bug: player can sit between moveForce distance and the slime will never hit the player
-            //adjust moveForce based on distance
-
-            rb.velocity = new Vector2(rb.velocity.x + (direction.x * moveForce), rb.velocity.y + jumpForce);
-            timeSinceLastJump = 0;
+                rb.velocity = new Vector2(rb.velocity.x + (direction.x), rb.velocity.y + jumpForce);
+                timeSinceLastJump = 0;
+            }
         }
 
         timeSinceLastJump += Time.deltaTime;

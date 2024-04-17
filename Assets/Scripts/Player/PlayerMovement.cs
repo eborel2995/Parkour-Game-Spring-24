@@ -53,8 +53,10 @@ public class PlayerMovement : MonoBehaviour
     private bool isFacingRight = true;
     private float vertical;
     private float horizontal;
+
     [Header("Player Movement Settings:")]
-    [SerializeField] private float moveSpeed = 10f;
+    private static float defaultMoveSpeed = 10f;
+    [SerializeField] private float moveSpeed = defaultMoveSpeed;
     [SerializeField] private float jumpingPower = 21f;
     [SerializeField] private float gravity;
 
@@ -112,7 +114,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float hitFlashSpeed;
     [SerializeField] GameObject bloodSpurt;
 
-    // Player health property.
+    [Header("Slime Boss Settings:")]
+    public bool isEngulfed = false;
+    private float engulfSlowRatio = 0.5f;
+
     public int Health
     {
         // Get player health.
@@ -187,6 +192,17 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.bodyType = RigidbodyType2D.Static;
             return;
+        }
+
+        if (isEngulfed)
+        {
+            moveSpeed = defaultMoveSpeed * engulfSlowRatio;
+            anim.speed = engulfSlowRatio;
+        }
+        else
+        {
+            moveSpeed = defaultMoveSpeed;
+            anim.speed = 1.0f;
         }
 
         // Prevent player from moving, jumping, and flipping while dashing.

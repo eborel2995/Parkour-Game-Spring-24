@@ -43,7 +43,7 @@ public class Charger : Enemy
         facingDirection = RIGHT;
         currentChargerState = ChargerStates.Charger_Idle;
         lastDirectionChangeTime = Time.time;
-        Debug.Log("Initial Detection Distance: " + detectionDistance);
+        //Debug.Log("Initial Detection Distance: " + detectionDistance);
     }
     protected override void Awake()
     {
@@ -53,7 +53,7 @@ public class Charger : Enemy
     protected override void Update()
     {
         base.Update();
-        Debug.Log($"Current State: {currentChargerState}, Y Velocity: {rb.velocity.y}, Grounded: {IsGrounded()}");
+        //Debug.Log($"Current State: {currentChargerState}, Y Velocity: {rb.velocity.y}, Grounded: {IsGrounded()}");
 
         switch (currentChargerState)
         {
@@ -196,7 +196,7 @@ public class Charger : Enemy
 
         // Detection should be independent of jump cooldown.
         float distance = Vector3.Distance(transform.position, PlayerMovement.Instance.transform.position);
-        Debug.Log($"Checking player distance: {distance}, Detection Distance: {detectionDistance}");
+        //Debug.Log($"Checking player distance: {distance}, Detection Distance: {detectionDistance}");
 
         if (distance <= detectionDistance && !IsNearEdge() && Time.time - lastJumpTime >= jumpCooldown)
         {
@@ -204,7 +204,7 @@ public class Charger : Enemy
         }
         else
         {
-            Debug.Log("Player out of detection range or near edge, staying Idle.");
+            //Debug.Log("Player out of detection range or near edge, staying Idle.");
             ChangeState(ChargerStates.Charger_Idle);
         }
     }

@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 826100938997318725}
+  - component: {fileID: 3202222257896407292}
   - component: {fileID: 2546051910816580604}
   - component: {fileID: 1663109617213267113}
-  - component: {fileID: 3202222257896407292}
   - component: {fileID: 6813717244527533527}
   - component: {fileID: 1188219153837359573}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Crawler
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -37,6 +37,26 @@ Transform:
   - {fileID: 2725107464866525067}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3202222257896407292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605116730173125564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 738890fca44edba4f9681c8d4e0febc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1
+  recoilLength: 75
+  recoilFactor: 75
+  isRecoiling: 0
+  moveSpeed: 5
+  damage: 1
+  castPos: {fileID: 2725107464866525067}
+  baseCastDist: 0.2
 --- !u!212 &2546051910816580604
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -110,26 +130,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3202222257896407292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4605116730173125564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 738890fca44edba4f9681c8d4e0febc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 2
-  recoilLength: 75
-  recoilFactor: 75
-  isRecoiling: 0
-  moveSpeed: 5
-  damage: 1
-  castPos: {fileID: 2725107464866525067}
-  baseCastDist: 0.2
 --- !u!58 &6813717244527533527
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -201,7 +201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2725107464866525067}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: CastPos
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
