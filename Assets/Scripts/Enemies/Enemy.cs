@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     protected float recoilTimer;
 
     protected HealthManager healthManager;
+    protected PlayerStatesList pState;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -65,7 +66,7 @@ public class Enemy : MonoBehaviour
     }
     protected void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && !PlayerMovement.Instance.pState.invincible)
+        if (collision.gameObject.CompareTag("Player") && !PlayerMovement.Instance.pState.invincible && pState.alive)
         {
             EnemyAttack(collision.gameObject);
             PlayerMovement.Instance.HitStopTime(0, 5, 0.5f);

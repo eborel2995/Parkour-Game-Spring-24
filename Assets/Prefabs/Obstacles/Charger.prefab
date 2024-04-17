@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5499193673446803551}
   - component: {fileID: 1281490685567522134}
   - component: {fileID: 2969363364931748543}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Charger
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -219,7 +219,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6685505270904855716}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: CastPos
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}

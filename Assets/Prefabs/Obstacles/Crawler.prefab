@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1663109617213267113}
   - component: {fileID: 6813717244527533527}
   - component: {fileID: 1188219153837359573}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Crawler
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2725107464866525067}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: CastPos
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
