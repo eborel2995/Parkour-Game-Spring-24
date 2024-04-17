@@ -53,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isFacingRight = true;
     private float vertical;
     private float horizontal;
+    private bool canDoubleJump = false;
 
     [Header("Player Movement Settings:")]
     private static float defaultMoveSpeed = 10f;
@@ -213,9 +214,18 @@ public class PlayerMovement : MonoBehaviour
         vertical = Input.GetAxisRaw("Vertical");
         horizontal = Input.GetAxisRaw("Horizontal");
         
-        // Jump if on jumpable ground.
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        // Reset jump counter
+        if (IsGrounded())
         {
+            canDoubleJump = true;
+        }
+
+        // Jump if on jumpable ground or the single double jump.
+        if (Input.GetButtonDown("Jump") && canDoubleJump)
+        {
+            if (!IsGrounded())
+            { canDoubleJump = false; }
+
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
         // Holding jump will let the player jump higher.
