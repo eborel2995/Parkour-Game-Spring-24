@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a27db08e1f1c3ed4293db589530c4685
+guid: cd45d65e4c71f3d479a132f487313a52
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -35,7 +35,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 30
+    spritePixelsToUnits: 16
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -97,7 +97,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638487070271000657
+  platformSettingsDirtyTick: 638489564004149955
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -121,18 +121,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: PlayerDash
+  - name: File
     originalName: 
-    pivot: {x: 0.51282054, y: -0.017857144}
+    pivot: {x: 0.72727275, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 39
-      height: 56
-    spriteID: bbfd83053ad782b479738cf774541f97
+      width: 22
+      height: 31
+    spriteID: 64bba03a2d1aba14f821d023b1fa992b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -142,7 +142,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: PlayerDash_0
+  - name: File_0
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -151,9 +151,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 39
-      height: 56
-    spriteID: 144edbcd4f9d8e445a6dd5f5b7570303
+      width: 22
+      height: 31
+    spriteID: 7349a2e97caacf94f9c9436f12b19c02
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -164,20 +164,20 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   asepriteLayers:
   - layerIndex: 0
-    guid: -328912935
-    name: PlayerDash
+    guid: -1754210644
+    name: File
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: PlayerDash
+    - name: File
       frameIndex: 0
       cellRect:
         x: 0
-        y: 1
-        width: 39
-        height: 56
-      spriteId: bbfd83053ad782b479738cf774541f97
+        y: 0
+        width: 22
+        height: 31
+      spriteId: 64bba03a2d1aba14f821d023b1fa992b
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -208,4 +208,4 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 40, y: 64}
+  canvasSize: {x: 32, y: 32}
