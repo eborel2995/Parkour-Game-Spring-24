@@ -119786,6 +119786,10 @@ PrefabInstance:
       value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 6707681149259320347, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: slashEffect
+      value: 
+      objectReference: {fileID: 179692507045510015, guid: dcb8e5e627510164887dd6bd0d5daeeb, type: 3}
+    - target: {fileID: 6707681149259320347, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: attackableLayer.m_Bits
       value: 2560
       objectReference: {fileID: 0}

@@ -34,7 +34,7 @@ public class HealthManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if the entity dies
+        //if the entity runs out of health
         if (healthAmount <= 0)
         {
             Debug.Log($"{gameObject.name} ran out of health!");
@@ -105,7 +105,7 @@ public class HealthManager : MonoBehaviour
             // Disable player movement.
             pm.ignoreUserInput = true;
         }
-        
+
     }
 
     public void Respawn()
@@ -113,6 +113,7 @@ public class HealthManager : MonoBehaviour
         //instantly teleport back to initial coordinates
         transform.position = respawnCoords;
         healthAmount = baseHealth;
+        pm.ignoreUserInput = false;
     }
 
     /*
