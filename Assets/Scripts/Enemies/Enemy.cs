@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour
 
     protected float recoilTimer;
 
+    protected HealthManager healthManager;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -67,6 +69,13 @@ public class Enemy : MonoBehaviour
         {
             Attack();
             PlayerMovement.Instance.HitStopTime(0, 5, 0.5f);
+        }
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            healthManager = gameObject.gameObject.GetComponent<HealthManager>();
+            Debug.Log($"{gameObject.name} hit Player!");
+            healthManager.TakeDamage(damage);
         }
     }
     protected virtual void Attack()
