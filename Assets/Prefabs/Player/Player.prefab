@@ -57,6 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbe0d409782891c4694f2d82b28c12ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pState: {fileID: 0}
   ignoreUserInput: 0
   groundCheck: {fileID: 1188277345214144823}
   groundLayer:
@@ -66,6 +67,16 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 256
+  moveSpeed: 10
+  jumpingPower: 21
+  gravity: 0
+  wallSlidingSpeed: 3
+  wallJumpingTime: 0.2
+  wallJumpingDuration: 0.4
+  dashingPower: 24
+  dashingTime: 0.2
+  dashingCooldown: 0.75
+  damage: 2
   SideAttackTransform: {fileID: 8429665651921188807}
   UpAttackTransform: {fileID: 1367155910052703321}
   DownAttackTransform: {fileID: 5364444290136464923}
@@ -75,17 +86,15 @@ MonoBehaviour:
   attackableLayer:
     serializedVersion: 2
     m_Bits: 512
-  damage: 2
   slashEffect: {fileID: 179692507045510015, guid: dcb8e5e627510164887dd6bd0d5daeeb, type: 3}
-  recoilXSteps: 5
-  recoilYSteps: 5
-  recoilXSpeed: 100
-  recoilYSpeed: 100
+  recoilXSteps: 3
+  recoilYSteps: 3
+  recoilXSpeed: 25
+  recoilYSpeed: 25
   health: 0
   maxHealth: 10
-  bloodSpurt: {fileID: 662869163059739363, guid: 1f8f294acf09c9945ad6363e0e5dc625, type: 3}
   hitFlashSpeed: 1
-  pState: {fileID: 0}
+  bloodSpurt: {fileID: 662869163059739363, guid: 1f8f294acf09c9945ad6363e0e5dc625, type: 3}
 --- !u!114 &8876568712622778336
 MonoBehaviour:
   m_ObjectHideFlags: 0
