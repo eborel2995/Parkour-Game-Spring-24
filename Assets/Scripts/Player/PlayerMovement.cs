@@ -197,10 +197,12 @@ public class PlayerMovement : MonoBehaviour
         if (isEngulfed)
         {
             moveSpeed = defaultMoveSpeed * engulfSlowRatio;
+            anim.speed = engulfSlowRatio;
         }
         else
         {
             moveSpeed = defaultMoveSpeed;
+            anim.speed = 1.0f;
         }
 
         // Prevent player from moving, jumping, and flipping while dashing.
