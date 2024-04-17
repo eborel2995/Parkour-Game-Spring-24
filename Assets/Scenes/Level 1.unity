@@ -105339,7 +105339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4486467446712469105, guid: d0104c80e631af84cbbe5a856d399cad, type: 3}
       propertyPath: nextScene
-      value: LevelSelection
+      value: Level 2
       objectReference: {fileID: 0}
     - target: {fileID: 6338851820662550619, guid: d0104c80e631af84cbbe5a856d399cad, type: 3}
       propertyPath: m_LocalPosition.x
@@ -119767,11 +119767,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2742280287832588091, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -23.88
+      value: -41.129
       objectReference: {fileID: 0}
     - target: {fileID: 2742280287832588091, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -13.05
+      value: -13.146
       objectReference: {fileID: 0}
     - target: {fileID: 3293875147550402044, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: m_Name
@@ -119811,11 +119811,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7222935451162616150, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -23.88
+      value: -41.129
       objectReference: {fileID: 0}
     - target: {fileID: 7222935451162616150, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -13.05
+      value: -13.146
       objectReference: {fileID: 0}
     - target: {fileID: 7760727370639362985, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: m_Enabled

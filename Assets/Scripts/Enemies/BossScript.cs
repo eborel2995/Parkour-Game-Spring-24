@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BossScript : Enemy
 {
@@ -47,5 +48,10 @@ public class BossScript : Enemy
         }
 
         timeSinceLastJump += Time.deltaTime;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.LoadScene("Victory Screen");
     }
 }
