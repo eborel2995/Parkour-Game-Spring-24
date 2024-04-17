@@ -119718,14 +119718,6 @@ PrefabInstance:
       propertyPath: deathFloorHeight
       value: -80
       objectReference: {fileID: 0}
-    - target: {fileID: 6146112704717090013, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -700
-      objectReference: {fileID: 0}
-    - target: {fileID: 6146112704717090013, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -375
-      objectReference: {fileID: 0}
     - target: {fileID: 6707681149259320347, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: recoilXSpeed
       value: 25
