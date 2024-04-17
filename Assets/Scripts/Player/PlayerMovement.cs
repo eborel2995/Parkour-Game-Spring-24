@@ -636,7 +636,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Restores time scale if it has been modified.
-    void RestoreTimeScale()
+    public void RestoreTimeScale()
     {
         // If time scale needs to be restored.
         if (restoreTime)

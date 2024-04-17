@@ -18,6 +18,8 @@ public class HealthManager : MonoBehaviour
 
     private Vector3 respawnCoords;
     [SerializeField] private float deathFloorHeight = -80;
+
+    private PlayerStatesList pList;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,7 @@ public class HealthManager : MonoBehaviour
         rb      = GetComponent<Rigidbody2D>();
         pm      = GetComponent<PlayerMovement>();
         cheats  = GetComponent<Cheats>();
+        pList   = GetComponent<PlayerStatesList>();
     }
 
     // Update is called once per frame
@@ -99,7 +102,7 @@ public class HealthManager : MonoBehaviour
     {
         // Activate death animation.
         anim.SetTrigger("death");
-
+        pList.alive = false;
         if (gameObject.name == "Player")
         {
             // Disable player movement.
@@ -114,6 +117,8 @@ public class HealthManager : MonoBehaviour
         transform.position = respawnCoords;
         healthAmount = baseHealth;
         pm.ignoreUserInput = false;
+        pList.alive = true;
+        Time.timeScale = 1;
     }
 
     

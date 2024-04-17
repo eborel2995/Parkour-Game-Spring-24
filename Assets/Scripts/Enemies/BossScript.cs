@@ -10,6 +10,7 @@ public class BossScript : Enemy
 
     private float timeSinceLastJump = 2f;
     private float jumpForce = 20f;
+    private float jumpFrequency = 2.5f;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -32,7 +33,7 @@ public class BossScript : Enemy
     {
         base.Update();
 
-        if (timeSinceLastJump > 3) 
+        if (timeSinceLastJump > jumpFrequency) 
         {
             //make it so there is a chance the slime doesn't jump
             var rand = Random.Range(0, 100);

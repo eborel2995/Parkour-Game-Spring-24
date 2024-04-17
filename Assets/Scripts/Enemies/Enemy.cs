@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     protected PlayerMovement player;
     [SerializeField] protected float moveSpeed = 5f;
 
-    [SerializeField] protected float damage;
+    [SerializeField] protected float damage = 10f;
 
     protected Rigidbody2D rb;
     protected SpriteRenderer sr;
@@ -21,7 +21,6 @@ public class Enemy : MonoBehaviour
     protected float recoilTimer;
 
     protected HealthManager healthManager;
-    protected PlayerStatesList pState;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -66,10 +65,10 @@ public class Enemy : MonoBehaviour
     }
     protected void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && !PlayerMovement.Instance.pState.invincible && pState.alive)
+        if (collision.gameObject.CompareTag("Player") && !PlayerMovement.Instance.pState.invincible)
         {
             EnemyAttack(collision.gameObject);
-            PlayerMovement.Instance.HitStopTime(0, 5, 0.5f);
+            PlayerMovement.Instance.HitStopTime(0.25f, 5, 0.5f);
         }
     }
     protected virtual void EnemyAttack(GameObject entity)
