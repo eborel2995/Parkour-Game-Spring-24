@@ -17,9 +17,9 @@ TagManager:
   - Ground
   - CheatMenu
   - Wall
-  - 
-  - 
-  - 
+  - Slime
+  - Player
+  - Attackable
   - 
   - 
   - 
@@ -52,4 +52,7 @@ TagManager:
     locked: 0
   - name: Terrain
     uniqueID: 1740996329
+    locked: 0
+  - name: UI Sorting Layer
+    uniqueID: 585506765
     locked: 0

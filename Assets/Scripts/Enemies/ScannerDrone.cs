@@ -37,6 +37,10 @@ public class ScannerDrone : Enemy
         base.Update();
         UpdateEnemyStates();
     }
+    protected override void Awake()
+    {
+        base.Awake();
+    }
     void UpdateEnemyStates()
     {
         float _dist = Vector2.Distance(transform.position, PlayerMovement.Instance.transform.position);
@@ -64,5 +68,9 @@ public class ScannerDrone : Enemy
     void FlipScanner()
     {
         sr.flipX = PlayerMovement.Instance.transform.position.x < transform.position.x;
+    }
+    public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
+    {
+        base.EnemyHit(_damageDone, _hitDirection, _hitForce);
     }
 }
