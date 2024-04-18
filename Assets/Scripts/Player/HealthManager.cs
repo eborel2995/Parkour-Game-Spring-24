@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -48,6 +49,7 @@ public class HealthManager : MonoBehaviour
             //RestartLevel();
         }
 
+        /*
         if (gameObject.name == "Player")
         {
             if (cheats.debugMode == true)
@@ -61,6 +63,7 @@ public class HealthManager : MonoBehaviour
                 //////////////////////
             }
         }
+        */
         
 
         if (transform.position.y <= deathFloorHeight)
@@ -78,13 +81,41 @@ public class HealthManager : MonoBehaviour
         {
             UpdateHealthbar();
         }
-        
     }
 
+    /*
     public void TakeDamage(float amount)
     {
+        // Decrease player health.
         healthAmount -= amount;
     }
+    */
+
+    // Handles player taking damage.
+    public void TakeDamage(float _damage)
+    {
+        // Decrement player health.
+        healthAmount -= Mathf.RoundToInt(_damage);
+
+        // Stop taking damage (invincibility-frames).
+        StartCoroutine(StopTakingDamage());
+    }
+
+    // Handles player invincibility-frames and TakeDamage animation.
+    IEnumerator StopTakingDamage()
+    {
+        // Enable player invincibility-frames.
+        pList.invincible = true;
+
+        // Set TakeDamage animation trigger.
+        //anim.SetTrigger("TakeDamage");
+        //Debug.Log("HURT ANIMATION NOW!");
+
+        // Delay disabling invincibility-frames.
+        yield return new WaitForSeconds(1f);
+        pList.invincible = false;
+    }
+
 
     public void Heal(float amount)
     {
@@ -127,5 +158,4 @@ public class HealthManager : MonoBehaviour
         // Restart level.
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    
 }

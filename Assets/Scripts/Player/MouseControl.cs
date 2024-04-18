@@ -56,10 +56,12 @@ public class MouseControl : MonoBehaviour
         //convert to world coordinates
         worldMousePos = cam.ScreenToWorldPoint(worldMousePos);
 
+        /*
         if (cheats.debugMode)
         {
             Debug.DrawRay(transform.position, worldMousePos - transform.position, Color.blue);
         }
+        */
 
         //if the user clicks
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) 
