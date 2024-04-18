@@ -11,10 +11,13 @@ public class BossScript : Enemy
     private float timeSinceLastJump = 2f;
     private float jumpForce = 20f;
     private float jumpFrequency = 2.5f;
+    private bool facingLeft = true;
+    [SerializeField] private GameObject playerObject; 
 
     // Start is called before the first frame update
     protected override void Start()
     {
+        playerObject = GameObject.FindWithTag("Player");
     }
     private new void Update()
     {
@@ -26,6 +29,18 @@ public class BossScript : Enemy
         else
         {
             rb.gravityScale = 5;
+        }
+
+        //change direction of boss
+        //if player is right of boss and boss is facing left, then look right OR
+        //if player is left of boss and boss is facing right, then look left
+        if ((player.transform.position.x > transform.position.x && facingLeft) ||
+            (player.transform.position.x < transform.position.x && !facingLeft))
+        {
+            facingLeft = !facingLeft;
+            Vector2 newDirection = rb.transform.localScale;
+            newDirection.x *= -1;
+            rb.transform.localScale = newDirection;
         }
     }
 
