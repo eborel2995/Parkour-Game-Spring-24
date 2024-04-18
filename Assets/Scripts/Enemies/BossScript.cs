@@ -12,16 +12,20 @@ public class BossScript : Enemy
     private float jumpForce = 20f;
     private float jumpFrequency = 2.5f;
     private bool facingLeft = true;
-    [SerializeField] private GameObject playerObject; 
+    private GameObject playerObject;
+    [SerializeField] private GameObject bomb;
+    private Rigidbody2D rb;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         playerObject = GameObject.FindWithTag("Player");
+        rb = bomb.GetComponent<Rigidbody2D>();
     }
     private new void Update()
     {
         //if the slime is at the apex of its jump (plus slight delay), increase gravity to simulate ground slam
+        /*
         if (rb.velocity.y < -5)
         {
             rb.gravityScale = 100;
@@ -30,12 +34,13 @@ public class BossScript : Enemy
         {
             rb.gravityScale = 5;
         }
+        */
 
         //change direction of boss
         //if player is right of boss and boss is facing left, then look right OR
         //if player is left of boss and boss is facing right, then look left
-        if ((player.transform.position.x > transform.position.x && facingLeft) ||
-            (player.transform.position.x < transform.position.x && !facingLeft))
+        if ((playerObject.transform.position.x > transform.position.x && facingLeft) ||
+            (playerObject.transform.position.x < transform.position.x && !facingLeft))
         {
             facingLeft = !facingLeft;
             Vector2 newDirection = rb.transform.localScale;
@@ -57,7 +62,7 @@ public class BossScript : Enemy
                 Vector3 playerPosition = PlayerMovement.Instance.transform.position;
                 Vector3 myPosition = transform.position;
                 Vector2 direction = (playerPosition - myPosition);
-
+                
                 rb.velocity = new Vector2(rb.velocity.x + (direction.x), rb.velocity.y + jumpForce);
                 timeSinceLastJump = 0;
             }

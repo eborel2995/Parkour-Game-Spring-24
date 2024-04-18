@@ -436,23 +436,30 @@ public class PlayerMovement : MonoBehaviour
             timeSinceAttack = 0;    // Reset time since last attack.
             anim.SetTrigger("Attacking");   // Set attacking animation trigger.
 
-            // If player is on the ground then side attack and display slash effect.
-            if (vertical == 0 || vertical < 0 && IsGrounded())
+            try
             {
-                Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
-                Instantiate(slashEffect, SideAttackTransform);
+                // If player is on the ground then side attack and display slash effect.
+                if (vertical == 0 || vertical < 0 && IsGrounded())
+                {
+                    Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
+                    Instantiate(slashEffect, SideAttackTransform);
+                }
+                // If player's vertical input > 0 then up attack and display slash effect.
+                else if (vertical > 0)
+                {
+                    Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
+                    SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
+                }
+                // If player's vertical input < 0 then down attack and display slash effect.
+                else if (vertical < 0 && !IsGrounded())
+                {
+                    Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
+                    SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
+                }
             }
-            // If player's vertical input > 0 then up attack and display slash effect.
-            else if (vertical > 0)
+            catch (Exception ex)
             {
-                Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
-                SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
-            }
-            // If player's vertical input < 0 then down attack and display slash effect.
-            else if (vertical < 0 && !IsGrounded())
-            {
-                Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
-                SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
+                Debug.Log($"Attacked entity has no ridigbody!");
             }
         }
     }
