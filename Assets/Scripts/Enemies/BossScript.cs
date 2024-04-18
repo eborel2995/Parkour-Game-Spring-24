@@ -7,6 +7,8 @@ public class BossScript : Enemy
 {
     [SerializeField] private int bitCount;
 
+    private Rigidbody2D rb;
+
     private float timeSinceLastJump = 2f;
     private float jumpForce = 20f;
 
@@ -14,7 +16,8 @@ public class BossScript : Enemy
     protected override void Start()
     {
     }
-    private new void Update()
+
+    private void Update()
     {
         //if the slime is at the apex of its jump (plus slight delay), increase gravity to simulate ground slam
         if (rb.velocity.y < -5)

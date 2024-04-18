@@ -24,11 +24,12 @@ public class HealthManager : MonoBehaviour
         //get the default coordinates set in Unity as the respawn coordinates
         respawnCoords = transform.position;
 
-        //player = GameObject.Find("Player");
-        anim    = GetComponent<Animator>();
-        rb      = GetComponent<Rigidbody2D>();
-        pm      = GetComponent<PlayerMovement>();
-        cheats  = GetComponent<Cheats>();
+        //can't access these due to HealthManager not being a child of the player
+        player = GameObject.Find("Player");
+        anim = player.GetComponent<Animator>();
+        rb = player.GetComponent<Rigidbody2D>();
+        pm = player.GetComponent<PlayerMovement>();
+        cheats = player.GetComponent<Cheats>();
     }
 
     // Update is called once per frame
@@ -40,25 +41,22 @@ public class HealthManager : MonoBehaviour
             Debug.Log($"{gameObject.name} ran out of health!");
             Die();
             //delay to play death animation
-            Invoke(nameof(Respawn), 3f);
+            Invoke(nameof(Respawn), 1f);
             //Respawn();
             //RestartLevel();
         }
 
-        if (gameObject.name == "Player")
+        if (cheats.debugMode == true)
         {
-            if (cheats.debugMode == true)
-            {
-                //FOR TESTING PURPOSES
-                if (Input.GetKeyDown(KeyCode.Return))
-                { TakeDamage(20); }
+            //FOR TESTING PURPOSES
+            if (Input.GetKeyDown(KeyCode.Return))
+            { TakeDamage(20); }
 
-                if (Input.GetKeyDown(KeyCode.Backspace))
-                { Heal(10); }
-                //////////////////////
-            }
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            { Heal(10); }
+            //////////////////////
         }
-        
+
 
         if (transform.position.y <= deathFloorHeight)
         {
@@ -100,12 +98,9 @@ public class HealthManager : MonoBehaviour
         // Activate death animation.
         anim.SetTrigger("death");
 
-        if (gameObject.name == "Player")
-        {
-            // Disable player movement.
-            pm.ignoreUserInput = true;
-        }
-
+        // Disable player movement.
+        //rb.bodyType = RigidbodyType2D.Static;
+        pm.ignoreUserInput = true;
     }
 
     public void Respawn()

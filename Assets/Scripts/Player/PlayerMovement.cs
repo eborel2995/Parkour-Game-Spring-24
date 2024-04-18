@@ -14,15 +14,52 @@ using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // Access components for player object.
+    private Animator anim;
+    private Rigidbody2D rb;
+    private BoxCollider2D coll;
+    private SpriteRenderer sprite;
+
+    // Shut off user input at death/goal.
+    public bool ignoreUserInput = false;
+
+    // Movement and jump variables.
+    private bool isFacingRight = true;
+    private float horizontal;
+    private static float defaultMoveSpeed = 10f;
+    private float moveSpeed = defaultMoveSpeed;
+    private float jumpingPower = 21f;
+
+    // Wall sliding variables.
+    private bool isWallSliding = false;
+    private float wallSlidingSpeed = 3f;
+
+    // Wall jumping variables.
+    private bool isWallJumping = false;
+    private float wallJumpingCounter;
+    private float wallJumpingDirection;
+    private float wallJumpingTime = 0.2f;
+    private float wallJumpingDuration = 0.4f;
+    private Vector2 wallJumpingPower = new Vector2(10f, 20f);
+
+    // Dashing variables.
+    private bool canDash = true;
+    private bool isDashing;
+    private float dashingPower = 24f;
+    private float dashingTime = 0.2f;
+    private float dashingCooldown = 0.75f;
+
+    // "[SerializeFeild]" allows these variables to be edited in Unity.
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private LayerMask wallLayer;
+
     // Create an Instance of PlayerMovement to reference in other scripts.
     public static PlayerMovement Instance { get; private set; }
 
-    // Class of bools that handle player states like jumping, dashing, and direction.
-    [HideInInspector] public PlayerStatesList pState;
-
-    // Sets player health and handles player health loss.
-    public delegate void OnHealthChangedDelegate();
-    [HideInInspector] public OnHealthChangedDelegate onHealthChangedCallback;
+    public bool isEngulfed = false;
+    private float engulfSlowRatio = 0.5f;
 
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals      0     1             2            3        4        5        6          mathematically.
@@ -197,12 +234,10 @@ public class PlayerMovement : MonoBehaviour
         if (isEngulfed)
         {
             moveSpeed = defaultMoveSpeed * engulfSlowRatio;
-            anim.speed = engulfSlowRatio;
         }
         else
         {
             moveSpeed = defaultMoveSpeed;
-            anim.speed = 1.0f;
         }
 
         // Prevent player from moving, jumping, and flipping while dashing.
