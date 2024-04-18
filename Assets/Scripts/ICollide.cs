@@ -35,7 +35,7 @@ public class ICollide : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Enemy"))
         {
-            healthManager.TakeDamage(20);
+            healthManager.TakeDamage(10);
         }
     }
 }

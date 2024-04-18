@@ -2,22 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BossScript : Enemy
 {
     [SerializeField] private int bitCount;
 
-    private Rigidbody2D rb;
-
     private float timeSinceLastJump = 2f;
     private float jumpForce = 20f;
+    private float jumpFrequency = 2.5f;
 
     // Start is called before the first frame update
     protected override void Start()
     {
     }
-
-    private void Update()
+    private new void Update()
     {
         //if the slime is at the apex of its jump (plus slight delay), increase gravity to simulate ground slam
         if (rb.velocity.y < -5)
@@ -34,7 +33,7 @@ public class BossScript : Enemy
     {
         base.Update();
 
-        if (timeSinceLastJump > 3) 
+        if (timeSinceLastJump > jumpFrequency) 
         {
             //make it so there is a chance the slime doesn't jump
             var rand = Random.Range(0, 100);
@@ -50,5 +49,10 @@ public class BossScript : Enemy
         }
 
         timeSinceLastJump += Time.deltaTime;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.LoadScene("Victory Screen");
     }
 }

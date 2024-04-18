@@ -18,18 +18,20 @@ public class HealthManager : MonoBehaviour
 
     private Vector3 respawnCoords;
     [SerializeField] private float deathFloorHeight = -80;
+
+    private PlayerStatesList pList;
     // Start is called before the first frame update
     void Start()
     {
         //get the default coordinates set in Unity as the respawn coordinates
         respawnCoords = transform.position;
 
-        //can't access these due to HealthManager not being a child of the player
-        player = GameObject.Find("Player");
-        anim = player.GetComponent<Animator>();
-        rb = player.GetComponent<Rigidbody2D>();
-        pm = player.GetComponent<PlayerMovement>();
-        cheats = player.GetComponent<Cheats>();
+        //player = GameObject.Find("Player");
+        anim    = GetComponent<Animator>();
+        rb      = GetComponent<Rigidbody2D>();
+        pm      = GetComponent<PlayerMovement>();
+        cheats  = GetComponent<Cheats>();
+        pList   = GetComponent<PlayerStatesList>();
     }
 
     // Update is called once per frame
@@ -41,22 +43,25 @@ public class HealthManager : MonoBehaviour
             Debug.Log($"{gameObject.name} ran out of health!");
             Die();
             //delay to play death animation
-            Invoke(nameof(Respawn), 1f);
+            Invoke(nameof(Respawn), 3f);
             //Respawn();
             //RestartLevel();
         }
 
-        if (cheats.debugMode == true)
+        if (gameObject.name == "Player")
         {
-            //FOR TESTING PURPOSES
-            if (Input.GetKeyDown(KeyCode.Return))
-            { TakeDamage(20); }
+            if (cheats.debugMode == true)
+            {
+                //FOR TESTING PURPOSES
+                if (Input.GetKeyDown(KeyCode.Return))
+                { TakeDamage(20); }
 
-            if (Input.GetKeyDown(KeyCode.Backspace))
-            { Heal(10); }
-            //////////////////////
+                if (Input.GetKeyDown(KeyCode.Backspace))
+                { Heal(10); }
+                //////////////////////
+            }
         }
-
+        
 
         if (transform.position.y <= deathFloorHeight)
         {
@@ -97,10 +102,13 @@ public class HealthManager : MonoBehaviour
     {
         // Activate death animation.
         anim.SetTrigger("death");
+        pList.alive = false;
+        if (gameObject.name == "Player")
+        {
+            // Disable player movement.
+            pm.ignoreUserInput = true;
+        }
 
-        // Disable player movement.
-        //rb.bodyType = RigidbodyType2D.Static;
-        pm.ignoreUserInput = true;
     }
 
     public void Respawn()
@@ -109,6 +117,8 @@ public class HealthManager : MonoBehaviour
         transform.position = respawnCoords;
         healthAmount = baseHealth;
         pm.ignoreUserInput = false;
+        pList.alive = true;
+        Time.timeScale = 1;
     }
 
     

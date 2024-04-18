@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     protected PlayerMovement player;
     [SerializeField] protected float moveSpeed = 5f;
 
-    [SerializeField] protected float damage;
+    [SerializeField] protected float damage = 10f;
 
     protected Rigidbody2D rb;
     protected SpriteRenderer sr;
@@ -67,8 +67,8 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !PlayerMovement.Instance.pState.invincible)
         {
-            EnemyAttack(collision);
-            PlayerMovement.Instance.HitStopTime(0, 5, 0.5f);
+            EnemyAttack(collision.gameObject);
+            PlayerMovement.Instance.HitStopTime(0.25f, 5, 0.5f);
         }
     }
     protected virtual void EnemyAttack(GameObject entity)

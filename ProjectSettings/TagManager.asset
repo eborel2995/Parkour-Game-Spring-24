@@ -40,8 +40,6 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
   m_SortingLayers:
   - name: Main Title
     uniqueID: 601833951
@@ -54,4 +52,7 @@ TagManager:
     locked: 0
   - name: Terrain
     uniqueID: 1740996329
+    locked: 0
+  - name: UI Sorting Layer
+    uniqueID: 585506765
     locked: 0
