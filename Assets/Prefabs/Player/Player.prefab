@@ -95,7 +95,6 @@ MonoBehaviour:
   health: 0
   maxHealth: 10
   hitFlashSpeed: 1
-  bloodSpurt: {fileID: 662869163059739363, guid: 1f8f294acf09c9945ad6363e0e5dc625, type: 3}
   isEngulfed: 0
 --- !u!114 &6226129961009158131
 MonoBehaviour:
