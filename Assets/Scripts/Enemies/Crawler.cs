@@ -20,16 +20,16 @@ public class Crawler : Enemy
         baseScale = transform.localScale;
 
         facingDirection = RIGHT;
-        
     }
-    // Update is called once per frame
-    protected override void Update()
-    {
 
+    protected override void Awake()
+    {
+        base.Awake();
     }
 
     protected void FixedUpdate()
     {
+        base.Update();
         float vX = moveSpeed;
 
         if(facingDirection == LEFT)
@@ -89,7 +89,12 @@ public class Crawler : Enemy
 
         Debug.DrawLine(castPos.position, targetPos, Color.blue);
 
-        if(Physics2D.Linecast(castPos.position, targetPos, 1 << LayerMask.NameToLayer("Ground")))
+        // Get the layer masks for both "Ground" and "wall"
+        int groundLayer = LayerMask.NameToLayer("Ground");
+        int wallLayer = LayerMask.NameToLayer("Wall");
+        int combinedLayerMask = (1 << groundLayer) | (1 << wallLayer);
+
+        if (Physics2D.Linecast(castPos.position, targetPos, combinedLayerMask))
         {
             val = true;
         }
@@ -124,5 +129,9 @@ public class Crawler : Enemy
         }
 
         return val;
+    }
+    public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
+    {
+        base.EnemyHit(_damageDone, _hitDirection, _hitForce);
     }
 }
