@@ -55,23 +55,7 @@ public class HealthManager : MonoBehaviour
             //delay to play death animation
             Invoke(nameof(Respawn), 3f);
         }
-
-        /*
-        if (gameObject.name == "Player")
-        {
-            if (cheats.debugMode == true)
-            {
-                //FOR TESTING PURPOSES
-                if (Input.GetKeyDown(KeyCode.Return))
-                { TakeDamage(20); }
-
-                if (Input.GetKeyDown(KeyCode.Backspace))
-                { Heal(10); }
-                //////////////////////
-            }
-        }
-        */
-        
+    }        
 
         if (transform.position.y <= deathFloorHeight)
         {
