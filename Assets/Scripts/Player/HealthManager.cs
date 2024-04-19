@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.ProBuilder.Shapes;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -21,7 +25,11 @@ public class HealthManager : MonoBehaviour
     [SerializeField] private float deathFloorHeight = -80;
 
     private PlayerStatesList pList;
-    // Start is called before the first frame update
+
+    //post processing stuff
+    PostProcessVolume ppv;
+    ColorGrading cg;
+
     void Start()
     {
         //get the default coordinates set in Unity as the respawn coordinates
@@ -33,6 +41,7 @@ public class HealthManager : MonoBehaviour
         pm      = GetComponent<PlayerMovement>();
         cheats  = GetComponent<Cheats>();
         pList   = GetComponent<PlayerStatesList>();
+        ppv     = transform.parent.Find("Game Camera").Find("Post Processing Volume").GetComponent<PostProcessVolume>();
     }
 
     // Update is called once per frame
@@ -45,8 +54,6 @@ public class HealthManager : MonoBehaviour
             Die();
             //delay to play death animation
             Invoke(nameof(Respawn), 3f);
-            //Respawn();
-            //RestartLevel();
         }
 
         /*
@@ -83,14 +90,6 @@ public class HealthManager : MonoBehaviour
         }
     }
 
-    /*
-    public void TakeDamage(float amount)
-    {
-        // Decrease player health.
-        healthAmount -= amount;
-    }
-    */
-
     // Handles player taking damage.
     public void TakeDamage(float _damage)
     {
@@ -99,34 +98,49 @@ public class HealthManager : MonoBehaviour
 
         // Stop taking damage (invincibility-frames).
         StartCoroutine(StopTakingDamage());
+
+        UpdatePostProcessing();
     }
-
-    // Handles player invincibility-frames and TakeDamage animation.
-    IEnumerator StopTakingDamage()
-    {
-        // Enable player invincibility-frames.
-        pList.invincible = true;
-
-        // Set TakeDamage animation trigger.
-        //anim.SetTrigger("TakeDamage");
-        //Debug.Log("HURT ANIMATION NOW!");
-
-        // Delay disabling invincibility-frames.
-        yield return new WaitForSeconds(1f);
-        pList.invincible = false;
-    }
-
 
     public void Heal(float amount)
     {
         healthAmount += amount;
         healthAmount = Mathf.Clamp(healthAmount, 0, 100);
+
+        UpdatePostProcessing();
     }
 
     public void UpdateHealthbar()
     {
         healthBar.fillAmount = healthAmount / 100f;
         //Debug.Log($"{gameObject.name} has {healthAmount} health");
+    }
+
+    private void UpdatePostProcessing()
+    {
+        //Color Grading
+        //More damage makes the screen turn more red & darker
+        if (ppv.profile.TryGetSettings(out cg))
+        {
+            //Channel Mixer
+            float redScreenValue = 200f - healthAmount;
+            cg.mixerRedOutRedIn.value = redScreenValue;
+            Debug.Log(healthAmount / 100);
+            //Trackballs Gain
+            cg.gain.value.w = -1 + (healthAmount / 100);
+
+        }
+    }
+    
+    IEnumerator StopTakingDamage()
+    {
+        // Handles player invincibility-frames and TakeDamage animation.
+        // Enable player invincibility-frames.
+        pList.invincible = true;
+
+        // Delay disabling invincibility-frames.
+        yield return new WaitForSeconds(1f);
+        pList.invincible = false;
     }
 
     public void Die()
