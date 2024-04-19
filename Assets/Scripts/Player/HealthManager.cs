@@ -54,8 +54,7 @@ public class HealthManager : MonoBehaviour
             Die();
             //delay to play death animation
             Invoke(nameof(Respawn), 3f);
-        }
-    }        
+        }        
 
         if (transform.position.y <= deathFloorHeight)
         {
