@@ -54,20 +54,26 @@ public class BossScript : Enemy
 
         if (timeSinceLastJump > jumpFrequency) 
         {
-            //make it so there is a chance the slime doesn't jump
-            var rand = Random.Range(0, 100);
-            if ( rand > 95 )
-            {
-                Vector3 playerPosition = PlayerMovement.Instance.transform.position;
-                Vector3 myPosition = transform.position;
-                Vector2 direction = (playerPosition - myPosition);
+            Vector3 playerPosition = PlayerMovement.Instance.transform.position;
+            Vector3 myPosition = transform.position;
+            Vector2 direction = (playerPosition - myPosition);
                 
-                rb.velocity = new Vector2(rb.velocity.x + (direction.x), rb.velocity.y + jumpForce);
-                timeSinceLastJump = 0;
-            }
+            rb.velocity = new Vector2(rb.velocity.x + (direction.x), rb.velocity.y + jumpForce);
+            timeSinceLastJump = 0;
         }
 
         timeSinceLastJump += Time.deltaTime;
+    }
+
+    public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
+    {
+        health -= _damageDone;
+        if (!isRecoiling)
+        {
+            rb.AddForce(-_hitForce * recoilFactor * _hitDirection);
+        }
+
+        timeSinceLastJump = 100; //force the boss to jump
     }
 
     private void OnDestroy()
