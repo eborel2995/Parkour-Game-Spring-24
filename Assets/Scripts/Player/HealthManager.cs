@@ -123,9 +123,8 @@ public class HealthManager : MonoBehaviour
         if (ppv.profile.TryGetSettings(out cg))
         {
             //Channel Mixer
-            float redScreenValue = 200f - healthAmount;
-            cg.mixerRedOutRedIn.value = redScreenValue;
-            Debug.Log(healthAmount / 100);
+            cg.mixerRedOutRedIn.value = 200f - healthAmount;
+
             //Trackballs Gain
             cg.gain.value.w = -1 + (healthAmount / 100);
 
