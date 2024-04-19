@@ -17,6 +17,7 @@ public class BossScript : Enemy
     private Rigidbody2D rb;
     private float turnDistance = 2f;
     private SpriteRenderer spriteRenderer;
+    private Color original;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -24,6 +25,7 @@ public class BossScript : Enemy
         playerObject = GameObject.FindWithTag("Player");
         rb = bomb.GetComponent<Rigidbody2D>();
         spriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
+        original = spriteRenderer.color;
     }
     private new void Update()
     {
@@ -78,7 +80,7 @@ public class BossScript : Enemy
 
         timeSinceLastJump = 100; //force the boss to jump
 
-        StartCoroutine(hitFlash(0.25f, spriteRenderer.color));
+        StartCoroutine(hitFlash(0.25f, original));
         
     }
 
