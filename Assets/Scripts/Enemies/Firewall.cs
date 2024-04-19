@@ -6,7 +6,7 @@ public class Firewall : MonoBehaviour
 {
     private GameObject player;
     private HealthManager healthManager;
-    [SerializeField] float FirewallDamage = 10f;
+    [SerializeField] private float FirewallDamage = 10f;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,11 +21,5 @@ public class Firewall : MonoBehaviour
             Debug.Log("Player detected at Firewall!");
             healthManager.TakeDamage(FirewallDamage);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
