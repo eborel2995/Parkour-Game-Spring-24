@@ -16,12 +16,14 @@ public class BossScript : Enemy
     [SerializeField] private GameObject bomb;
     private Rigidbody2D rb;
     private float turnDistance = 2f;
+    private SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         playerObject = GameObject.FindWithTag("Player");
         rb = bomb.GetComponent<Rigidbody2D>();
+        spriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
     }
     private new void Update()
     {
@@ -65,6 +67,7 @@ public class BossScript : Enemy
         timeSinceLastJump += Time.deltaTime;
     }
 
+    //This function is called when the boss gets hit
     public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
     {
         health -= _damageDone;
@@ -74,6 +77,16 @@ public class BossScript : Enemy
         }
 
         timeSinceLastJump = 100; //force the boss to jump
+
+        StartCoroutine(hitFlash(0.25f, spriteRenderer.color));
+        
+    }
+
+    IEnumerator hitFlash(float length, Color originalColor)
+    {
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(length);
+        spriteRenderer.color = originalColor;
     }
 
     private void OnDestroy()
