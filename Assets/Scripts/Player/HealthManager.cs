@@ -21,6 +21,7 @@ public class HealthManager : MonoBehaviour
     [SerializeField] private float deathFloorHeight = -80;
 
     private PlayerStatesList pList;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,24 +48,7 @@ public class HealthManager : MonoBehaviour
             Invoke(nameof(Respawn), 3f);
             //Respawn();
             //RestartLevel();
-        }
-
-        /*
-        if (gameObject.name == "Player")
-        {
-            if (cheats.debugMode == true)
-            {
-                //FOR TESTING PURPOSES
-                if (Input.GetKeyDown(KeyCode.Return))
-                { TakeDamage(20); }
-
-                if (Input.GetKeyDown(KeyCode.Backspace))
-                { Heal(10); }
-                //////////////////////
-            }
-        }
-        */
-        
+        }        
 
         if (transform.position.y <= deathFloorHeight)
         {
