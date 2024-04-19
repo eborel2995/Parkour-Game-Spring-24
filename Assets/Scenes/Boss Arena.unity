@@ -149,7 +149,7 @@ Transform:
   m_GameObject: {fileID: 18439813}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.164, y: 0.3314, z: 0}
+  m_LocalPosition: {x: -0.16720006, y: 0.39300004, z: 0}
   m_LocalScale: {x: 0.10286024, y: 0.027846187, z: 0.06}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -376,7 +376,7 @@ Transform:
   m_GameObject: {fileID: 251568648}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.634293, y: -1.8885751, z: 0.10867196}
+  m_LocalPosition: {x: 16.6, y: 13.7, z: 0.10867196}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -718,7 +718,7 @@ GameObject:
   m_Component:
   - component: {fileID: 532060072}
   m_Layer: 9
-  m_Name: Particle emitters
+  m_Name: Explosive particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -737,8 +737,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1959873838}
   - {fileID: 561600607}
+  - {fileID: 1959873838}
   - {fileID: 757461818}
   m_Father: {fileID: 251568650}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1681,7 +1681,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
   EmissionModule:
-    enabled: 1
+    enabled: 0
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
@@ -6100,7 +6100,7 @@ GameObject:
   - component: {fileID: 757461820}
   - component: {fileID: 757461819}
   m_Layer: 0
-  m_Name: Upwards explosion
+  m_Name: Crash explosion particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6278,7 +6278,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.69
+      scalar: 0.25
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -6830,7 +6830,7 @@ ParticleSystem:
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 1
+    radiusThickness: 0
     donutRadius: 0.2
     m_Position: {x: 0, y: -0.45, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -6913,7 +6913,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1
+      value: 0.0001
       mode: 0
       spread: 0
       speed:
@@ -7027,12 +7027,12 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
   EmissionModule:
-    enabled: 1
+    enabled: 0
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 27.98
+      scalar: 200
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -7653,7 +7653,7 @@ ParticleSystem:
     flipU: 0
     flipV: 0
   VelocityModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
       minMaxState: 0
@@ -8187,7 +8187,7 @@ ParticleSystem:
     speedModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 16.54
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -8239,7 +8239,7 @@ ParticleSystem:
         m_RotationOrder: 4
     inWorldSpace: 0
   InheritVelocityModule:
-    enabled: 1
+    enabled: 0
     m_Mode: 0
     m_Curve:
       serializedVersion: 2
@@ -10944,8 +10944,8 @@ Transform:
   m_GameObject: {fileID: 794155094}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.164, y: 0.48491, z: 0}
-  m_LocalScale: {x: 0.03, y: 0.1640891, z: 0.11}
+  m_LocalPosition: {x: -0.164, y: 0.5176, z: 0}
+  m_LocalScale: {x: 0.03, y: 0.13138615, z: 0.11}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 251568650}
@@ -12994,7 +12994,7 @@ Transform:
   m_GameObject: {fileID: 1602356348}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1628, y: 0.3194, z: 0}
+  m_LocalPosition: {x: -0.166, y: 0.381, z: 0}
   m_LocalScale: {x: 0.13367602, y: 0.10228552, z: 0.25}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -21882,6 +21882,9 @@ MonoBehaviour:
   damage: 0
   bitCount: 0
   bomb: {fileID: 251568648}
+  whiteLaunchParticles: {fileID: 561600609}
+  yellowLaunchParticles: {fileID: 1959873840}
+  crashLaunchParticles: {fileID: 757461820}
 --- !u!61 &1796870791
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21970,7 +21973,7 @@ FixedJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -0.283, y: 0.42799997}
+  m_ConnectedAnchor: {x: -0.283, y: 0.42800045}
   m_DampingRatio: 0
   m_Frequency: 0
 --- !u!1 &1959873837
@@ -21985,7 +21988,7 @@ GameObject:
   - component: {fileID: 1959873840}
   - component: {fileID: 1959873839}
   m_Layer: 0
-  m_Name: Orange explosion particles
+  m_Name: Yellow explosion particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22912,7 +22915,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
   EmissionModule:
-    enabled: 1
+    enabled: 0
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
