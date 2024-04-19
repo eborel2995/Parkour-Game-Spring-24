@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class Firewall : MonoBehaviour
 {
-    private ParticleSystem ps;
     private GameObject player;
     private HealthManager healthManager;
     [SerializeField] float FirewallDamage = 10f;
     // Start is called before the first frame update
     void Start()
     {
-        ps = GetComponent<ParticleSystem>();
         player = GameObject.Find("Player");
         healthManager = player.GetComponent<HealthManager>();
     }
