@@ -26,16 +26,19 @@ public class PlayerMovement : MonoBehaviour
 
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals the corresponding number to its right mathematically.
-    private enum MovementState { idle,          // 0
-                                 runningRight,  // 1
-                                 runningLeft,   // 2
-                                 jumping,       // 3
-                                 falling,       // 4
-                                 dashing,       // 5
-                                 wallSliding,   // 6
-                                 attacking,     // 7
-                                 airAttacking,  // 8
-                                 hurt }         // 9
+    private enum MovementState
+    {
+        idle,          // 0
+        runningRight,  // 1
+        runningLeft,   // 2
+        jumping,       // 3
+        falling,       // 4
+        dashing,       // 5
+        wallSliding,   // 6
+        //attacking,     // 7
+        //airAttacking,  // 8
+        //hurt          // 9
+    }
     MovementState state;
 
     // Access components for player object.
@@ -495,7 +498,7 @@ public class PlayerMovement : MonoBehaviour
                 // If player is on the ground then side attack and display slash effect.
                 if (vertical == 0)
                 {
-                    anim.SetTrigger("Attacking");
+                    //anim.SetTrigger("Attacking");
                     Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
                     Instantiate(slashEffect, SideAttackTransform);
                     
@@ -504,7 +507,7 @@ public class PlayerMovement : MonoBehaviour
                 // If player's vertical input > 0 then up attack and display slash effect.
                 else if (vertical > 0)
                 {
-                    anim.SetTrigger("Attacking");
+                    //anim.SetTrigger("Attacking");
                     Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
                     
@@ -517,7 +520,7 @@ public class PlayerMovement : MonoBehaviour
                 // If player is on the ground then side attack and display slash effect.
                 if (vertical == 0)
                 {
-                    anim.SetTrigger("AirAttacking");
+                    //anim.SetTrigger("AirAttacking");
                     Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
                     Instantiate(slashEffect, SideAttackTransform);
                        // Set air attacking animation trigger.
@@ -527,7 +530,7 @@ public class PlayerMovement : MonoBehaviour
                 // If player's vertical input > 0 then up attack and display slash effect.
                 else if (vertical > 0)
                 {
-                    anim.SetTrigger("AirAttacking");
+                    //anim.SetTrigger("AirAttacking");
                     Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
                        // Set air attacking animation trigger.
@@ -537,7 +540,7 @@ public class PlayerMovement : MonoBehaviour
                 // If player's vertical input < 0 then down attack and display slash effect.
                 else if (vertical < 0)
                 {
-                    anim.SetTrigger("AirAttacking");
+                    //anim.SetTrigger("AirAttacking");
                     Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
                        // Set air attacking animation trigger.
