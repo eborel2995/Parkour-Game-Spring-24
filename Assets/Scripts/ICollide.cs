@@ -22,8 +22,10 @@ public class ICollide : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        /*
         if (cheats.invincible == true)
         { return; }
+        */
 
         // If player touches trap, return true and play death animation.
         if (collision.gameObject.CompareTag("Trap"))

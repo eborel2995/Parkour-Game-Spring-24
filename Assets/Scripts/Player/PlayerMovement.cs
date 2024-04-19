@@ -25,8 +25,17 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public OnHealthChangedDelegate onHealthChangedCallback;
 
     // Enum of movement state animations for our player to cycle through.
-    // Each variable equals      0     1             2            3        4        5        6          mathematically.
-    private enum MovementState { idle, runningRight, runningLeft, jumping, falling, dashing, wallSliding }
+    // Each variable equals the corresponding number to its right mathematically.
+    private enum MovementState { idle,          // 0
+                                 runningRight,  // 1
+                                 runningLeft,   // 2
+                                 jumping,       // 3
+                                 falling,       // 4
+                                 dashing,       // 5
+                                 wallSliding,   // 6
+                                 attacking,     // 7
+                                 airAttacking,  // 8
+                                 hurt }         // 9
     MovementState state;
 
     // Access components for player object.
@@ -113,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
     public int health;
     public int maxHealth;
     [SerializeField] float hitFlashSpeed;
-    [SerializeField] GameObject bloodSpurt;
+    //[SerializeField] GameObject bloodSpurt;
 
     [Header("Slime Boss Settings:")]
     public bool isEngulfed = false;
@@ -434,7 +443,19 @@ public class PlayerMovement : MonoBehaviour
         if (attack && timeSinceAttack >= timeBetweenAttack)
         {
             timeSinceAttack = 0;    // Reset time since last attack.
-            anim.SetTrigger("Attacking");   // Set attacking animation trigger.
+
+            /*
+            if (!IsGrounded())
+            {
+                anim.SetTrigger("AirAttacking");   // Set air attacking animation trigger.
+                Debug.Log("AIR ATTACKING");
+            }
+            else if (IsGrounded())
+            {
+                anim.SetTrigger("Attacking");
+            }
+            
+            
 
             try
             {
@@ -459,7 +480,63 @@ public class PlayerMovement : MonoBehaviour
             }
             catch (Exception ex)
             {
-                Debug.Log($"Attacked entity has no ridigbody!");
+                Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
+                SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
+            }
+            // If player's vertical input < 0 then down attack and display slash effect.
+            else if (vertical < 0 && !IsGrounded())
+            {
+                Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
+                SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
+            }*/
+            if (IsGrounded())
+            {
+                // If player is on the ground then side attack and display slash effect.
+                if (vertical == 0)
+                {
+                    Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
+                    Instantiate(slashEffect, SideAttackTransform);
+                    anim.SetTrigger("Attacking");
+                    //state = MovementState.attacking;
+                }
+                // If player's vertical input > 0 then up attack and display slash effect.
+                else if (vertical > 0)
+                {
+                    Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
+                    SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
+                    anim.SetTrigger("Attacking");
+                    //state = MovementState.attacking;
+                }
+            }
+            else if (!IsGrounded())
+            {
+                // If player is on the ground then side attack and display slash effect.
+                if (vertical == 0)
+                {
+                    Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
+                    Instantiate(slashEffect, SideAttackTransform);
+                    anim.SetTrigger("AirAttacking");   // Set air attacking animation trigger.
+                    Debug.Log("AIR ATTACKING");
+                    //state = MovementState.airAttacking;
+                }
+                // If player's vertical input > 0 then up attack and display slash effect.
+                else if (vertical > 0)
+                {
+                    Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
+                    SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
+                    anim.SetTrigger("AirAttacking");   // Set air attacking animation trigger.
+                    Debug.Log("AIR ATTACKING");
+                    //state = MovementState.airAttacking;
+                }
+                // If player's vertical input < 0 then down attack and display slash effect.
+                else if (vertical < 0)
+                {
+                    Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
+                    SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
+                    anim.SetTrigger("AirAttacking");   // Set air attacking animation trigger.
+                    Debug.Log("AIR ATTACKING");
+                    //state = MovementState.airAttacking;
+                }
             }
         }
     }
@@ -592,6 +669,7 @@ public class PlayerMovement : MonoBehaviour
         pState.recoilingY = false;
     }
 
+    /*
     // Handles player taking damage.
     public void TakeDamage(float _damage)
     {
@@ -616,11 +694,13 @@ public class PlayerMovement : MonoBehaviour
 
         // Set TakeDamage animation trigger.
         anim.SetTrigger("TakeDamage");
+        Debug.Log("HURT ANIMATION NOW");
 
         // Delay disabling invincibility-frames.
         yield return new WaitForSeconds(1f);
         pState.invincible = false;
     }
+    */
 
     // Cause player sprite to flash when player is invincible.
     void FlashWhileInvincible()

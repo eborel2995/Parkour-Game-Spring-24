@@ -89,7 +89,12 @@ public class Crawler : Enemy
 
         Debug.DrawLine(castPos.position, targetPos, Color.blue);
 
-        if(Physics2D.Linecast(castPos.position, targetPos, 1 << LayerMask.NameToLayer("Ground")))
+        // Get the layer masks for both "Ground" and "wall"
+        int groundLayer = LayerMask.NameToLayer("Ground");
+        int wallLayer = LayerMask.NameToLayer("Wall");
+        int combinedLayerMask = (1 << groundLayer) | (1 << wallLayer);
+
+        if (Physics2D.Linecast(castPos.position, targetPos, combinedLayerMask))
         {
             val = true;
         }

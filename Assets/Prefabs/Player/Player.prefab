@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &945941984310748148
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8222533029557527113}
+  m_Layer: 0
+  m_Name: 'Down Attack Transform '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8222533029557527113
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945941984310748148}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.27999878, y: -1.4899998, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2193904212644158720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1474088957329560946
 GameObject:
   m_ObjectHideFlags: 0
@@ -44,6 +75,7 @@ Transform:
   - {fileID: 5364444290136464923}
   - {fileID: 1188277345214144823}
   - {fileID: 4723030902068796873}
+  - {fileID: 8222533029557527113}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2835347677360910413
@@ -80,10 +112,10 @@ MonoBehaviour:
   damage: 2
   SideAttackTransform: {fileID: 8429665651921188807}
   UpAttackTransform: {fileID: 1367155910052703321}
-  DownAttackTransform: {fileID: 5364444290136464923}
-  SideAttackArea: {x: 4, y: 2.5}
-  UpAttackArea: {x: 2.5, y: 4}
-  DownAttackArea: {x: 2.5, y: 4}
+  DownAttackTransform: {fileID: 8222533029557527113}
+  SideAttackArea: {x: 4.5, y: 3.5}
+  UpAttackArea: {x: 3.5, y: 4.5}
+  DownAttackArea: {x: 3.5, y: 4.5}
   attackableLayer:
     serializedVersion: 2
     m_Bits: 2560
@@ -95,7 +127,6 @@ MonoBehaviour:
   health: 0
   maxHealth: 10
   hitFlashSpeed: 1
-  bloodSpurt: {fileID: 662869163059739363, guid: 1f8f294acf09c9945ad6363e0e5dc625, type: 3}
   isEngulfed: 0
 --- !u!114 &6226129961009158131
 MonoBehaviour:
