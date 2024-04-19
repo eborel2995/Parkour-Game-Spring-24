@@ -12548,10 +12548,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player and Camera
       objectReference: {fileID: 0}
-    - target: {fileID: 6077270059657862663, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
-      propertyPath: m_SortingOrder
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 6146112704717090013, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -21783,8 +21779,8 @@ GameObject:
   - component: {fileID: 1796870786}
   - component: {fileID: 1796870789}
   - component: {fileID: 1796870791}
-  - component: {fileID: 1796870787}
   - component: {fileID: 1796870792}
+  - component: {fileID: 1796870787}
   - component: {fileID: 1796870793}
   m_Layer: 11
   m_Name: ZIP Bomber
@@ -21880,7 +21876,8 @@ MonoBehaviour:
   isRecoiling: 0
   moveSpeed: 5
   damage: 0
-  bitCount: 0
+  jumpForce: 30
+  jumpFrequency: 1.75
   bomb: {fileID: 251568648}
   whiteLaunchParticles: {fileID: 561600609}
   yellowLaunchParticles: {fileID: 1959873840}

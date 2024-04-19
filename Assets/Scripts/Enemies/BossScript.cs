@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 
 public class BossScript : Enemy
 {
-    [SerializeField] private int bitCount;
-
     private float timeSinceLastJump = 1f; //initial jump timer
-    private float jumpForce = 25f;
-    private float jumpFrequency = 2f;
+    [SerializeField] private float jumpForce = 35f;
+    [SerializeField] private float jumpFrequency = 2f;
     private bool facingLeft = true;
     private GameObject playerObject;
     [SerializeField] private GameObject bomb; //parent object that Zip Bomber is riding
-    private Rigidbody2D rb;
-    private float turnDistance = 2f;
+    private float turnDistance = 2f; //distance player must move until boss turns to prevent instantaneous turning
     private SpriteRenderer spriteRenderer;
     private Color original; 
 
@@ -24,6 +22,7 @@ public class BossScript : Enemy
     [SerializeField] private ParticleSystem yellowLaunchParticles;
     [SerializeField] private ParticleSystem crashLaunchParticles;
 
+    //Particles
     ParticleSystem.EmissionModule emissions; //used to toggle particle emitters
 
     // Start is called before the first frame update
@@ -50,7 +49,6 @@ public class BossScript : Enemy
         timeSinceLastJump += Time.deltaTime;
 
         toggleGroundEmissions();
-        
     }
 
     //This function is called when the boss gets hit
@@ -133,6 +131,8 @@ public class BossScript : Enemy
             Vector2 newDirection = rb.transform.localScale;
             newDirection.x *= -1;
             rb.transform.localScale = newDirection;
+
+            timeSinceLastJump = 0; //reset jump timer 
         }
     }
 
@@ -148,5 +148,19 @@ public class BossScript : Enemy
     {
         //bug: player respawning resets entire scene, which destroys the boss, which triggers this even when the player dies
         SceneManager.LoadScene("Victory Screen");
+        //todo: victory particles
+        //StartCoroutine(GoToVictoryScreen());
     }
+
+    /*
+    //doesn't work because the GameObject would be destroyed
+    IEnumerator GoToVictoryScreen()
+    {
+        yield return new WaitForSeconds(5);
+        //bug: player respawning resets entire scene, which destroys the boss, which triggers this even when the player dies
+        SceneManager.LoadScene("Victory Screen");
+
+    }
+    */
 }
+
