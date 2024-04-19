@@ -41,7 +41,7 @@ public class HealthManager : MonoBehaviour
         pm      = GetComponent<PlayerMovement>();
         cheats  = GetComponent<Cheats>();
         pList   = GetComponent<PlayerStatesList>();
-        ppv     = transform.parent.Find("Game Camera").Find("Post Processing Volume").GetComponent<PostProcessVolume>();
+        ppv     = GameObject.Find("Game Camera/Post Processing Volume").GetComponent<PostProcessVolume>();
     }
 
     // Update is called once per frame
