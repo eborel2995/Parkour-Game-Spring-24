@@ -216,7 +216,7 @@ Transform:
   m_GameObject: {fileID: 177730316}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 44.52, y: 3.18, z: 0.71837753}
+  m_LocalPosition: {x: 49.81, y: 3.18, z: 0.71837753}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -105667,7 +105667,7 @@ Transform:
   m_GameObject: {fileID: 1670473564}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20.77, y: 3.18, z: 0.71837753}
+  m_LocalPosition: {x: 32.13, y: 3.18, z: 0.71837753}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -119873,7 +119873,7 @@ Transform:
   m_GameObject: {fileID: 2106205050}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.67, y: 3.18, z: 0.71837753}
+  m_LocalPosition: {x: 12.8, y: 3.18, z: 0.71837753}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -119887,9 +119887,9 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106205050}
-  m_Text: 'Press ''SPACE''
+  m_Text: 'Press ''SPACE'' to jump.
 
-    to jump.'
+    Press it again to double jump.'
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
