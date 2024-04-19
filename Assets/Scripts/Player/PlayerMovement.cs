@@ -491,50 +491,57 @@ public class PlayerMovement : MonoBehaviour
             }*/
             if (IsGrounded())
             {
+                
                 // If player is on the ground then side attack and display slash effect.
                 if (vertical == 0)
                 {
+                    anim.SetTrigger("Attacking");
                     Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
                     Instantiate(slashEffect, SideAttackTransform);
-                    anim.SetTrigger("Attacking");
+                    
                     //state = MovementState.attacking;
                 }
                 // If player's vertical input > 0 then up attack and display slash effect.
                 else if (vertical > 0)
                 {
+                    anim.SetTrigger("Attacking");
                     Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
-                    anim.SetTrigger("Attacking");
+                    
                     //state = MovementState.attacking;
                 }
             }
             else if (!IsGrounded())
             {
+                
                 // If player is on the ground then side attack and display slash effect.
                 if (vertical == 0)
                 {
+                    anim.SetTrigger("AirAttacking");
                     Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
                     Instantiate(slashEffect, SideAttackTransform);
-                    anim.SetTrigger("AirAttacking");   // Set air attacking animation trigger.
-                    Debug.Log("AIR ATTACKING");
+                       // Set air attacking animation trigger.
+                    //Debug.Log("AIR ATTACKING");
                     //state = MovementState.airAttacking;
                 }
                 // If player's vertical input > 0 then up attack and display slash effect.
                 else if (vertical > 0)
                 {
+                    anim.SetTrigger("AirAttacking");
                     Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
-                    anim.SetTrigger("AirAttacking");   // Set air attacking animation trigger.
-                    Debug.Log("AIR ATTACKING");
+                       // Set air attacking animation trigger.
+                    //Debug.Log("AIR ATTACKING");
                     //state = MovementState.airAttacking;
                 }
                 // If player's vertical input < 0 then down attack and display slash effect.
                 else if (vertical < 0)
                 {
+                    anim.SetTrigger("AirAttacking");
                     Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
-                    anim.SetTrigger("AirAttacking");   // Set air attacking animation trigger.
-                    Debug.Log("AIR ATTACKING");
+                       // Set air attacking animation trigger.
+                    //Debug.Log("AIR ATTACKING");
                     //state = MovementState.airAttacking;
                 }
             }
