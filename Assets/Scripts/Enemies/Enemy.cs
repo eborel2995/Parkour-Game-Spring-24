@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour
             rb.AddForce(-_hitForce * recoilFactor * _hitDirection);
         }
     }
-    protected void OnCollisionEnter2D(GameObject collision)
+    protected void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && !PlayerMovement.Instance.pState.invincible)
         {
