@@ -26,16 +26,16 @@ public class PlayerMovement : MonoBehaviour
 
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals the corresponding number to its right mathematically.
-    private enum MovementState { idle,          // 0
-                                 runningRight,  // 1
-                                 runningLeft,   // 2
-                                 jumping,       // 3
-                                 falling,       // 4
-                                 dashing,       // 5
-                                 wallSliding,   // 6
-                                 attacking,     // 7
-                                 airAttacking,  // 8
-                                 hurt }         // 9
+    private enum MovementState
+    {
+        idle,          // 0
+        runningRight,  // 1
+        runningLeft,   // 2
+        jumping,       // 3
+        falling,       // 4
+        dashing,       // 5
+        wallSliding,   // 6
+    }
     MovementState state;
 
     // Access components for player object.
@@ -122,7 +122,6 @@ public class PlayerMovement : MonoBehaviour
     public int health;
     public int maxHealth;
     [SerializeField] float hitFlashSpeed;
-    //[SerializeField] GameObject bloodSpurt;
 
     [Header("Slime Boss Settings:")]
     public bool isEngulfed = false;
@@ -151,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Awake() is called when the script instance is being loaded.
-    // Awake is used to initialize any variables or game states before the game starts.
+    // Awake() is used to initialize any variables or game states before the game starts.
     private void Awake()
     { 
 
@@ -237,7 +236,7 @@ public class PlayerMovement : MonoBehaviour
 
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
-        // Holding jump will let the player jump higher.
+        // Letting go of jump will reduce the jump height
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
@@ -444,84 +443,44 @@ public class PlayerMovement : MonoBehaviour
         {
             timeSinceAttack = 0;    // Reset time since last attack.
 
-            /*
-            if (!IsGrounded())
-            {
-                anim.SetTrigger("AirAttacking");   // Set air attacking animation trigger.
-                Debug.Log("AIR ATTACKING");
-            }
-            else if (IsGrounded())
-            {
-                anim.SetTrigger("Attacking");
-            }
-            
-            
-
-            // If player is on the ground then side attack and display slash effect.
-            if (vertical == 0 || vertical < 0 && IsGrounded())
-            {
-                Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
-                Instantiate(slashEffect, SideAttackTransform);
-            }
-            // If player's vertical input > 0 then up attack and display slash effect.
-            else if (vertical > 0)
-            {
-                Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
-                SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
-            }
-            // If player's vertical input < 0 then down attack and display slash effect.
-            else if (vertical < 0 && !IsGrounded())
-            {
-                Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
-                SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
-            }*/
+            // If player is on the ground.
             if (IsGrounded())
             {
+                
                 // If player is on the ground then side attack and display slash effect.
                 if (vertical == 0)
                 {
                     Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
                     Instantiate(slashEffect, SideAttackTransform);
-                    anim.SetTrigger("Attacking");
-                    //state = MovementState.attacking;
                 }
                 // If player's vertical input > 0 then up attack and display slash effect.
                 else if (vertical > 0)
                 {
                     Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
-                    anim.SetTrigger("Attacking");
-                    //state = MovementState.attacking;
                 }
             }
+            // If player is in the air.
             else if (!IsGrounded())
             {
-                // If player is on the ground then side attack and display slash effect.
+                
+                // If player is in the air then side attack and display slash effect.
                 if (vertical == 0)
                 {
                     Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
                     Instantiate(slashEffect, SideAttackTransform);
-                    anim.SetTrigger("AirAttacking");   // Set air attacking animation trigger.
-                    Debug.Log("AIR ATTACKING");
-                    //state = MovementState.airAttacking;
                 }
                 // If player's vertical input > 0 then up attack and display slash effect.
                 else if (vertical > 0)
                 {
                     Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
-                    anim.SetTrigger("AirAttacking");   // Set air attacking animation trigger.
-                    Debug.Log("AIR ATTACKING");
-                    //state = MovementState.airAttacking;
                 }
                 // If player's vertical input < 0 then down attack and display slash effect.
                 else if (vertical < 0)
                 {
                     Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
-                    anim.SetTrigger("AirAttacking");   // Set air attacking animation trigger.
-                    Debug.Log("AIR ATTACKING");
-                    //state = MovementState.airAttacking;
                 }
             }
         }
@@ -654,39 +613,6 @@ public class PlayerMovement : MonoBehaviour
         stepsYRecoiled = 0;
         pState.recoilingY = false;
     }
-
-    /*
-    // Handles player taking damage.
-    public void TakeDamage(float _damage)
-    {
-        // Decrement player health.
-        Health -= Mathf.RoundToInt(_damage);
-
-        // Stop taking damage (invincibility-frames).
-        StartCoroutine(StopTakingDamage());
-    }
-
-    // Handles player invincibility-frames and TakeDamage animation.
-    IEnumerator StopTakingDamage()
-    {
-        // Enable player invincibility-frames.
-        pState.invincible = true;
-
-        // Create bloodspurt effect.
-        GameObject _bloodSpurtParticles = Instantiate(bloodSpurt, transform.position, Quaternion.identity);
-
-        // Destroy bloodspurt effect.
-        Destroy(_bloodSpurtParticles, 1.5f);
-
-        // Set TakeDamage animation trigger.
-        anim.SetTrigger("TakeDamage");
-        Debug.Log("HURT ANIMATION NOW");
-
-        // Delay disabling invincibility-frames.
-        yield return new WaitForSeconds(1f);
-        pState.invincible = false;
-    }
-    */
 
     // Cause player sprite to flash when player is invincible.
     void FlashWhileInvincible()

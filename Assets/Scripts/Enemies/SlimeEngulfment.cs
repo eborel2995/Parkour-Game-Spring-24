@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SlimeEngulfment : MonoBehaviour
 {
+    //Note: this is old code for the old slime boss, but still used in Zip Bomber
     [SerializeField] private GameObject player;
     private PlayerMovement pm;
     private HealthManager healthManager;
