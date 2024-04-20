@@ -166,7 +166,7 @@ MonoBehaviour:
   recoilLength: 50
   recoilFactor: 50
   isRecoiling: 0
-  moveSpeed: 25
+  moveSpeed: 20
   damage: 1
   chaseDistance: 7
 --- !u!95 &6044433006789600754
