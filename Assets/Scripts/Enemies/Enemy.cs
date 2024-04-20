@@ -5,35 +5,33 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] protected float health;
-    [SerializeField] protected float recoilLength;
-    [SerializeField] protected float recoilFactor;
-    [SerializeField] protected bool isRecoiling = false;
-
-    protected PlayerMovement player;
-    [SerializeField] protected float moveSpeed = 5f;
-
     [SerializeField] protected float damage = 10f;
 
+    [SerializeField] protected bool isRecoiling = false;
+    [SerializeField] protected float recoilLength;
+    [SerializeField] protected float recoilFactor;
+    protected float recoilTimer;
+
+    [SerializeField] protected float moveSpeed = 5f;
+
+    protected PlayerMovement player;
     protected Rigidbody2D rb;
     protected SpriteRenderer sr;
     protected Animator anim;
-
-    protected float recoilTimer;
-
     protected HealthManager healthManager;
 
-    // Start is called before the first frame update
+    
     protected virtual void Start()
     {
-        
+        //leave this empty so enemy types can override it
     }
-    
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-        player = PlayerMovement.Instance;
         anim = GetComponent<Animator>();
+        player = PlayerMovement.Instance;
     }
     // Update is called once per frame
     protected virtual void Update()
@@ -82,7 +80,7 @@ public class Enemy : MonoBehaviour
             )
         {
             healthManager = entity.gameObject.GetComponent<HealthManager>();
-            Debug.Log($"{gameObject.name} hit {entity.gameObject.name}!");
+            Debug.Log($"Enemy.cs: {gameObject.name} hit {entity.gameObject.name} for {damage}!");
             healthManager.TakeDamage(damage);
         }
     }

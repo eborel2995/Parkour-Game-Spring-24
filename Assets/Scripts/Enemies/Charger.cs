@@ -176,7 +176,7 @@ public class Charger : Enemy
         RaycastHit2D hit = Physics2D.Raycast(castPos.position, Vector2.down, checkDistance, whatIsGround);
         Debug.DrawRay(castPos.position, Vector2.down * checkDistance, hit ? Color.green : Color.red);
 
-        Debug.Log($"Raycast for ground check: {hit.collider != null}");
+        //Debug.Log($"Raycast for ground check: {hit.collider != null}");
         return hit.collider != null;
     }
 
@@ -217,7 +217,7 @@ public class Charger : Enemy
     {
         if (PlayerMovement.Instance == null || !PlayerMovement.Instance.gameObject.activeInHierarchy)
         {
-            Debug.LogWarning("Player instance is missing or inactive, stopping charge.");
+            //Debug.LogWarning("Player instance is missing or inactive, stopping charge.");
             ChangeState(ChargerStates.Charger_Idle);
             return;
         }
@@ -246,7 +246,7 @@ public class Charger : Enemy
     {
         if (currentChargerState != newState)
         {
-            Debug.Log($"Changing state from {currentChargerState} to {newState}");
+            //Debug.Log($"Changing state from {currentChargerState} to {newState}");
             // Handle exiting states
             switch (currentChargerState)
             {

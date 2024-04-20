@@ -4852,7 +4852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44180cdadc9b8bb478033c664644d8d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FirewallDamage: 10
+  damagePerParticle: 10
 --- !u!1 &3247345618493639628
 GameObject:
   m_ObjectHideFlags: 0

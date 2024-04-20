@@ -54,7 +54,7 @@ MonoBehaviour:
   recoilFactor: 75
   isRecoiling: 0
   moveSpeed: 5
-  damage: 1
+  damage: 10
   castPos: {fileID: 2725107464866525067}
   baseCastDist: 0.2
 --- !u!212 &2546051910816580604

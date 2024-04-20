@@ -20,6 +20,7 @@ public class HealthManager : MonoBehaviour
     public Image healthBar;
     private static float baseHealth = 100f;
     public float healthAmount = baseHealth;
+    private bool displayedDead = false;
 
     private Vector3 respawnCoords;
     [SerializeField] private float deathFloorHeight = -80;
@@ -40,7 +41,7 @@ public class HealthManager : MonoBehaviour
         anim    = GetComponent<Animator>();
         rb      = GetComponent<Rigidbody2D>();
         pm      = GetComponent<PlayerMovement>();
-        cheats  = GetComponent<Cheats>();
+        //cheats  = GetComponent<Cheats>();
         pList   = GetComponent<PlayerStatesList>();
         ppv     = GameObject.Find("Game Camera/Post Processing Volume").GetComponent<PostProcessVolume>();
     }
@@ -49,12 +50,13 @@ public class HealthManager : MonoBehaviour
     void Update()
     {
         //if the entity runs out of health
-        if (healthAmount <= 0)
+        if (healthAmount <= 0 && !displayedDead)
         {
             Debug.Log($"{gameObject.name} ran out of health!");
+            displayedDead = true; //only trigger Die and Respawn once!
             Die();
             //delay to play death animation
-            Invoke(nameof(Respawn), 3f);
+            Invoke(nameof(Respawn), 2.5f);
         }        
 
         if (transform.position.y <= deathFloorHeight)
@@ -107,10 +109,12 @@ public class HealthManager : MonoBehaviour
         if (ppv.profile.TryGetSettings(out cg))
         {
             //Channel Mixer
-            cg.mixerRedOutRedIn.value = 200f - healthAmount;
+            float redValue = 200f - healthAmount;
+            cg.mixerRedOutRedIn.value = redValue;
 
             //Trackballs Gain
-            cg.gain.value.w = -1 + (healthAmount / 100);
+            float gainValue = -1 + (healthAmount / 100);
+            cg.gain.value.w = gainValue; //value.w is how dark the highlights get
 
         }
     }
