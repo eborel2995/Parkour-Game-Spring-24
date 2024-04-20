@@ -8,21 +8,12 @@ using UnityEngine.SceneManagement;
 
 public class NewBehaviourScript : MonoBehaviour
 {
-    // Variable to hold the audio source of the finish sound effect.
-    //private AudioSource finishSound;
-
-    // Variable to confirm whether player has completed level.
-    // This also prevents the repeated playing of the finish sound effect.
+    // Level completion variables.
     private bool levelCompleted = false;
     private float sceneSwapDelayS = 1f;
-    [SerializeField] private string nextScene;
 
-    // Start is called before the first frame update.
-    private void Start()
-    {
-        // Store GetComponent<AudioSource>() in finishSound to save memory and CPU resources.
-        //finishSound = GetComponent<AudioSource>();
-    }
+    // "[SerializeFeild]" allows these variables to be edited in Unity.
+    [SerializeField] private string nextScene;
 
     // Detect if player touches finish line.
     private void OnTriggerEnter2D(Collider2D collision)
@@ -33,16 +24,11 @@ public class NewBehaviourScript : MonoBehaviour
             //ignore user input so player stays at the goal
             collision.gameObject.GetComponent<PlayerMovement>().ignoreUserInput = true;
 
-            // Play finish sound effect.
-            //finishSound.Play();
-
             // Set levelCompleted to true after reaching finish line.
             levelCompleted = true;
 
             // Call CompleteLevel() method with delay.
             Invoke("CompleteLevel", sceneSwapDelayS);
-
-            //suction(collision.gameObject);
         }
     }
 
