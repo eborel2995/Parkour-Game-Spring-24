@@ -99,7 +99,7 @@ public class BossScript : Enemy
     private void toggleGroundEmissions()
     {
         //when boss is on the ground
-        if (rb.velocity.y < 0)
+        if (rb.velocity.y < 0 && rb.position.y < 1.25)
         {
             emissions = whiteLaunchParticles.emission;
             emissions.enabled = false;
@@ -109,6 +109,7 @@ public class BossScript : Enemy
 
             emissions = crashLaunchParticles.emission;
             emissions.enabled = true;
+            crashLaunchParticles.Play();
         }
     }
 

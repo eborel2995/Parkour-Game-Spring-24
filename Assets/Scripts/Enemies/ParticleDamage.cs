@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Firewall : MonoBehaviour
+public class ParticleDamage : MonoBehaviour
 {
     private GameObject player;
     private HealthManager healthManager;
-    [SerializeField] private float FirewallDamage = 10f;
+    [SerializeField] private float damagePerParticle = 1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +18,8 @@ public class Firewall : MonoBehaviour
     {
         if (other == player)
         {
-            Debug.Log("Player detected at Firewall!");
-            healthManager.TakeDamage(FirewallDamage);
+            Debug.Log("Player hit by damaging particles!");
+            healthManager.TakeDamage(damagePerParticle);
         }
     }
 }
