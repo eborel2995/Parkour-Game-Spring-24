@@ -8,10 +8,11 @@ public class MainMenuStart : MonoBehaviour
     // Method to start the game.
     public void StartGame()
     {
-        // Load next scene (level 1).
+        // Load next scene.
         SceneManager.LoadScene("Level 1");
     }
     
+    // Exit the game.
     public void QuitGame()
     {
         Application.Quit();
