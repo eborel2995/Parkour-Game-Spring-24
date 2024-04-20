@@ -336,6 +336,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3202222257896407292, guid: 6f6683c037624fc4eb12d80449797f36, type: 3}
+      propertyPath: damage
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4605116730173125564, guid: 6f6683c037624fc4eb12d80449797f36, type: 3}
       propertyPath: m_Name
       value: Crawler (1)
@@ -405,6 +409,10 @@ PrefabInstance:
     - target: {fileID: 4272261199343201822, guid: fbd4d98b9603067499783a6fbc863f56, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5170438592165883148, guid: fbd4d98b9603067499783a6fbc863f56, type: 3}
+      propertyPath: damage
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7943221415610329712, guid: fbd4d98b9603067499783a6fbc863f56, type: 3}
       propertyPath: m_Name
@@ -104067,6 +104075,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3202222257896407292, guid: 6f6683c037624fc4eb12d80449797f36, type: 3}
+      propertyPath: damage
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4605116730173125564, guid: 6f6683c037624fc4eb12d80449797f36, type: 3}
       propertyPath: m_Name
       value: Crawler (2)
@@ -104247,6 +104259,10 @@ PrefabInstance:
     - target: {fileID: 5845533420094946620, guid: ecd50a8a227576d48a19f038228bcfe4, type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7804846782657544873, guid: ecd50a8a227576d48a19f038228bcfe4, type: 3}
+      propertyPath: damage
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -105620,6 +105636,10 @@ PrefabInstance:
     - target: {fileID: 826100938997318725, guid: 6f6683c037624fc4eb12d80449797f36, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202222257896407292, guid: 6f6683c037624fc4eb12d80449797f36, type: 3}
+      propertyPath: damage
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4605116730173125564, guid: 6f6683c037624fc4eb12d80449797f36, type: 3}
       propertyPath: m_Name

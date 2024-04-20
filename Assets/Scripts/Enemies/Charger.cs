@@ -176,7 +176,7 @@ public class Charger : Enemy
         RaycastHit2D hit = Physics2D.Raycast(castPos.position, Vector2.down, checkDistance, whatIsGround);
         Debug.DrawRay(castPos.position, Vector2.down * checkDistance, hit ? Color.green : Color.red);
 
-        Debug.Log($"Raycast for ground check: {hit.collider != null}");
+        //Debug.Log($"Raycast for ground check: {hit.collider != null}");
         return hit.collider != null;
     }
 

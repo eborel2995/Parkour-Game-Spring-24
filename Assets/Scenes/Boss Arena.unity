@@ -12657,6 +12657,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6707681149259320347, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: attackableLayer.m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
     - target: {fileID: 7191744702287263699, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -13300,7 +13304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 86470938}
-  damageToPlayer: 10
+  damageToPlayer: 0
 --- !u!58 &1648728023
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -21940,11 +21944,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
+  damage: 15
+  isRecoiling: 0
   recoilLength: 0
   recoilFactor: 0
-  isRecoiling: 0
   moveSpeed: 5
-  damage: 0
   jumpForce: 30
   jumpFrequency: 1.75
   bomb: {fileID: 251568648}
