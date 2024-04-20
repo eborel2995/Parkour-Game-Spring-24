@@ -5,6 +5,9 @@ using UnityEngine.UIElements;
 
 public class Cheats : MonoBehaviour
 {
+    // DREW WANTS TO ARCHIVE THIS SCRIPT FOR HIS PERSONAL USE!
+
+    /*
     [SerializeField] public bool debugMode = true;
     [SerializeField] float resize = 1;
     [SerializeField] float gravity = 5;
@@ -40,4 +43,5 @@ public class Cheats : MonoBehaviour
             
         }
     }
+    */
 }

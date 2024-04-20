@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class MouseControl : MonoBehaviour
 {
-    private Cheats cheats;
+    // DREW WANTS TO ARCHIVE THIS SCRIPT FOR HIS PERSONAL USE!
+
+    /*
+    //...
     private static MouseControl _instance;
     public static MouseControl Instance
     {
@@ -19,14 +22,19 @@ public class MouseControl : MonoBehaviour
         }
     }
 
+    //...
     Camera cam;
+
+    // "[SerializeFeild]" allows these variables to be edited in Unity.
     [SerializeField] public Vector3 clickedWorldCoords = Vector3.zero;
     [SerializeField] public GameObject selectedObject = null;
-    //[SerializeField] GameObject spawnableObject;
 
+    //...
     Vector3 screenMousePos;
     Vector3 worldMousePos;
 
+    // Awake() is called when the script instance is being loaded.
+    // Awake() is used to initialize any variables or game states before the game starts.
     private void Awake()
     {
         if (_instance != null)
@@ -34,20 +42,15 @@ public class MouseControl : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        /*else if (_instance != this)
-        {
-            Destroy(this);
-        }*/
     }
 
-    // Start is called before the first frame update
+    // Start() is called before the first frame update.
     void Start()
     {
-        cheats = GetComponent<Cheats>();
         cam = Camera.main;
     }
 
-    // Update is called once per frame
+    // Update() is called once per frame.
     void Update()
     {
         screenMousePos = Input.mousePosition;
@@ -55,13 +58,6 @@ public class MouseControl : MonoBehaviour
 
         //convert to world coordinates
         worldMousePos = cam.ScreenToWorldPoint(worldMousePos);
-
-        /*
-        if (cheats.debugMode)
-        {
-            Debug.DrawRay(transform.position, worldMousePos - transform.position, Color.blue);
-        }
-        */
 
         //if the user clicks
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) 
@@ -77,10 +73,10 @@ public class MouseControl : MonoBehaviour
             }
             else
             { 
-                //deselect the object
+                // Deselect the object.
                 selectedObject = null;
             }
         }
-
     }
+    */
 }

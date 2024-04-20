@@ -155,7 +155,7 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawWireCube(DownAttackTransform.position, DownAttackArea);
     }
 
-    // Update() is called once per frame
+    // Update() is called once per frame.
     void Update()
     {
         // Cast enum state into int state.
