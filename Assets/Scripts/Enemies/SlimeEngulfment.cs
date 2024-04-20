@@ -20,6 +20,7 @@ public class SlimeEngulfment : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //keep the PlayerMovement script updated on whether or not the player is engulfed
         if (Engulfed) 
             { pm.isEngulfed = true; }
         else{ pm.isEngulfed = false; }

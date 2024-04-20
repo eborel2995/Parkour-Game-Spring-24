@@ -9,12 +9,19 @@ public class BossScript : Enemy
     [SerializeField] private int bitCount;
 
     private float timeSinceLastJump = 2f;
-    private float jumpForce = 20f;
+    private float jumpForce = 25f;
     private float jumpFrequency = 2.5f;
+    private bool facingLeft = true;
+    private GameObject playerObject;
+    [SerializeField] private GameObject bomb;
+    private Rigidbody2D rb;
+    private float turnDistance = 2f;
 
     // Start is called before the first frame update
     protected override void Start()
     {
+        playerObject = GameObject.FindWithTag("Player");
+        rb = bomb.GetComponent<Rigidbody2D>();
     }
     private new void Update()
     {
@@ -26,6 +33,18 @@ public class BossScript : Enemy
         else
         {
             rb.gravityScale = 5;
+        }
+
+        //change direction of boss
+        //if player is right of boss and boss is facing left, then look right OR
+        //if player is left of boss and boss is facing right, then look left
+        if (((playerObject.transform.position.x > transform.position.x + turnDistance) && facingLeft) ||
+            ((playerObject.transform.position.x < transform.position.x - turnDistance) && !facingLeft))
+        {
+            facingLeft = !facingLeft;
+            Vector2 newDirection = rb.transform.localScale;
+            newDirection.x *= -1;
+            rb.transform.localScale = newDirection;
         }
     }
 
@@ -42,7 +61,7 @@ public class BossScript : Enemy
                 Vector3 playerPosition = PlayerMovement.Instance.transform.position;
                 Vector3 myPosition = transform.position;
                 Vector2 direction = (playerPosition - myPosition);
-
+                
                 rb.velocity = new Vector2(rb.velocity.x + (direction.x), rb.velocity.y + jumpForce);
                 timeSinceLastJump = 0;
             }
