@@ -89,7 +89,7 @@ MonoBehaviour:
   dashSound: {fileID: 5270325099697903457}
   attackSound: {fileID: 886341013722013776}
   stepSound: {fileID: 8633057383147956892}
-  damage: 5
+  damage: 1
   SideAttackTransform: {fileID: 8429665651921188807}
   UpAttackTransform: {fileID: 1367155910052703321}
   DownAttackTransform: {fileID: 5364444290136464923}
