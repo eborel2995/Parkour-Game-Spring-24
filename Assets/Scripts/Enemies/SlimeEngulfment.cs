@@ -4,40 +4,48 @@ using UnityEngine;
 
 public class SlimeEngulfment : MonoBehaviour
 {
-    //Note: this is old code for the old slime boss, but still used in Zip Bomber
-    [SerializeField] private GameObject player;
+    // Create relevant instances.
     private PlayerMovement pm;
     private HealthManager healthManager;
+
+    // "[SerializeFeild]" allows these variables to be edited in Unity.
+    // Slime Boss variables.
+    private bool Engulfed = false;
+    [SerializeField] private GameObject player;
     [SerializeField] private float damageToPlayer = 10f;
 
-    private bool Engulfed = false;
-    // Start is called before the first frame update
+    // Start() is called before the first frame update.
     void Start()
     {
-        healthManager = player.GetComponent<HealthManager>();
+        // Access components once to save processing power.
         pm = player.GetComponent<PlayerMovement>();
+        healthManager = player.GetComponent<HealthManager>();
     }
 
-    // Update is called once per frame
+    // Update() is called once per frame.
     void Update()
     {
-        //keep the PlayerMovement script updated on whether or not the player is engulfed
+        // Update PlayerMovement script whether or not the player is engulfed.
         if (Engulfed) 
-            { pm.isSlowed = true; }
-        else{ pm.isSlowed = false; }
+        {
+            pm.isSlowed = true;
+        }
+        else
+        { 
+            pm.isSlowed = false; 
+        }
     }
 
+    // Player takes damage while engulfed.
     private void OnTriggerEnter2D(Collider2D col)
     {
-        //slow player while overlapping
         Engulfed = true;
-
         healthManager.TakeDamage(damageToPlayer);
     }
 
+    // Disable engulfed.
     private void OnTriggerExit2D(Collider2D collision)
     {
-        //return player to regular speed
         Engulfed = false;
     }
 }
