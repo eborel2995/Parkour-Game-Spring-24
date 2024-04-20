@@ -21,17 +21,8 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public PlayerStatesList pState;
 
     // Enum of movement state animations for our player to cycle through.
-    // Each variable equals the corresponding number to its right mathematically.
-    private enum MovementState
-    {
-        idle,          // 0
-        runningRight,  // 1
-        runningLeft,   // 2
-        jumping,       // 3
-        falling,       // 4
-        dashing,       // 5
-        wallSliding,   // 6
-    }
+    // Each variable equals      0     1             2            3        4        5        6            mathematically.
+    private enum MovementState { idle, runningRight, runningLeft, jumping, falling, dashing, wallSliding }
     MovementState state;
 
     // Access components for player object.
@@ -96,8 +87,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     // AttackAttacking variables.
-    // Handles player attack permissions and holds attack key from Unity Input Manager.
-    bool attack = false;
+    bool attack = false;    // Handles player attack permissions and holds attack key from Unity Input Manager.
     bool restoreTime;
     float timeSinceAttack;
     float restoreTimeSpeed;
@@ -126,6 +116,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Player Health Settings:")]
     [SerializeField] float hitFlashSpeed;
 
+    // Effects variables.
     [Header("Effects:")]
     public bool isSlowed = false;
     private float slowRatio = 0.5f;
@@ -133,18 +124,14 @@ public class PlayerMovement : MonoBehaviour
     // Awake() is called when the script instance is being loaded.
     // Awake() is used to initialize any variables or game states before the game starts.
     private void Awake()
-    { 
-
+    {
         // Error checking for the PlayerMovement instance.
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject); // Destroy game object if instance is inaccessible.
         }
         // If no PlayerMovement instance is accessible then destroy game object.
-        else
-        {
-            Instance = this;
-        }
+        else { Instance = this; }
     }
 
     // Start() is called before the first frame update.
@@ -181,6 +168,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        // Apply slowed effect to player.
         if (isSlowed)
         {
             moveSpeed = defaultMoveSpeed * slowRatio;
@@ -201,10 +189,7 @@ public class PlayerMovement : MonoBehaviour
         horizontal = Input.GetAxisRaw("Horizontal");
         
         // Reset jump counter
-        if (IsGrounded())
-        {
-            canDoubleJump = true;
-        }
+        if (IsGrounded()) { canDoubleJump = true; }
 
         // Jump if on jumpable ground or the single double jump.
         if (Input.GetButtonDown("Jump") && canDoubleJump)
@@ -219,6 +204,7 @@ public class PlayerMovement : MonoBehaviour
             else if(!IsGrounded())
             { doubleJumpSound.Play(); }
         }
+
         // Letting go of jump will reduce the jump height
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
@@ -262,7 +248,6 @@ public class PlayerMovement : MonoBehaviour
         Recoil();
     }
 
-
     // Check if player is touching jumpable ground.
     private bool IsGrounded()
     {
@@ -287,10 +272,7 @@ public class PlayerMovement : MonoBehaviour
             // Clamp player to wall and set wall slide speed.
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
         }
-        else
-        {
-            isWallSliding = false;
-        }
+        else { isWallSliding = false; }
     }
 
     // Check if player can wall jump and do it if so.
@@ -342,12 +324,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     // Stop allowing player to wall jump.
-    private void StopWallJumping()
-    {
-        isWallJumping = false;
-    }
+    private void StopWallJumping() { isWallJumping = false; }
 
     // Flip the player when they move in that direction.
     private void Flip()
@@ -560,11 +538,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         // If player is not recoiling.
-        else
-        {
-            // Set player gravity to original gravity value.
-            rb.gravityScale = gravity;
-        }
+        else { rb.gravityScale = gravity; }
 
         // If player is recoiling on the x-axis AND player still has steps left to recoil.
         if (pState.recoilingX && stepsXRecoiled < recoilXSteps)
@@ -573,10 +547,7 @@ public class PlayerMovement : MonoBehaviour
             stepsXRecoiled++;
         }
         // If player is out of steps to recoil then stop recoiling.
-        else
-        {
-            StopRecoilX();
-        }
+        else { StopRecoilX(); }
 
         // If player is recoiling on the y-axis AND player still has steps left to recoil.
         if (pState.recoilingY && stepsYRecoiled < recoilYSteps)
@@ -585,16 +556,10 @@ public class PlayerMovement : MonoBehaviour
             stepsYRecoiled++;
         }
         // If player is out of steps to recoil then stop recoiling.
-        else
-        {
-            StopRecoilY();
-        }
+        else { StopRecoilY(); }
 
         // If player is touching jumpable ground then stop recoiling.
-        if (IsGrounded())
-        {
-            StopRecoilY();
-        }
+        if (IsGrounded()) { StopRecoilY(); }
     }
 
     // Stop player from recoiling on the x-axis.
