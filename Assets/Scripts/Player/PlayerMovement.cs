@@ -20,10 +20,6 @@ public class PlayerMovement : MonoBehaviour
     // Class of bools that handle player states like jumping, dashing, and direction.
     [HideInInspector] public PlayerStatesList pState;
 
-    // Sets player health and handles player health loss.
-    public delegate void OnHealthChangedDelegate();
-    [HideInInspector] public OnHealthChangedDelegate onHealthChangedCallback;
-
     // Enum of movement state animations for our player to cycle through.
     // Each variable equals the corresponding number to its right mathematically.
     private enum MovementState
@@ -119,35 +115,11 @@ public class PlayerMovement : MonoBehaviour
 
     // Player health variables.
     [Header("Player Health Settings:")]
-    public int health;
-    public int maxHealth;
     [SerializeField] float hitFlashSpeed;
 
-    [Header("Slime Boss Settings:")]
-    public bool isEngulfed = false;
-    private float engulfSlowRatio = 0.5f;
-
-    public int Health
-    {
-        // Get player health.
-        get { return health; }
-
-        // Set player health.
-        set
-        {
-            // Limit player health to a maxHealth value.
-            if (health != value)
-            {
-                health = Mathf.Clamp(value, 0, maxHealth);
-
-                // If player health is changed then update player health value.
-                if (onHealthChangedCallback != null)
-                {
-                    onHealthChangedCallback.Invoke();
-                }
-            }
-        }
-    }
+    [Header("Effects:")]
+    public bool isSlowed = false;
+    private float slowRatio = 0.5f;
 
     // Awake() is called when the script instance is being loaded.
     // Awake() is used to initialize any variables or game states before the game starts.
@@ -164,9 +136,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Instance = this;
         }
-
-        // Set player health.
-        Health = maxHealth;
     }
 
     // Start() is called before the first frame update.
@@ -203,10 +172,10 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (isEngulfed)
+        if (isSlowed)
         {
-            moveSpeed = defaultMoveSpeed * engulfSlowRatio;
-            anim.speed = engulfSlowRatio;
+            moveSpeed = defaultMoveSpeed * slowRatio;
+            anim.speed = slowRatio;
         }
         else
         {

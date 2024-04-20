@@ -11,11 +11,14 @@ public class BossScript : Enemy
     [SerializeField] private float jumpForce = 35f;
     [SerializeField] private float jumpFrequency = 2f;
     private bool facingLeft = true;
-    private GameObject playerObject;
     [SerializeField] private GameObject bomb; //parent object that Zip Bomber is riding
     private float turnDistance = 2f; //distance player must move until boss turns to prevent instantaneous turning
     private SpriteRenderer spriteRenderer;
-    private Color original; 
+    private Color original;
+
+    private GameObject playerObject;
+    private HealthManager hm;
+    private float recordedPlayerHP;
 
     //identified in Unity Inspector
     [SerializeField] private ParticleSystem whiteLaunchParticles;
@@ -28,15 +31,18 @@ public class BossScript : Enemy
     // Start is called before the first frame update
     protected override void Start()
     {
-        playerObject = GameObject.FindWithTag("Player");
         rb = bomb.GetComponent<Rigidbody2D>();
         spriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
         original = spriteRenderer.color;
+
+        playerObject = GameObject.FindWithTag("Player");
+        hm = playerObject.GetComponent<HealthManager>();
     }
     private new void Update()
     {
         gravityModifier(); //launch at regular gravity, crash down after apex of launch
         changeDirection(); //whether player is on left or right of boss
+        recordedPlayerHP = hm.healthAmount;
     }
 
     private void FixedUpdate()
@@ -148,7 +154,14 @@ public class BossScript : Enemy
     {
         Timer.instance.EndTimer();
         //bug: player respawning resets entire scene, which destroys the boss, which triggers this even when the player dies
-        SceneManager.LoadScene("Victory Screen");
+        if (recordedPlayerHP > 0)
+        {
+            SceneManager.LoadScene("Victory Screen");
+        }
+        else
+        {
+            SceneManager.LoadScene("GameOver");
+        }
         //todo: victory particles
         //StartCoroutine(GoToVictoryScreen());
     }

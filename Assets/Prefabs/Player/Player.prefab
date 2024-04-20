@@ -76,7 +76,7 @@ MonoBehaviour:
   dashingPower: 24
   dashingTime: 0.2
   dashingCooldown: 0.75
-  damage: 2
+  damage: 1
   SideAttackTransform: {fileID: 8429665651921188807}
   UpAttackTransform: {fileID: 1367155910052703321}
   DownAttackTransform: {fileID: 5364444290136464923}
@@ -91,10 +91,8 @@ MonoBehaviour:
   recoilYSteps: 3
   recoilXSpeed: 25
   recoilYSpeed: 25
-  health: 0
-  maxHealth: 10
   hitFlashSpeed: 1
-  isEngulfed: 0
+  isSlowed: 0
 --- !u!114 &6226129961009158131
 MonoBehaviour:
   m_ObjectHideFlags: 0
