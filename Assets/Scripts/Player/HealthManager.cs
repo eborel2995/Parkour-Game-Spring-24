@@ -11,65 +11,68 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-    //private GameObject player;
+    // Access components for player object.
     private Animator anim;
+    private Cheats cheats;
     private Rigidbody2D rb;
     private PlayerMovement pm;
-    private Cheats cheats;
+    private PlayerStatesList pState;
 
+    // Health and health bar variables.
     public Image healthBar;
-    private static float baseHealth = 100f;
     public float healthAmount = baseHealth;
     private bool displayedDead = false;
+    private static float baseHealth = 100f;
 
+    // "[SerializeFeild]" allows these variables to be edited in Unity.
     private Vector3 respawnCoords;
     [SerializeField] private float deathFloorHeight = -80;
     [SerializeField] private AudioSource deathSound;
 
-    private PlayerStatesList pList;
-
-    //post processing stuff
+    // Post processing variables.
     PostProcessVolume ppv;
     ColorGrading cg;
 
+    // Start() is called before the first frame update.
     void Start()
     {
-        //get the default coordinates set in Unity as the respawn coordinates
+        // Get the default coordinates set in Unity as the respawn coordinates.
         respawnCoords = transform.position;
 
-        //player = GameObject.Find("Player");
+        // Access components once to save processing power.
         anim    = GetComponent<Animator>();
         rb      = GetComponent<Rigidbody2D>();
         pm      = GetComponent<PlayerMovement>();
-        //cheats  = GetComponent<Cheats>();
-        pList   = GetComponent<PlayerStatesList>();
+        pState  = GetComponent<PlayerStatesList>();
         ppv     = GameObject.Find("Game Camera/Post Processing Volume").GetComponent<PostProcessVolume>();
     }
 
-    // Update is called once per frame
+    // Update() is called once per frame.
     void Update()
     {
-        //if the entity runs out of health
+        // If the entity runs out of health.
         if (healthAmount <= 0 && !displayedDead)
         {
-            Debug.Log($"{gameObject.name} ran out of health!");
-            displayedDead = true; //only trigger Die and Respawn once!
+            // Only trigger Die() and Respawn() once!
+            displayedDead = true;
+
+            // Play death animations and sound.
             Die();
-            //delay to play death animation
+
+            // Delay playing death animation.
             Invoke(nameof(Respawn), 2.5f);
         }        
 
+        // If player drops below death floor height they die.
         if (transform.position.y <= deathFloorHeight)
         {
-            Debug.Log($"{gameObject.name} fell out of the world!");
-
             // Make sure to zero the player's velocity and movement to prevent clipping into terrain
-            //Rigidbody2D rb = GetComponent<Rigidbody2D>(); //remove this
             rb.velocity = new Vector2(0, 0);
 
             TakeDamage(healthAmount);
         }
 
+        // Update health bar.
         if (healthBar != null)
         {
             UpdateHealthbar();
@@ -88,76 +91,69 @@ public class HealthManager : MonoBehaviour
         UpdatePostProcessing();
     }
 
-    public void Heal(float amount)
-    {
-        healthAmount += amount;
-        healthAmount = Mathf.Clamp(healthAmount, 0, 100);
-
-        UpdatePostProcessing();
-    }
-
+    // Updates player health bar to current health.
     public void UpdateHealthbar()
     {
         healthBar.fillAmount = healthAmount / 100f;
-        //Debug.Log($"{gameObject.name} has {healthAmount} health");
     }
 
+    // Handles UI post processing.
     private void UpdatePostProcessing()
     {
-        //Color Grading
-        //More damage makes the screen turn more red & darker
+        // Color Grading.
+        // More damage makes the screen turn more red & darker.
         if (ppv.profile.TryGetSettings(out cg))
         {
-            //Channel Mixer
+            // Channel Mixer.
             float redValue = 200f - healthAmount;
             cg.mixerRedOutRedIn.value = redValue;
 
-            //Trackballs Gain
+            // Trackballs Gain.
             float gainValue = -1 + (healthAmount / 100);
             cg.gain.value.w = gainValue; //value.w is how dark the highlights get
 
         }
     }
-    
+
+    // Handles player invincibility-frames and TakeDamage animation.
     IEnumerator StopTakingDamage()
     {
-        // Handles player invincibility-frames and TakeDamage animation.
         // Enable player invincibility-frames.
-        pList.invincible = true;
+        pState.invincible = true;
 
         // Delay disabling invincibility-frames.
         yield return new WaitForSeconds(1f);
-        pList.invincible = false;
+        pState.invincible = false;
     }
 
+    // Handles death animation and audio.
     public void Die()
     {
         // Activate death animation.
         deathSound.Play(); 
         anim.SetTrigger("death");
-        pList.alive = false;
+        pState.alive = false;
         if (gameObject.name == "Player")
         {
             // Disable player movement.
             pm.ignoreUserInput = true;
         }
-
     }
 
+    // Handles player respawn.
     public void Respawn()
     {
-        //instantly teleport back to initial coordinates
+        // Teleport back to initial spawn coordinates.
         transform.position = respawnCoords;
         healthAmount = baseHealth;
         pm.ignoreUserInput = false;
-        pList.alive = true;
+        pState.alive = true;
         Time.timeScale = 1;
     }
 
-    
+    // Restarts the current scene.
     private void RestartLevel()
     {
-        // Restart level.
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
