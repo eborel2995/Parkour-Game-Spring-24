@@ -23,6 +23,7 @@ public class HealthManager : MonoBehaviour
 
     private Vector3 respawnCoords;
     [SerializeField] private float deathFloorHeight = -80;
+    [SerializeField] private AudioSource deathSound;
 
     private PlayerStatesList pList;
 
@@ -128,6 +129,7 @@ public class HealthManager : MonoBehaviour
     public void Die()
     {
         // Activate death animation.
+        deathSound.Play(); 
         anim.SetTrigger("death");
         pList.alive = false;
         if (gameObject.name == "Player")
