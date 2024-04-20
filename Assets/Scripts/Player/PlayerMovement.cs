@@ -480,10 +480,15 @@ public class PlayerMovement : MonoBehaviour
         // Holds an array of colliders for objects that can be hit.
         Collider2D[] objectsToHit = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0, attackableLayer);
 
-        // If there is an object to hit then recoil.
+        // If there is an object to hit.
         if (objectsToHit.Length > 0)
         {
-            _recoilDir = true;
+            _recoilDir = true; //add a recoil effect on the player
+
+            canDoubleJump = true; //if player hit enemy, allow another air jump and dash
+            dashingCooldown = 0;
+            canDash = true;
+            Debug.Log("double jump and dash reset!");
         }
         
         // Loop through objectsToHit array and deal damage accordingly.
