@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class DestroyAfterAnimation : MonoBehaviour
 {
-    // Start is called before the first frame update
+    // Start() is called before the first frame update.
     void Start()
     {
+        // Destroy game object.
         Destroy(gameObject, GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);   
     }
 }
