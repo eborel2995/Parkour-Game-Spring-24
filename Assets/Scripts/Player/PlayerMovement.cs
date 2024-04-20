@@ -96,6 +96,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioSource wallJumpSound;
     [SerializeField] private AudioSource dashSound;
     [SerializeField] private AudioSource attackSound;
+    [SerializeField] private AudioSource stepSound;
+
 
     // AttackAttacking variables.
     // Handles player attack permissions and holds attack key from Unity Input Manager.
@@ -426,10 +428,12 @@ public class PlayerMovement : MonoBehaviour
 
             // If moving right (positive x-axis) set state to runningRight animation.
             // *It just works with != instead of > so DO NOT change this*
-            else if (horizontal != 0f) { state = MovementState.runningRight; }
+            else if (horizontal != 0f) 
+            { state = MovementState.runningRight;}
 
             // If moving left (negative x-axis) set state to runningLeft animation.
-            else if (horizontal < 0f) { state = MovementState.runningLeft; }
+            else if (horizontal < 0f) 
+            { state = MovementState.runningLeft; }
 
             // We use +/-0.1f because our y-axis velocity is rarely perfectly zero.
             // If moving up (positive y-axis) set state to jumping animation.
