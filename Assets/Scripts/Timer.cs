@@ -18,7 +18,13 @@ public class Timer : MonoBehaviour
 
     private void Awake()
     {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     // Start is called before the first frame update

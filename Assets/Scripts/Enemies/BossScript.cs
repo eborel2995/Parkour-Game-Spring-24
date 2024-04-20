@@ -146,6 +146,7 @@ public class BossScript : Enemy
 
     private void OnDestroy()
     {
+        Timer.instance.EndTimer();
         //bug: player respawning resets entire scene, which destroys the boss, which triggers this even when the player dies
         SceneManager.LoadScene("Victory Screen");
         //todo: victory particles
