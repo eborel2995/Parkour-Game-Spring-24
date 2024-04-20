@@ -86,6 +86,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashingCooldown = 0.75f;
     [Space(5)]
 
+    // Audio Variables
+    [SerializeField] private AudioSource jumpSound;
+    [SerializeField] private AudioSource doubleJumpSound;
+    [SerializeField] private AudioSource wallJumpSound;
+    [SerializeField] private AudioSource dashSound;
+    [SerializeField] private AudioSource attackSound;
+
     // AttackAttacking variables.
     // Handles player attack permissions and holds attack key from Unity Input Manager.
     bool attack = false;
@@ -202,8 +209,13 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!IsGrounded())
             { canDoubleJump = false; }
-
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            
+            //Play jump sound if on ground, play double jump sound if not on ground
+            if(IsGrounded())
+            { jumpSound.Play(); }
+            else if(!IsGrounded())
+            { doubleJumpSound.Play(); }
         }
         // Letting go of jump will reduce the jump height
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
@@ -215,6 +227,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Dash") && canDash && !isWallSliding)
         {
             StartCoroutine(Dash());
+            dashSound.Play();
         }
 
         // Function calls.
@@ -304,6 +317,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && wallJumpingCounter > 0f)
         {
             isWallJumping = true;
+            wallJumpSound.Play();
 
             // Apply wall jump physics.
             rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
@@ -419,12 +433,14 @@ public class PlayerMovement : MonoBehaviour
                 // If player is on the ground then side attack and display slash effect.
                 if (vertical == 0)
                 {
+                    attackSound.Play();
                     Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
                     Instantiate(slashEffect, SideAttackTransform);
                 }
                 // If player's vertical input > 0 then up attack and display slash effect.
                 else if (vertical > 0)
                 {
+                    attackSound.Play();
                     Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
                 }
@@ -436,18 +452,21 @@ public class PlayerMovement : MonoBehaviour
                 // If player is in the air then side attack and display slash effect.
                 if (vertical == 0)
                 {
+                    attackSound.Play();
                     Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
                     Instantiate(slashEffect, SideAttackTransform);
                 }
                 // If player's vertical input > 0 then up attack and display slash effect.
                 else if (vertical > 0)
                 {
+                    attackSound.Play();
                     Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
                 }
                 // If player's vertical input < 0 then down attack and display slash effect.
                 else if (vertical < 0)
                 {
+                    attackSound.Play();
                     Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
                 }
