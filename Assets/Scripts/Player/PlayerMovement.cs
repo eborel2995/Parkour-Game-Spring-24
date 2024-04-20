@@ -20,22 +20,9 @@ public class PlayerMovement : MonoBehaviour
     // Class of bools that handle player states like jumping, dashing, and direction.
     [HideInInspector] public PlayerStatesList pState;
 
-    // Sets player health and handles player health loss.
-    public delegate void OnHealthChangedDelegate();
-    [HideInInspector] public OnHealthChangedDelegate onHealthChangedCallback;
-
     // Enum of movement state animations for our player to cycle through.
-    // Each variable equals the corresponding number to its right mathematically.
-    private enum MovementState
-    {
-        idle,          // 0
-        runningRight,  // 1
-        runningLeft,   // 2
-        jumping,       // 3
-        falling,       // 4
-        dashing,       // 5
-        wallSliding,   // 6
-    }
+    // Each variable equals      0     1             2            3        4        5        6            mathematically.
+    private enum MovementState { idle, runningRight, runningLeft, jumping, falling, dashing, wallSliding }
     MovementState state;
 
     // Access components for player object.
@@ -90,9 +77,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashingCooldown = 0.75f;
     [Space(5)]
 
+    // Audio Variables
+    [SerializeField] private AudioSource jumpSound;
+    [SerializeField] private AudioSource doubleJumpSound;
+    [SerializeField] private AudioSource wallJumpSound;
+    [SerializeField] private AudioSource dashSound;
+    [SerializeField] private AudioSource attackSound;
+    [SerializeField] private AudioSource stepSound;
+
+
     // AttackAttacking variables.
-    // Handles player attack permissions and holds attack key from Unity Input Manager.
-    bool attack = false;
+    bool attack = false;    // Handles player attack permissions and holds attack key from Unity Input Manager.
     bool restoreTime;
     float timeSinceAttack;
     float restoreTimeSpeed;
@@ -119,54 +114,24 @@ public class PlayerMovement : MonoBehaviour
 
     // Player health variables.
     [Header("Player Health Settings:")]
-    public int health;
-    public int maxHealth;
     [SerializeField] float hitFlashSpeed;
 
-    [Header("Slime Boss Settings:")]
-    public bool isEngulfed = false;
-    private float engulfSlowRatio = 0.5f;
-
-    public int Health
-    {
-        // Get player health.
-        get { return health; }
-
-        // Set player health.
-        set
-        {
-            // Limit player health to a maxHealth value.
-            if (health != value)
-            {
-                health = Mathf.Clamp(value, 0, maxHealth);
-
-                // If player health is changed then update player health value.
-                if (onHealthChangedCallback != null)
-                {
-                    onHealthChangedCallback.Invoke();
-                }
-            }
-        }
-    }
+    // Effects variables.
+    [Header("Effects:")]
+    public bool isSlowed = false;
+    private float slowRatio = 0.5f;
 
     // Awake() is called when the script instance is being loaded.
     // Awake() is used to initialize any variables or game states before the game starts.
     private void Awake()
-    { 
-
+    {
         // Error checking for the PlayerMovement instance.
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject); // Destroy game object if instance is inaccessible.
         }
         // If no PlayerMovement instance is accessible then destroy game object.
-        else
-        {
-            Instance = this;
-        }
-
-        // Set player health.
-        Health = maxHealth;
+        else { Instance = this; }
     }
 
     // Start() is called before the first frame update.
@@ -203,10 +168,11 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (isEngulfed)
+        // Apply slowed effect to player.
+        if (isSlowed)
         {
-            moveSpeed = defaultMoveSpeed * engulfSlowRatio;
-            anim.speed = engulfSlowRatio;
+            moveSpeed = defaultMoveSpeed * slowRatio;
+            anim.speed = slowRatio;
         }
         else
         {
@@ -223,19 +189,22 @@ public class PlayerMovement : MonoBehaviour
         horizontal = Input.GetAxisRaw("Horizontal");
         
         // Reset jump counter
-        if (IsGrounded())
-        {
-            canDoubleJump = true;
-        }
+        if (IsGrounded()) { canDoubleJump = true; }
 
         // Jump if on jumpable ground or the single double jump.
         if (Input.GetButtonDown("Jump") && canDoubleJump)
         {
             if (!IsGrounded())
             { canDoubleJump = false; }
-
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            
+            //Play jump sound if on ground, play double jump sound if not on ground
+            if(IsGrounded())
+            { jumpSound.Play(); }
+            else if(!IsGrounded())
+            { doubleJumpSound.Play(); }
         }
+
         // Letting go of jump will reduce the jump height
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
@@ -246,6 +215,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Dash") && canDash && !isWallSliding)
         {
             StartCoroutine(Dash());
+            dashSound.Play();
         }
 
         // Function calls.
@@ -278,7 +248,6 @@ public class PlayerMovement : MonoBehaviour
         Recoil();
     }
 
-
     // Check if player is touching jumpable ground.
     private bool IsGrounded()
     {
@@ -303,10 +272,7 @@ public class PlayerMovement : MonoBehaviour
             // Clamp player to wall and set wall slide speed.
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
         }
-        else
-        {
-            isWallSliding = false;
-        }
+        else { isWallSliding = false; }
     }
 
     // Check if player can wall jump and do it if so.
@@ -335,6 +301,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && wallJumpingCounter > 0f)
         {
             isWallJumping = true;
+            wallJumpSound.Play();
 
             // Apply wall jump physics.
             rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
@@ -357,12 +324,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     // Stop allowing player to wall jump.
-    private void StopWallJumping()
-    {
-        isWallJumping = false;
-    }
+    private void StopWallJumping() { isWallJumping = false; }
 
     // Flip the player when they move in that direction.
     private void Flip()
@@ -412,10 +375,12 @@ public class PlayerMovement : MonoBehaviour
 
             // If moving right (positive x-axis) set state to runningRight animation.
             // *It just works with != instead of > so DO NOT change this*
-            else if (horizontal != 0f) { state = MovementState.runningRight; }
+            else if (horizontal != 0f) 
+            { state = MovementState.runningRight;}
 
             // If moving left (negative x-axis) set state to runningLeft animation.
-            else if (horizontal < 0f) { state = MovementState.runningLeft; }
+            else if (horizontal < 0f) 
+            { state = MovementState.runningLeft; }
 
             // We use +/-0.1f because our y-axis velocity is rarely perfectly zero.
             // If moving up (positive y-axis) set state to jumping animation.
@@ -450,12 +415,14 @@ public class PlayerMovement : MonoBehaviour
                 // If player is on the ground then side attack and display slash effect.
                 if (vertical == 0)
                 {
+                    attackSound.Play();
                     Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
                     Instantiate(slashEffect, SideAttackTransform);
                 }
                 // If player's vertical input > 0 then up attack and display slash effect.
                 else if (vertical > 0)
                 {
+                    attackSound.Play();
                     Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
                 }
@@ -467,18 +434,21 @@ public class PlayerMovement : MonoBehaviour
                 // If player is in the air then side attack and display slash effect.
                 if (vertical == 0)
                 {
+                    attackSound.Play();
                     Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
                     Instantiate(slashEffect, SideAttackTransform);
                 }
                 // If player's vertical input > 0 then up attack and display slash effect.
                 else if (vertical > 0)
                 {
+                    attackSound.Play();
                     Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
                 }
                 // If player's vertical input < 0 then down attack and display slash effect.
                 else if (vertical < 0)
                 {
+                    attackSound.Play();
                     Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
                     SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
                 }
@@ -492,10 +462,15 @@ public class PlayerMovement : MonoBehaviour
         // Holds an array of colliders for objects that can be hit.
         Collider2D[] objectsToHit = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0, attackableLayer);
 
-        // If there is an object to hit then recoil.
+        // If there is an object to hit.
         if (objectsToHit.Length > 0)
         {
-            _recoilDir = true;
+            _recoilDir = true; //add a recoil effect on the player
+
+            canDoubleJump = true; //if player hit enemy, allow another air jump and dash
+            dashingCooldown = 0;
+            canDash = true;
+            Debug.Log("double jump and dash reset!");
         }
         
         // Loop through objectsToHit array and deal damage accordingly.
@@ -563,11 +538,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         // If player is not recoiling.
-        else
-        {
-            // Set player gravity to original gravity value.
-            rb.gravityScale = gravity;
-        }
+        else { rb.gravityScale = gravity; }
 
         // If player is recoiling on the x-axis AND player still has steps left to recoil.
         if (pState.recoilingX && stepsXRecoiled < recoilXSteps)
@@ -576,10 +547,7 @@ public class PlayerMovement : MonoBehaviour
             stepsXRecoiled++;
         }
         // If player is out of steps to recoil then stop recoiling.
-        else
-        {
-            StopRecoilX();
-        }
+        else { StopRecoilX(); }
 
         // If player is recoiling on the y-axis AND player still has steps left to recoil.
         if (pState.recoilingY && stepsYRecoiled < recoilYSteps)
@@ -588,16 +556,10 @@ public class PlayerMovement : MonoBehaviour
             stepsYRecoiled++;
         }
         // If player is out of steps to recoil then stop recoiling.
-        else
-        {
-            StopRecoilY();
-        }
+        else { StopRecoilY(); }
 
         // If player is touching jumpable ground then stop recoiling.
-        if (IsGrounded())
-        {
-            StopRecoilY();
-        }
+        if (IsGrounded()) { StopRecoilY(); }
     }
 
     // Stop player from recoiling on the x-axis.
