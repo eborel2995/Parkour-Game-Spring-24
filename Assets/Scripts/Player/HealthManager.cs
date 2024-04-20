@@ -106,10 +106,12 @@ public class HealthManager : MonoBehaviour
         if (ppv.profile.TryGetSettings(out cg))
         {
             //Channel Mixer
-            cg.mixerRedOutRedIn.value = 200f - healthAmount;
+            float redValue = 200f - healthAmount;
+            cg.mixerRedOutRedIn.value = redValue;
 
             //Trackballs Gain
-            cg.gain.value.w = -1 + (healthAmount / 100);
+            float gainValue = -1 + (healthAmount / 100);
+            cg.gain.value.w = gainValue; //value.w is how dark the highlights get
 
         }
     }
