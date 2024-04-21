@@ -1,16 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Resources;
-using System.Security.Cryptography;
-using Unity.VisualScripting.ReorderableList;
-using UnityEditor.Tilemaps;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
-using UnityEngine.InputSystem.Processors;
-using UnityEngine.InputSystem.XR.Haptics;
-using UnityEngine.ProBuilder.MeshOperations;
-using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
