@@ -135,7 +135,7 @@ public class Crawler : Enemy
         return val;
     }
 
-    // Handles crawler hit to player.
+    // Handles crawler being attacked.
     public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
     {
         base.EnemyHit(_damageDone, _hitDirection, _hitForce);

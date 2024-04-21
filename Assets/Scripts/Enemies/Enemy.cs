@@ -62,7 +62,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // Handles enemy hits to player.
+    // Handles enemy being attacked..
     public virtual void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
     {
         // Do damage.

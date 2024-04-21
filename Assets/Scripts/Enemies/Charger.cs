@@ -277,7 +277,7 @@ public class Charger : Enemy
         }
     }
 
-    // Handles charger attack.
+    // Handles charger being attacked.
     public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
     {
         base.EnemyHit(_damageDone, _hitDirection, _hitForce);
