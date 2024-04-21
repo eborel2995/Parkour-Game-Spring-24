@@ -168,62 +168,21 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        // Apply slowed effect to player.
-        if (isSlowed)
-        {
-            moveSpeed = defaultMoveSpeed * slowRatio;
-            anim.speed = slowRatio;
-        }
-        else
-        {
-            moveSpeed = defaultMoveSpeed;
-            anim.speed = 1.0f;
-        }
-
         // Prevent player from moving, jumping, and flipping while dashing.
         if (isDashing) { return; }
 
-        // Set attack, vertical, and horizontal input via Unity Input Manager.
-        attack = Input.GetButtonDown("Attack");
-        vertical = Input.GetAxisRaw("Vertical");
-        horizontal = Input.GetAxisRaw("Horizontal");
-        
-        // Reset jump counter
-        if (IsGrounded()) { canDoubleJump = true; }
-
-        // Jump if on jumpable ground or the single double jump.
-        if (Input.GetButtonDown("Jump") && canDoubleJump)
-        {
-            if (!IsGrounded())
-            { canDoubleJump = false; }
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-            
-            //Play jump sound if on ground, play double jump sound if not on ground
-            if(IsGrounded())
-            { jumpSound.Play(); }
-            else if(!IsGrounded())
-            { doubleJumpSound.Play(); }
-        }
-
-        // Letting go of jump will reduce the jump height
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-        }
-
-        // Dash by hitting leftShift if canDash is true.
-        if (Input.GetButtonDown("Dash") && canDash && !isWallSliding)
-        {
-            StartCoroutine(Dash());
-            dashSound.Play();
-        }
-
         // Function calls.
+        TrySlow();
+        GetUserInput();
+        TryDash();
         Attack();
         RestoreTimeScale();
         FlashWhileInvincible();
         WallSlide();
         WallJump();
+        ResetDoubleJump();
+        TryJump();
+        ReduceJumpHeightOnRelease();
         UpdateAnimationState();
 
         // Flip player direction when not wall jumping.
@@ -394,6 +353,39 @@ public class PlayerMovement : MonoBehaviour
 
             // If dashing set state to dashing animation.
             if (isDashing) { state = MovementState.dashing; }
+        }
+    }
+
+    void GetUserInput()
+    {
+        // Set attack, vertical, and horizontal input via Unity Input Manager.
+        attack = Input.GetButtonDown("Attack");
+        vertical = Input.GetAxisRaw("Vertical");
+        horizontal = Input.GetAxisRaw("Horizontal");
+    }
+
+    void TrySlow()
+    {
+        // Apply slowed effect to player.
+        if (isSlowed)
+        {
+            moveSpeed = defaultMoveSpeed * slowRatio;
+            anim.speed = slowRatio;
+        }
+        else
+        {
+            moveSpeed = defaultMoveSpeed;
+            anim.speed = 1.0f;
+        }
+    }
+
+    void TryDash()
+    {
+        // Dash by hitting leftShift if canDash is true.
+        if (Input.GetButtonDown("Dash") && canDash && !isWallSliding)
+        {
+            StartCoroutine(Dash());
+            dashSound.Play();
         }
     }
 
@@ -632,6 +624,38 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             restoreTime = true;
+        }
+    }
+
+    void ResetDoubleJump()
+    {
+        // Reset jump counter
+        if (IsGrounded()) { canDoubleJump = true; }
+    }
+
+    void TryJump()
+    {
+        // Jump if on jumpable ground or the single double jump.
+        if (Input.GetButtonDown("Jump") && canDoubleJump)
+        {
+            if (!IsGrounded())
+            { canDoubleJump = false; }
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+
+            //Play jump sound if on ground, play double jump sound if not on ground
+            if (IsGrounded())
+            { jumpSound.Play(); }
+            else if (!IsGrounded() && !isWallJumping)
+            { doubleJumpSound.Play(); }
+        }
+    }
+
+    void ReduceJumpHeightOnRelease()
+    {
+        // Letting go of jump will reduce the jump height
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
     }
 
