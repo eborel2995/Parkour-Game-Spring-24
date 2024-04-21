@@ -182,9 +182,6 @@ public class PlayerMovement : MonoBehaviour
         if (!isWallJumping) { Flip(); }
     }
 
-
-    
-
     // FixedUpdate() can run once, zero, or several times per frame, depending on
     // how many physics frames per second are set in the time settings, and how
     // fast/slow the framerate is.
