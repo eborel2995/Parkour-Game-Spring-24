@@ -231,7 +231,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // FixedUpdate() can run once, zero, or several times per frame, depending on
-    // how mnay physics frames per second are set in the time settings, and how
+    // how many physics frames per second are set in the time settings, and how
     // fast/slow the framerate is.
     private void FixedUpdate()
     {
