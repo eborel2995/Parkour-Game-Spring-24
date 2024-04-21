@@ -4,57 +4,52 @@ using UnityEngine;
 
 public class Charger : Enemy
 {
+    // "[SerializeFeild]" allows these variables to be edited in Unity.
+    // Charger variables.
+    Vector3 baseScale;
+    string facingDirection;
     const string LEFT = "left";
     const string RIGHT = "right";
 
+    private float lastJumpTime;
+    private float lastDirectionChangeTime;
+    private float directionChangeCooldown = 0.5f;
+
+    [SerializeField] private float jumpForce;
     [SerializeField] protected Transform castPos;
     [SerializeField] protected float baseCastDist;
-
-    [SerializeField] private float chargeSpeedMultiplier;
     [SerializeField] private float chargeDistance;
-    [SerializeField] private float jumpForce;
     [SerializeField] private LayerMask whatIsGround;
-
-    string facingDirection;
-
-    Vector3 baseScale;
-
     [SerializeField] private float detectionDistance;
+    [SerializeField] private float jumpCooldown = 1.0f;
+    [SerializeField] private float chargeSpeedMultiplier;
 
-    private float directionChangeCooldown = 0.5f; // 0.5 seconds cooldown
-    private float lastDirectionChangeTime;
-
-    [SerializeField] private float jumpCooldown = 1.0f;  // Cooldown period in seconds
-    private float lastJumpTime;
-
-    protected enum ChargerStates
-    {
-        Charger_Idle,
-        Charger_Surprised,
-        Charger_Charge,
-        Charger_Jumping
-    }
+    // Enum for charger states.
+    protected enum ChargerStates { Charger_Idle, Charger_Surprised, Charger_Charge, Charger_Jumping }
     ChargerStates currentChargerState;
 
-    // Start is called before the first frame update
+    // Start() is called before the first frame update.
     protected override void Start()
     {
         baseScale = transform.localScale;
         facingDirection = RIGHT;
         currentChargerState = ChargerStates.Charger_Idle;
         lastDirectionChangeTime = Time.time;
-        //Debug.Log("Initial Detection Distance: " + detectionDistance);
     }
+
+    // Awake() is called when the script instance is being loaded.
+    // Awake() is used to initialize any variables or game states before the game starts.
     protected override void Awake()
     {
         base.Awake();
     }
-    // Update is called once per frame
+
+    // Update() is called once per frame.
     protected override void Update()
     {
         base.Update();
-        //Debug.Log($"Current State: {currentChargerState}, Y Velocity: {rb.velocity.y}, Grounded: {IsGrounded()}");
 
+        // Switch between charger states.
         switch (currentChargerState)
         {
             case ChargerStates.Charger_Idle:
@@ -77,22 +72,22 @@ public class Charger : Enemy
         }
     }
 
+    // FixedUpdate() can run once, zero, or several times per frame, depending on
+    // how many physics frames per second are set in the time settings, and how
+    // fast/slow the framerate is.
     protected void FixedUpdate()
     {
-        if(currentChargerState == ChargerStates.Charger_Charge) {
-            // Only update direction if not charging or add more specific conditions
-            return;
-        }
+        // Ignore if charger is charging.
+        if (currentChargerState == ChargerStates.Charger_Charge) { return; }
 
-        // Prevent horizontal movement when jumping
-        if (currentChargerState == ChargerStates.Charger_Jumping)
-        {
-            return;
-        }
+        // Ignore if charger is jumping.
+        if (currentChargerState == ChargerStates.Charger_Jumping) { return; }
 
+        // Move the charger.
         float vX = facingDirection == LEFT ? -moveSpeed : moveSpeed;
         rb.velocity = new Vector2(vX, rb.velocity.y);
 
+        // Make charger turn around at edges and walls.
         if (IsHittingWall() || IsNearEdge())
         {
             if (Time.time > lastDirectionChangeTime + directionChangeCooldown)
@@ -110,6 +105,7 @@ public class Charger : Enemy
         }
     }
 
+    // Handles changing chargers direction.
     protected void ChangeFacingDirection(string newDirection)
     {
         if (facingDirection != newDirection)
@@ -121,25 +117,25 @@ public class Charger : Enemy
         }
     }
 
+    // Check if charger is hitting a wall.
     protected bool IsHittingWall()
     {
         bool val = false;
-
         float castDist = baseCastDist;
 
-        // define the cast distance for left and right
+        // Define the cast distance for left and right.
         if (facingDirection == LEFT)
         {
             castDist = -baseCastDist;
         }
 
-        // determine the target destination based on the cst distance
+        // Determine the target destination based on the cst distance.
         Vector3 targetPos = castPos.position;
         targetPos.x += castDist;
 
         Debug.DrawLine(castPos.position, targetPos, Color.blue);
 
-        // Get the layer masks for both "Ground" and "wall"
+        // Get the layer masks for both "Ground" and "Wall".
         int groundLayer = LayerMask.NameToLayer("Ground");
         int wallLayer = LayerMask.NameToLayer("Wall");
         int combinedLayerMask = (1 << groundLayer) | (1 << wallLayer);
@@ -156,30 +152,32 @@ public class Charger : Enemy
         return val;
     }
 
+    // Check if charger is near an edge.
     protected bool IsNearEdge()
     {
-        float forwardCheckDistance = 0.2f; // Distance forward to check for an edge
-        float downwardCheckDistance = 0.5f; // Downward distance to check for ground
+        float forwardCheckDistance = 0.2f; // Distance forward to check for an edge.
+        float downwardCheckDistance = 0.5f; // Downward distance to check for ground.
 
-        // Cast positions forward depending on the facing direction
+        // Cast positions forward depending on the facing direction.
         Vector3 forwardCheck = castPos.position + (facingDirection == RIGHT ? Vector3.right : Vector3.left) * forwardCheckDistance;
         Vector3 downwardCheck = forwardCheck + Vector3.down * downwardCheckDistance;
 
         Debug.DrawRay(forwardCheck, Vector3.down * downwardCheckDistance, Color.red);
 
-        // If there is no ground forward and downward, consider it an edge
+        // If there is no ground forward and downward, consider it an edge.
         return !Physics2D.Raycast(forwardCheck, Vector2.down, downwardCheckDistance, whatIsGround);
     }
+
+    // Check if charger is grounded.
     private bool IsGrounded()
     {
-        float checkDistance = 0.5f; // Check distance below the character
+        float checkDistance = 0.5f; // Check distance below the character.
         RaycastHit2D hit = Physics2D.Raycast(castPos.position, Vector2.down, checkDistance, whatIsGround);
         Debug.DrawRay(castPos.position, Vector2.down * checkDistance, hit ? Color.green : Color.red);
-
-        //Debug.Log($"Raycast for ground check: {hit.collider != null}");
         return hit.collider != null;
     }
 
+    // Handles chargers jump.
     private void Jump()
     {
         if (Time.time - lastJumpTime >= jumpCooldown && IsGrounded()) // Check cooldown and grounded state

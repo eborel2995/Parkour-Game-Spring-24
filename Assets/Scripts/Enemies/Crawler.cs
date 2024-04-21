@@ -7,9 +7,9 @@ public class Crawler : Enemy
     // "[SerializeFeild]" allows these variables to be edited in Unity.
     // Crawler variables.
     Vector3 baseScale;
+    string facingDirection;
     const string LEFT = "left";
     const string RIGHT = "right";
-    string facingDirection;
     [SerializeField] protected Transform castPos;
     [SerializeField] protected float baseCastDist; 
 
