@@ -506,7 +506,6 @@ public class PlayerMovement : MonoBehaviour
             canDoubleJump = true; //if player hit enemy, allow another air jump and dash
             dashingCooldown = 0;
             canDash = true;
-            Debug.Log("double jump and dash reset!");
         }
         
         // Loop through objectsToHit array and deal damage accordingly.
