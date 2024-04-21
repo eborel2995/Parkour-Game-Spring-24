@@ -11,6 +11,7 @@ using UnityEngine.InputSystem.Processors;
 using UnityEngine.InputSystem.XR.Haptics;
 using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.ProBuilder.Shapes;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -75,6 +76,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashingPower = 24f;
     [SerializeField] private float dashingTime = 0.2f;
     [SerializeField] private float dashingCooldown = 0.75f;
+    [SerializeField] private Image dashIcon;
+    private float timeSinceDash = 1;
     [Space(5)]
 
     // Audio Variables
@@ -183,9 +186,15 @@ public class PlayerMovement : MonoBehaviour
         WallJump();
         ReduceJumpHeightOnRelease();
         UpdateAnimationState();
+        UpdateUI();
 
         // Flip player direction when not wall jumping.
         if (!isWallJumping) { Flip(); }
+    }
+
+    private void UpdateUI()
+    {
+        dashIcon.fillAmount = Math.Clamp(timeSinceDash, 0, 1);
     }
 
     // FixedUpdate() can run once, zero, or several times per frame, depending on
@@ -311,11 +320,13 @@ public class PlayerMovement : MonoBehaviour
 
     void TryDash()
     {
+        timeSinceDash += Time.deltaTime;
         // Dash by hitting leftShift if canDash is true.
         if (Input.GetButtonDown("Dash") && canDash && !isWallSliding)
         {
             StartCoroutine(Dash());
             dashSound.Play();
+            timeSinceDash = 0;
         }
     }
 
@@ -506,6 +517,7 @@ public class PlayerMovement : MonoBehaviour
             canDoubleJump = true; //if player hit enemy, allow another air jump and dash
             dashingCooldown = 0;
             canDash = true;
+            timeSinceDash += 1;
         }
         
         // Loop through objectsToHit array and deal damage accordingly.

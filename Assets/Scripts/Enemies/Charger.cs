@@ -230,7 +230,7 @@ public class Charger : Enemy
         // Check if charger is near an edge or within player detection distance.
         if (IsNearEdge() || distance > chargeDistance)
         {
-            Debug.Log($"Stopping charge due to edge proximity(IsNearEdge(): {IsNearEdge()})  or player out of range. Distance of: {distance}");
+            //Debug.Log($"Stopping charge due to edge proximity(IsNearEdge(): {IsNearEdge()})  or player out of range. Distance of: {distance}");
             ChangeState(ChargerStates.Charger_Idle);
             return;
         }
