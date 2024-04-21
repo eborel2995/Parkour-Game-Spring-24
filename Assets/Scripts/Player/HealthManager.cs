@@ -27,7 +27,10 @@ public class HealthManager : MonoBehaviour
     // "[SerializeFeild]" allows these variables to be edited in Unity.
     private Vector3 respawnCoords;
     [SerializeField] private float deathFloorHeight = -80;
+    
+    //To play sounds upon getting wounded or dying
     [SerializeField] private AudioSource deathSound;
+    [SerializeField] private AudioSource hitSound;
 
     // Post processing variables.
     PostProcessVolume ppv;
@@ -82,6 +85,7 @@ public class HealthManager : MonoBehaviour
     // Handles player taking damage.
     public void TakeDamage(float _damage)
     {
+        hitSound.Play();
         // Decrement player health.
         healthAmount -= Mathf.RoundToInt(_damage);
 
