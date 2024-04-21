@@ -197,7 +197,7 @@ public class PlayerMovement : MonoBehaviour
         if (isDashing) { return; }
 
         // Get horizontal movement when not wall jumping.
-        if (!isWallJumping)
+        if (!isWallJumping && rb.bodyType != RigidbodyType2D.Static)
         {
             rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
         }
