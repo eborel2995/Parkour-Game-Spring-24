@@ -7,63 +7,57 @@ using UnityEngine.SceneManagement;
 
 public class BossScript : Enemy
 {
-    // "[SerializeFeild]" allows these variables to be edited in Unity.
-    // Boss variables.
-    private Color original;
-    private bool facingLeft = true;
-    private float recordedPlayerHP;
-    private float turnDistance = 2f; // Distance player must move until boss turns to prevent instantaneous turning.
-    private float timeSinceLastJump = 1f; // Initial jump timer.
-    [SerializeField] private GameObject bomb; // Parent object that Zip Bomber is riding.
+    private float timeSinceLastJump = 1f; //initial jump timer
     [SerializeField] private float jumpForce = 35f;
     [SerializeField] private float jumpFrequency = 2f;
-
-    // Access relevant components.
-    private HealthManager hm;
-    private GameObject playerObject;
+    private bool facingLeft = true;
+    [SerializeField] private GameObject bomb; //parent object that Zip Bomber is riding
+    private float turnDistance = 2f; //distance player must move until boss turns to prevent instantaneous turning
     private SpriteRenderer spriteRenderer;
+    private Color original;
 
-    // Identified in Unity Inspector.
+    private GameObject playerObject;
+    private HealthManager hm;
+    private float recordedPlayerHP;
+
+    //identified in Unity Inspector
     [SerializeField] private ParticleSystem whiteLaunchParticles;
     [SerializeField] private ParticleSystem yellowLaunchParticles;
     [SerializeField] private ParticleSystem crashLaunchParticles;
 
-    // Particles.
-    ParticleSystem.EmissionModule emissions; // Used to toggle particle emitters.
+    //Particles
+    ParticleSystem.EmissionModule emissions; //used to toggle particle emitters
 
-    // Start() is called before the first frame update.
+    // Start is called before the first frame update
     protected override void Start()
     {
-        rb             = bomb.GetComponent<Rigidbody2D>();
-        hm             = playerObject.GetComponent<HealthManager>();
-        original       = spriteRenderer.color;
-        playerObject   = GameObject.FindWithTag("Player");
+        rb = bomb.GetComponent<Rigidbody2D>();
         spriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
-    }
+        original = spriteRenderer.color;
 
-    // Update() is called once per frame.
+        playerObject = GameObject.FindWithTag("Player");
+        hm = playerObject.GetComponent<HealthManager>();
+    }
     private new void Update()
     {
-        gravityModifier(); // Launch at regular gravity, crash down after apex of launch.
-        changeDirection(); // Whether player is on left or right of boss.
+        gravityModifier(); //launch at regular gravity, crash down after apex of launch
+        changeDirection(); //whether player is on left or right of boss
         recordedPlayerHP = hm.healthAmount;
     }
 
-    // FixedUpdate() can run once, zero, or several times per frame, depending on
-    // how many physics frames per second are set in the time settings, and how
-    // fast/slow the framerate is.
     private void FixedUpdate()
     {
-        base.Update();  // Get Enemy.cs updates.
+        //get Enemy.cs updates
+        base.Update();
 
-        launchOffGround(); // Main movement function.
+        launchOffGround(); //main movement function
         
         timeSinceLastJump += Time.deltaTime;
 
         toggleGroundEmissions();
     }
 
-    // Handles boss being attacked.
+    //This function is called when the boss gets hit
     public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
     {
         health -= _damageDone;
@@ -72,24 +66,24 @@ public class BossScript : Enemy
             rb.AddForce(-_hitForce * recoilFactor * _hitDirection);
         }
 
-        timeSinceLastJump = 100; // Force the boss to jump.
+        timeSinceLastJump = 100; //force the boss to jump
 
         StartCoroutine(hitFlash(0.25f, original));
     }
 
-    // Handles boss movement.
+    //main helper function for boss movement
     private void launchOffGround()
     {
         if (timeSinceLastJump > jumpFrequency)
         {
-            // Play explosive particles at launch.
+            //play explosive particles at launch
             emissions = whiteLaunchParticles.emission;
             emissions.enabled = true;
 
             emissions = yellowLaunchParticles.emission;
             emissions.enabled = true;
 
-            // Stop the crashing explosive particles before launching.
+            //stop the crashing explosive particles before launching
             emissions = crashLaunchParticles.emission;
             emissions.enabled = false;
 
@@ -102,10 +96,9 @@ public class BossScript : Enemy
         }
     }
 
-    // Handles boss particle emissions on the ground.
     private void toggleGroundEmissions()
     {
-        // If boss is on the ground.
+        //when boss is on the ground
         if (rb.velocity.y < 0 && rb.position.y < 1.25)
         {
             emissions = whiteLaunchParticles.emission;
@@ -120,10 +113,9 @@ public class BossScript : Enemy
         }
     }
 
-    // Handles boss gravity during slam attack.
     private void gravityModifier()
     {
-        // If the boss is at the apex of its jump (plus slight delay) then increase gravity to simulate ground slam.
+        //if the boss is at the apex of its jump (plus slight delay), increase gravity to simulate ground slam
         if (rb.velocity.y < -5)
         {
             rb.gravityScale = 100;
@@ -134,11 +126,11 @@ public class BossScript : Enemy
         }
     }
 
-    // Change the direction of the boss.
     private void changeDirection()
     {
-        // If player is right of boss and boss is facing left, then look right OR
-        // if player is left of boss and boss is facing right, then look left.
+        //change direction of boss
+        //if player is right of boss and boss is facing left, then look right OR
+        //if player is left of boss and boss is facing right, then look left
         if (((playerObject.transform.position.x > transform.position.x + turnDistance) && facingLeft) ||
             ((playerObject.transform.position.x < transform.position.x - turnDistance) && !facingLeft))
         {
@@ -151,15 +143,14 @@ public class BossScript : Enemy
         }
     }
 
-    // When boss is hit, flash red to show that it got hit.
     IEnumerator hitFlash(float timeLength, Color originalColor)
     {
+        //when the boss is hit, flash the bomb red to show that it got hit
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(timeLength);
         spriteRenderer.color = originalColor;
     }
 
-    // Handles which screen to show when defeating boss or boss defeats player.
     private void OnDestroy()
     {
         Timer.instance.EndTimer();
@@ -172,5 +163,19 @@ public class BossScript : Enemy
         {
             SceneManager.LoadScene("GameOver");
         }
+        //todo: victory particles
+        //StartCoroutine(GoToVictoryScreen());
     }
+
+    /*
+    //doesn't work because the GameObject would be destroyed
+    IEnumerator GoToVictoryScreen()
+    {
+        yield return new WaitForSeconds(5);
+        //bug: player respawning resets entire scene, which destroys the boss, which triggers this even when the player dies
+        SceneManager.LoadScene("Victory Screen");
+
+    }
+    */
 }
+

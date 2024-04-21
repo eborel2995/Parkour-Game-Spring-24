@@ -89,7 +89,7 @@ public class ScannerDrone : Enemy
         sr.flipX = PlayerMovement.Instance.transform.position.x < transform.position.x;
     }
 
-    // Handles scanner being attacked.
+    // Handles scanner attack.
     public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
     {
         base.EnemyHit(_damageDone, _hitDirection, _hitForce);
