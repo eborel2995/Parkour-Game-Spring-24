@@ -180,15 +180,17 @@ public class Charger : Enemy
     // Handles chargers jump.
     private void Jump()
     {
-        if (Time.time - lastJumpTime >= jumpCooldown && IsGrounded()) // Check cooldown and grounded state
+        // Check cooldown and grounded state.
+        if (Time.time - lastJumpTime >= jumpCooldown && IsGrounded()) 
         {
             anim.SetBool("IsJumping", true);
-            rb.velocity = Vector2.up * jumpForce; // Directly use Vector2.up for clarity
+            rb.velocity = Vector2.up * jumpForce;   // Directly use Vector2.up for clarity.
             lastJumpTime = Time.time;
             ChangeState(ChargerStates.Charger_Jumping);
         }
     }
 
+    // Handles chargers player detection.
     private void DetectPlayer()
     {
         if (PlayerMovement.Instance == null)
@@ -199,23 +201,23 @@ public class Charger : Enemy
 
         // Detection should be independent of jump cooldown.
         float distance = Vector3.Distance(transform.position, PlayerMovement.Instance.transform.position);
-        //Debug.Log($"Checking player distance: {distance}, Detection Distance: {detectionDistance}");
 
+        // Change charger state based on player detection.
         if (distance <= detectionDistance && !IsNearEdge() && Time.time - lastJumpTime >= jumpCooldown)
         {
             ChangeState(ChargerStates.Charger_Surprised);
         }
         else
         {
-            //Debug.Log("Player out of detection range or near edge, staying Idle.");
             ChangeState(ChargerStates.Charger_Idle);
         }
     }
+
+    // Handles how charger charges to player after detection.
     private void ChargeTowardsPlayer()
     {
         if (PlayerMovement.Instance == null || !PlayerMovement.Instance.gameObject.activeInHierarchy)
         {
-            //Debug.LogWarning("Player instance is missing or inactive, stopping charge.");
             ChangeState(ChargerStates.Charger_Idle);
             return;
         }
@@ -225,6 +227,7 @@ public class Charger : Enemy
         Vector2 direction = (playerPosition - position).normalized;
         float distance = Vector2.Distance(position, playerPosition);
 
+        // Check if charger is near an edge or within player detection distance.
         if (IsNearEdge() || distance > chargeDistance)
         {
             Debug.Log($"Stopping charge due to edge proximity(IsNearEdge(): {IsNearEdge()})  or player out of range. Distance of: {distance}");
@@ -232,46 +235,49 @@ public class Charger : Enemy
             return;
         }
 
+        // Change charger direction.
         if (direction.x > 0 && facingDirection == LEFT)
             ChangeFacingDirection(RIGHT);
         else if (direction.x < 0 && facingDirection == RIGHT)
             ChangeFacingDirection(LEFT);
 
+        // Activate charging movement.
         rb.velocity = new Vector2(direction.x * moveSpeed * chargeSpeedMultiplier, rb.velocity.y);
     }
 
+    // Changes charger state.
     protected void ChangeState(ChargerStates newState)
     {
         if (currentChargerState != newState)
         {
-            //Debug.Log($"Changing state from {currentChargerState} to {newState}");
-            // Handle exiting states
+            // Handle exiting states.
             switch (currentChargerState)
             {
                 case ChargerStates.Charger_Jumping:
-                    anim.SetBool("IsJumping", false); // Ensure jumping animation is turned off
+                    anim.SetBool("IsJumping", false); // Ensure jumping animation is turned off.
                     break;
-                    // Other states if necessary
             }
 
             currentChargerState = newState;
 
-            // Handle entering new states
+            // Handle entering new states.
             switch (newState)
             {
                 case ChargerStates.Charger_Charge:
-                    anim.SetBool("IsJumping", false); // Explicitly ensure this is off
-                    anim.speed = chargeSpeedMultiplier; // Speed up animation
+                    anim.SetBool("IsJumping", false); // Explicitly ensure this is off.
+                    anim.speed = chargeSpeedMultiplier; // Speed up animation.
                     break;
                 case ChargerStates.Charger_Jumping:
                     anim.SetBool("IsJumping", true);
                     break;
                 default:
-                    anim.speed = 1; // Reset speed when not charging
+                    anim.speed = 1; // Reset speed when not charging.
                     break;
             }
         }
     }
+
+    // Handles charger attack.
     public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
     {
         base.EnemyHit(_damageDone, _hitDirection, _hitForce);
