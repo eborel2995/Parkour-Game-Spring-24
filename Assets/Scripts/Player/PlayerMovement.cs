@@ -118,8 +118,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Effects variables.
     [Header("Effects:")]
-    public bool isSlowed = false;
-    private float slowRatio = 0.5f;
+    private float slowRatio = 0.45f;
 
     // Awake() is called when the script instance is being loaded.
     // Awake() is used to initialize any variables or game states before the game starts.
@@ -155,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawWireCube(DownAttackTransform.position, DownAttackArea);
     }
 
-    // Update() is called once per frame
+    // Update() is called once per frame.
     void Update()
     {
         // Cast enum state into int state.
@@ -168,62 +167,21 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        // Apply slowed effect to player.
-        if (isSlowed)
-        {
-            moveSpeed = defaultMoveSpeed * slowRatio;
-            anim.speed = slowRatio;
-        }
-        else
-        {
-            moveSpeed = defaultMoveSpeed;
-            anim.speed = 1.0f;
-        }
-
         // Prevent player from moving, jumping, and flipping while dashing.
         if (isDashing) { return; }
 
-        // Set attack, vertical, and horizontal input via Unity Input Manager.
-        attack = Input.GetButtonDown("Attack");
-        vertical = Input.GetAxisRaw("Vertical");
-        horizontal = Input.GetAxisRaw("Horizontal");
-        
-        // Reset jump counter
-        if (IsGrounded()) { canDoubleJump = true; }
-
-        // Jump if on jumpable ground or the single double jump.
-        if (Input.GetButtonDown("Jump") && canDoubleJump)
-        {
-            if (!IsGrounded())
-            { canDoubleJump = false; }
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-            
-            //Play jump sound if on ground, play double jump sound if not on ground
-            if(IsGrounded())
-            { jumpSound.Play(); }
-            else if(!IsGrounded())
-            { doubleJumpSound.Play(); }
-        }
-
-        // Letting go of jump will reduce the jump height
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-        }
-
-        // Dash by hitting leftShift if canDash is true.
-        if (Input.GetButtonDown("Dash") && canDash && !isWallSliding)
-        {
-            StartCoroutine(Dash());
-            dashSound.Play();
-        }
-
         // Function calls.
+        GetUserInput();
+        ResetDoubleJump();
+        TrySlow();
+        TryJump();
+        TryDash();
         Attack();
         RestoreTimeScale();
         FlashWhileInvincible();
         WallSlide();
         WallJump();
+        ReduceJumpHeightOnRelease();
         UpdateAnimationState();
 
         // Flip player direction when not wall jumping.
@@ -231,7 +189,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // FixedUpdate() can run once, zero, or several times per frame, depending on
-    // how mnay physics frames per second are set in the time settings, and how
+    // how many physics frames per second are set in the time settings, and how
     // fast/slow the framerate is.
     private void FixedUpdate()
     {
@@ -239,13 +197,22 @@ public class PlayerMovement : MonoBehaviour
         if (isDashing) { return; }
 
         // Get horizontal movement when not wall jumping.
-        if (!isWallJumping)
+        if (!isWallJumping && rb.bodyType != RigidbodyType2D.Static)
         {
             rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
         }
 
         // Apply recoil to attacks and damage.
         Recoil();
+    }
+
+    //Helper functions:
+    void GetUserInput()
+    {
+        // Set attack, vertical, and horizontal input via Unity Input Manager.
+        attack = Input.GetButtonDown("Attack");
+        vertical = Input.GetAxisRaw("Vertical");
+        horizontal = Input.GetAxisRaw("Horizontal");
     }
 
     // Check if player is touching jumpable ground.
@@ -260,6 +227,121 @@ public class PlayerMovement : MonoBehaviour
     {
         // Create invisible circle at player side to check for overlap with walls.
         return Physics2D.OverlapCircle(wallCheck.position, 0.1f, wallLayer);
+    }
+
+    // Restores time scale if it has been modified.
+    public void RestoreTimeScale()
+    {
+        // If time scale needs to be restored.
+        if (restoreTime)
+        {
+            // If time scale < 1 then summation time scale.
+            if (Time.timeScale < 1)
+            {
+                Time.timeScale += Time.deltaTime * restoreTimeSpeed;
+            }
+            // Stop restoring time scale when time scale = 1.
+            else
+            {
+                Time.timeScale = 1;
+                restoreTime = false;
+            }
+        }
+    }
+
+    // Cause player sprite to flash when player is invincible.
+    void FlashWhileInvincible()
+    {
+        if (sprite == null)
+        {
+            Debug.LogError("SpriteRenderer not assigned in PlayerMovement.");
+            return; // Exit if sprite is null to prevent further errors
+        }
+
+        if (pState == null)
+        {
+            Debug.LogError("PlayerStatesList not assigned in PlayerMovement.");
+            return; // Exit if pState is null to prevent further errors
+        }
+
+        // Change player sprite color if player is invincible and don't change if not.
+        sprite.material.color = pState.invincible ?
+            Color.Lerp(Color.white, Color.black, Mathf.PingPong(Time.time * hitFlashSpeed, 1.0f)) : Color.white;
+    }
+
+    //Movement functions:
+
+    void ResetDoubleJump()
+    {
+        // Reset jump counter
+        if (IsGrounded()) { canDoubleJump = true; }
+    }
+
+    void TrySlow()
+    {
+        // Apply slowed effect to player.
+        if (pState.slowed)
+        {
+            moveSpeed = defaultMoveSpeed * slowRatio;
+            anim.speed = slowRatio;
+        }
+        else
+        {
+            moveSpeed = defaultMoveSpeed;
+            anim.speed = 1.0f;
+        }
+    }
+
+    void TryJump()
+    {
+        // Jump if on jumpable ground or the single double jump.
+        if (Input.GetButtonDown("Jump") && canDoubleJump)
+        {
+            if (!IsGrounded())
+            { canDoubleJump = false; }
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+
+            //Play jump sound if on ground, play double jump sound if not on ground
+            if (IsGrounded())
+            { jumpSound.Play(); }
+            else if (!IsGrounded() && !isWallJumping)
+            { doubleJumpSound.Play(); }
+        }
+    }
+
+    void TryDash()
+    {
+        // Dash by hitting leftShift if canDash is true.
+        if (Input.GetButtonDown("Dash") && canDash && !isWallSliding)
+        {
+            StartCoroutine(Dash());
+            dashSound.Play();
+        }
+    }
+
+    // Handles player dashing permissions and execution.
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+
+        // Preserve original gravity value and set gravity to zero while dashing.
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+
+        // Dashing physics.
+        rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+
+        // Dash for the as long as dashingTime.
+        yield return new WaitForSeconds(dashingTime);
+
+        // Restore gravity after dashing.
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+
+        // Player can dash again after dashingCooldown.
+        yield return new WaitForSeconds(dashingCooldown);
+        canDash = true;
     }
 
     // Check if player can wall slide and do it if so.
@@ -340,62 +422,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Handles player dashing permissions and execution.
-    private IEnumerator Dash()
+    void ReduceJumpHeightOnRelease()
     {
-        canDash = false;
-        isDashing = true;
-
-        // Preserve original gravity value and set gravity to zero while dashing.
-        float originalGravity = rb.gravityScale;
-        rb.gravityScale = 0f;
-
-        // Dashing physics.
-        rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
-
-        // Dash for the as long as dashingTime.
-        yield return new WaitForSeconds(dashingTime);
-
-        // Restore gravity after dashing.
-        rb.gravityScale = originalGravity;
-        isDashing = false;
-
-        // Player can dash again after dashingCooldown.
-        yield return new WaitForSeconds(dashingCooldown);
-        canDash = true;
-    }
-
-    // Switch between player animations based on movement.
-    private void UpdateAnimationState()
-    {
-        if (!isWallJumping)
+        // Letting go of jump will reduce the jump height
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
-            // If not moving set state to idle animation.
-            if (horizontal == 0f) { state = MovementState.idle; }
-
-            // If moving right (positive x-axis) set state to runningRight animation.
-            // *It just works with != instead of > so DO NOT change this*
-            else if (horizontal != 0f) 
-            { state = MovementState.runningRight;}
-
-            // If moving left (negative x-axis) set state to runningLeft animation.
-            else if (horizontal < 0f) 
-            { state = MovementState.runningLeft; }
-
-            // We use +/-0.1f because our y-axis velocity is rarely perfectly zero.
-            // If moving up (positive y-axis) set state to jumping animation.
-            if (rb.velocity.y > 0.1f) { state = MovementState.jumping; }
-
-            // If moving down (negative y-axis) set state to falling animation.
-            else if (rb.velocity.y < -0.1f) { state = MovementState.falling; }
-
-            // If wall sliding set state to wallSliding animation.
-            if (isWallSliding) { state = MovementState.wallSliding; }
-
-            // If dashing set state to dashing animation.
-            if (isDashing) { state = MovementState.dashing; }
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
     }
+
+    //Combat functions:
 
     // Player attack handler.
     void Attack()
@@ -470,7 +506,6 @@ public class PlayerMovement : MonoBehaviour
             canDoubleJump = true; //if player hit enemy, allow another air jump and dash
             dashingCooldown = 0;
             canDash = true;
-            Debug.Log("double jump and dash reset!");
         }
         
         // Loop through objectsToHit array and deal damage accordingly.
@@ -576,46 +611,6 @@ public class PlayerMovement : MonoBehaviour
         pState.recoilingY = false;
     }
 
-    // Cause player sprite to flash when player is invincible.
-    void FlashWhileInvincible()
-    {
-        if (sprite == null)
-        {
-            Debug.LogError("SpriteRenderer not assigned in PlayerMovement.");
-            return; // Exit if sprite is null to prevent further errors
-        }
-
-        if (pState == null)
-        {
-            Debug.LogError("PlayerStatesList not assigned in PlayerMovement.");
-            return; // Exit if pState is null to prevent further errors
-        }
-
-        // Change player sprite color if player is invincible and don't change if not.
-        sprite.material.color = pState.invincible ?
-            Color.Lerp(Color.white, Color.black, Mathf.PingPong(Time.time * hitFlashSpeed, 1.0f)) : Color.white;
-    }
-
-    // Restores time scale if it has been modified.
-    public void RestoreTimeScale()
-    {
-        // If time scale needs to be restored.
-        if (restoreTime)
-        {
-            // If time scale < 1 then summation time scale.
-            if (Time.timeScale < 1)
-            {
-                Time.timeScale += Time.deltaTime * restoreTimeSpeed;
-            }
-            // Stop restoring time scale when time scale = 1.
-            else
-            {
-                Time.timeScale = 1;
-                restoreTime = false;
-            }
-        }
-    }
-
     // Initiates change in time scale based on when player takes damage.
     public void HitStopTime(float _newTimeScale, int _restoreSpeed, float _delay)
     {
@@ -640,5 +635,37 @@ public class PlayerMovement : MonoBehaviour
     {
         restoreTime = true;
         yield return new WaitForSeconds(_delay);
+    }
+
+    // Switch between player animations based on movement.
+    private void UpdateAnimationState()
+    {
+        if (!isWallJumping)
+        {
+            // If not moving set state to idle animation.
+            if (horizontal == 0f) { state = MovementState.idle; }
+
+            // If moving right (positive x-axis) set state to runningRight animation.
+            // *It just works with != instead of > so DO NOT change this*
+            else if (horizontal != 0f)
+            { state = MovementState.runningRight; }
+
+            // If moving left (negative x-axis) set state to runningLeft animation.
+            else if (horizontal < 0f)
+            { state = MovementState.runningLeft; }
+
+            // We use +/-0.1f because our y-axis velocity is rarely perfectly zero.
+            // If moving up (positive y-axis) set state to jumping animation.
+            if (rb.velocity.y > 0.1f) { state = MovementState.jumping; }
+
+            // If moving down (negative y-axis) set state to falling animation.
+            else if (rb.velocity.y < -0.1f) { state = MovementState.falling; }
+
+            // If wall sliding set state to wallSliding animation.
+            if (isWallSliding) { state = MovementState.wallSliding; }
+
+            // If dashing set state to dashing animation.
+            if (isDashing) { state = MovementState.dashing; }
+        }
     }
 }

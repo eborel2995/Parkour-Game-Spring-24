@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    // Variable to hold the transform component.
     // "[SerializeFeild]" allows these variables to be edited in Unity.
+    // Variable to hold the transform component.
     [SerializeField] private Transform player;
 
     // Update is called once per frame.
