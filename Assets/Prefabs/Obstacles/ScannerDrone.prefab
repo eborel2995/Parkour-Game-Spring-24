@@ -163,11 +163,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
+  damage: 10
+  isRecoiling: 0
   recoilLength: 50
   recoilFactor: 50
-  isRecoiling: 0
-  moveSpeed: 20
-  damage: 10
+  moveSpeed: 5
   chaseDistance: 7
 --- !u!95 &6044433006789600754
 Animator:

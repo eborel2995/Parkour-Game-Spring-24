@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 
 public class BossScript : Enemy
@@ -38,7 +35,7 @@ public class BossScript : Enemy
         rb = bomb.GetComponent<Rigidbody2D>();
         spriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
         original = spriteRenderer.color;
-        playerObject = GameObject.FindWithTag("Player");
+        playerObject = GameObject.Find("Player");
         hm = playerObject.GetComponent<HealthManager>();
     }
 
@@ -47,7 +44,7 @@ public class BossScript : Enemy
     {
         gravityModifier(); // Launch at regular gravity, crash down after apex of launch.
         changeDirection(); // Whether player is on left or right of boss.
-        recordedPlayerHP = hm.healthAmount;
+        recordedPlayerHP = hm.healthAmount; // Used for determining victory or defeat
     }
 
     // FixedUpdate() can run once, zero, or several times per frame, depending on
@@ -80,24 +77,29 @@ public class BossScript : Enemy
     {
         if (timeSinceLastJump > jumpFrequency)
         {
-            // Play explosive particles at launch.
-            emissions = whiteLaunchParticles.emission;
-            emissions.enabled = true;
+            launchParticles();
 
-            emissions = yellowLaunchParticles.emission;
-            emissions.enabled = true;
-
-            // Stop the crashing explosive particles before launching.
-            emissions = crashLaunchParticles.emission;
-            emissions.enabled = false;
-
-            Vector3 playerPosition = PlayerMovement.Instance.transform.position;
+            Vector3 playerPosition = playerObject.transform.position;
             Vector3 myPosition = transform.position;
             Vector2 direction = (playerPosition - myPosition);
-
+            
             rb.velocity = new Vector2(rb.velocity.x + (direction.x), rb.velocity.y + jumpForce);
             timeSinceLastJump = 0;
         }
+    }
+
+    private void launchParticles()
+    {
+        // Play explosive particles at launch.
+        emissions = whiteLaunchParticles.emission;
+        emissions.enabled = true;
+
+        emissions = yellowLaunchParticles.emission;
+        emissions.enabled = true;
+
+        // Stop the crashing explosive particles before launching.
+        emissions = crashLaunchParticles.emission;
+        emissions.enabled = false;
     }
 
     // Handles boss particle emissions on the ground.
