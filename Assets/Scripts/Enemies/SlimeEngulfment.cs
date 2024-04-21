@@ -6,8 +6,7 @@ public class SlimeEngulfment : MonoBehaviour
 {
     // Create relevant instances.
     private GameObject player;
-    private PlayerMovement pm;
-    private HealthManager healthManager;
+    private PlayerStatesList pState;
 
     // "[SerializeFeild]" allows these variables to be edited in Unity.
     // Boss variables.
@@ -19,21 +18,20 @@ public class SlimeEngulfment : MonoBehaviour
     {
         // Access components once to save processing power.
         player = GameObject.Find("Player");
-        pm = player.GetComponent<PlayerMovement>();
-        healthManager = player.GetComponent<HealthManager>();
+        pState = player.GetComponent<PlayerStatesList>();
     }
 
     // Update() is called once per frame.
     void Update()
     {
-        // Update PlayerMovement script whether or not the player is engulfed.
+        // Update PlayerStatesList script whether or not the player is engulfed.
         if (Engulfed) 
         {
-            pm.isSlowed = true;
+            pState.slowed = true;
         }
         else
-        { 
-            pm.isSlowed = false; 
+        {
+            pState.slowed = false; 
         }
     }
 
@@ -41,7 +39,6 @@ public class SlimeEngulfment : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D col)
     {
         Engulfed = true;
-        healthManager.TakeDamage(damageToPlayer);
     }
 
     // Disable engulfed.

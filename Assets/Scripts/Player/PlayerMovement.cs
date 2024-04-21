@@ -118,8 +118,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Effects variables.
     [Header("Effects:")]
-    public bool isSlowed = false;
-    private float slowRatio = 0.5f;
+    private float slowRatio = 0.45f;
 
     // Awake() is called when the script instance is being loaded.
     // Awake() is used to initialize any variables or game states before the game starts.
@@ -281,7 +280,7 @@ public class PlayerMovement : MonoBehaviour
     void TrySlow()
     {
         // Apply slowed effect to player.
-        if (isSlowed)
+        if (pState.slowed)
         {
             moveSpeed = defaultMoveSpeed * slowRatio;
             anim.speed = slowRatio;
