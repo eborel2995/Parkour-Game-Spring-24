@@ -182,10 +182,8 @@ public class PlayerMovement : MonoBehaviour
         if (!isWallJumping) { Flip(); }
     }
 
-    private void UpdateUI()
-    {
-        dashIcon.fillAmount = Math.Clamp(timeSinceDash, 0, 1);
-    }
+
+    
 
     // FixedUpdate() can run once, zero, or several times per frame, depending on
     // how many physics frames per second are set in the time settings, and how
@@ -669,5 +667,9 @@ public class PlayerMovement : MonoBehaviour
             // If dashing set state to dashing animation.
             if (isDashing) { state = MovementState.dashing; }
         }
+    }
+    private void UpdateUI()
+    {
+        dashIcon.fillAmount = Math.Clamp(timeSinceDash, 0, 1);
     }
 }

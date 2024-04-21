@@ -41,6 +41,10 @@ public class ScannerDrone : Enemy
     {
         // Update state.
         base.Update();
+    }
+
+    private void FixedUpdate()
+    {
         UpdateEnemyStates();
     }
 
