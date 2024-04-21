@@ -34,10 +34,10 @@ public class BossScript : Enemy
     // Start() is called before the first frame update.
     protected override void Start()
     {
+        // Access components once to save processing power.
         rb = bomb.GetComponent<Rigidbody2D>();
         spriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
         original = spriteRenderer.color;
-
         playerObject = GameObject.FindWithTag("Player");
         hm = playerObject.GetComponent<HealthManager>();
     }
