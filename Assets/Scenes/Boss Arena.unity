@@ -207,11 +207,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &86470938 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7942750912769468708, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
-  m_PrefabInstance: {fileID: 1120744551}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &222881637
 GameObject:
   m_ObjectHideFlags: 0
@@ -12818,6 +12813,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6707681149259320347, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+      propertyPath: dashIcon
+      value: 
+      objectReference: {fileID: 1120744552}
+    - target: {fileID: 6707681149259320347, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
       propertyPath: attackableLayer.m_Bits
       value: 2048
       objectReference: {fileID: 0}
@@ -12842,6 +12841,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+--- !u!114 &1120744552 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8687567633036651482, guid: 330a2e9a7b0c8ea42abf661ca5b6ee14, type: 3}
+  m_PrefabInstance: {fileID: 1120744551}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1194094954
 GameObject:
   m_ObjectHideFlags: 0
@@ -13463,8 +13473,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb88d55edc299714386acd79e549ad96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 86470938}
-  damageToPlayer: 0
 --- !u!58 &1648728023
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -22109,9 +22117,9 @@ MonoBehaviour:
   recoilLength: 0
   recoilFactor: 0
   moveSpeed: 5
+  bomb: {fileID: 251568648}
   jumpForce: 30
   jumpFrequency: 1.75
-  bomb: {fileID: 251568648}
   whiteLaunchParticles: {fileID: 561600609}
   yellowLaunchParticles: {fileID: 1959873840}
   crashLaunchParticles: {fileID: 757461820}
