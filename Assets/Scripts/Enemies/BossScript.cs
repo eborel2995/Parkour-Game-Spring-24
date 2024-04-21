@@ -7,18 +7,21 @@ using UnityEngine.SceneManagement;
 
 public class BossScript : Enemy
 {
-    private float timeSinceLastJump = 1f; //initial jump timer
+    // "[SerializeFeild]" allows these variables to be edited in Unity.
+    // Boss variables.
+    private Color original;
+    private bool facingLeft = true;
+    private float recordedPlayerHP;
+    private float turnDistance = 2f; // Distance player must move until boss turns to prevent instantaneous turning.
+    private float timeSinceLastJump = 1f; // Initial jump timer.
+    [SerializeField] private GameObject bomb; // Parent object that Zip Bomber is riding.
     [SerializeField] private float jumpForce = 35f;
     [SerializeField] private float jumpFrequency = 2f;
-    private bool facingLeft = true;
-    [SerializeField] private GameObject bomb; //parent object that Zip Bomber is riding
-    private float turnDistance = 2f; //distance player must move until boss turns to prevent instantaneous turning
-    private SpriteRenderer spriteRenderer;
-    private Color original;
 
-    private GameObject playerObject;
+    // Access relevant components.
     private HealthManager hm;
-    private float recordedPlayerHP;
+    private GameObject playerObject;
+    private SpriteRenderer spriteRenderer;
 
     // Identified in Unity Inspector.
     [SerializeField] private ParticleSystem whiteLaunchParticles;
@@ -26,7 +29,7 @@ public class BossScript : Enemy
     [SerializeField] private ParticleSystem crashLaunchParticles;
 
     // Particles.
-    ParticleSystem.EmissionModule emissions; //used to toggle particle emitters
+    ParticleSystem.EmissionModule emissions; // Used to toggle particle emitters.
 
     // Start() is called before the first frame update.
     protected override void Start()
