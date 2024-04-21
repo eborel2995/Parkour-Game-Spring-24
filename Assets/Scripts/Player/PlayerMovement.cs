@@ -93,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
     float restoreTimeSpeed;
     float timeBetweenAttack;
     [Header("Player Attack Settings:")]
-    [SerializeField] float damage;
+    [SerializeField] float damage = 1f;
 
     // Attack transform, attack area, attackable layers, and attack animations.
     [SerializeField] Transform SideAttackTransform, UpAttackTransform, DownAttackTransform;
