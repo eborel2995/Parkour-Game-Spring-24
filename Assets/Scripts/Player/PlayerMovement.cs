@@ -86,7 +86,6 @@ public class PlayerMovement : MonoBehaviour
     private bool restoreTime;
     private float timeSinceAttack;
     private float restoreTimeSpeed;
-    private float timeBetweenAttack;
     [SerializeField] float damage = 1f;
 
     // Attack transform, attack area, attackable layers, and attack animations.
@@ -199,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Apply recoil to attacks and damage.
-        Recoil();
+        TryRecoil();
     }
 
     //Helper functions:
@@ -449,54 +448,50 @@ public class PlayerMovement : MonoBehaviour
         // If the player didn't try to attack, skip this function.
         if (!playerClickedAttack) { return; }
 
-        // If the player can attack.
-        if (timeSinceAttack >= timeBetweenAttack)
-        {
-            // Reset time since last attack.
-            timeSinceAttack = 0; 
+        // Reset time since last attack.
+        timeSinceAttack = 0; 
             
-            // If player is on the ground then side attack and display slash effect.
-            if (vertical == 0)
-            {
-                // Side attack.
-                ChooseAttackDirection("Side");
-            }
-            // If player's vertical input > 0 then up attack and display slash effect.
-            else if (vertical > 0)
-            {
-                // Up attack.
-                ChooseAttackDirection("Up");
-            }
-            // If player is in the air and player's vertical input < 0 then down attack and display slash effect.
-            else if (!IsGrounded() && vertical < 0)
-            {
-                // Down attack.
-                ChooseAttackDirection("Down");
-            }
+        // If player is on the ground then side attack and display slash effect.
+        if (vertical == 0)
+        {
+            // Side attack.
+            ChooseAttackDirection("Side");
         }
+        // If player's vertical input > 0 then up attack and display slash effect.
+        else if (vertical > 0)
+        {
+            // Up attack.
+            ChooseAttackDirection("Up");
+        }
+        // If player is in the air and player's vertical input < 0 then down attack and display slash effect.
+        else if (!IsGrounded() && vertical < 0)
+        {
+            // Down attack.
+            ChooseAttackDirection("Down");
+        }
+        
     }
 
     // Allow the programmer to write a readable direction for the attack, all that's modifyable is in here. 
     void ChooseAttackDirection(string attackDirection)
     {
         if (attackDirection == "Side")
-        { AttackDirection(SideAttackTransform, SideAttackArea, pState.recoilingX, recoilXSpeed, slashEffect, 0, SideAttackTransform, attackSound); }
+        { AttackDirection(SideAttackTransform, SideAttackArea, pState.recoilingX, recoilXSpeed, slashEffect, 0, attackSound); }
 
         else if (attackDirection == "Up")
-        { AttackDirection(UpAttackTransform, UpAttackArea, pState.recoilingY, recoilYSpeed, slashEffect, 80, UpAttackTransform, attackSound); }
+        { AttackDirection(UpAttackTransform, UpAttackArea, pState.recoilingY, recoilYSpeed, slashEffect, 80, attackSound); }
 
         else if (attackDirection == "Down")
-        { AttackDirection(DownAttackTransform, DownAttackArea, pState.recoilingY, recoilYSpeed, slashEffect, -90, DownAttackTransform, attackSound); }
+        { AttackDirection(DownAttackTransform, DownAttackArea, pState.recoilingY, recoilYSpeed, slashEffect, -90, attackSound); }
     }
 
-    void AttackDirection(Transform area, Vector2 distance, bool recoilDirection, float recoilSpeed, GameObject visualEffect, int effectAngle, Transform position, AudioSource soundEffect)
+    // Take inputs predefined in ChooseAttackDirection to keep consistent attack method. 
+    void AttackDirection(Transform positionArea, Vector2 distance, bool recoilDirection, float recoilSpeed, GameObject visualEffect, int effectAngle, AudioSource soundEffect)
     {
         soundEffect.Play();
-        Hit(area, distance, ref recoilDirection, recoilSpeed);
-        SlashEffectAtAngle(visualEffect, effectAngle, position);
+        Hit(positionArea, distance, ref recoilDirection, recoilSpeed);
+        SlashEffectAtAngle(visualEffect, effectAngle, positionArea);
     }
-
-
 
 
     // Handles player hit and recoil on enemies.
@@ -543,7 +538,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Handles player recoil.
-    void Recoil()
+    void TryRecoil()
     {
         // If player is recoiling on the x-axis.
         if (pState.recoilingX)
@@ -649,33 +644,34 @@ public class PlayerMovement : MonoBehaviour
     // Switch between player animations based on movement.
     private void UpdateAnimationState()
     {
-        if (!isWallJumping)
-        {
-            // If not moving set state to idle animation.
-            if (horizontal == 0f) { state = MovementState.idle; }
+        // Guard clause to prevent nesting.
+        // If wall jumping, don't change animation state.
+        if (isWallJumping)
+        { return; }
 
-            // If moving right (positive x-axis) set state to runningRight animation.
-            // *It just works with != instead of > so DO NOT change this*
-            else if (horizontal != 0f)
-            { state = MovementState.runningRight; }
+        // If not moving set state to idle animation.
+        if (horizontal == 0f) { state = MovementState.idle; }
 
-            // If moving left (negative x-axis) set state to runningLeft animation.
-            else if (horizontal < 0f)
-            { state = MovementState.runningLeft; }
+        // If moving right (positive x-axis) set state to runningRight animation.
+        // *It just works with != instead of > so DO NOT change this*
+        else if (horizontal != 0f) { state = MovementState.runningRight; }
 
-            // We use +/-0.1f because our y-axis velocity is rarely perfectly zero.
-            // If moving up (positive y-axis) set state to jumping animation.
-            if (rb.velocity.y > 0.1f) { state = MovementState.jumping; }
+        // If moving left (negative x-axis) set state to runningLeft animation.
+        else if (horizontal < 0f) { state = MovementState.runningLeft; }
 
-            // If moving down (negative y-axis) set state to falling animation.
-            else if (rb.velocity.y < -0.1f) { state = MovementState.falling; }
+        // We use +/-0.1f because our y-axis velocity is rarely perfectly zero.
+        // If moving up (positive y-axis) set state to jumping animation.
+        if (rb.velocity.y > 0.1f) { state = MovementState.jumping; }
 
-            // If wall sliding set state to wallSliding animation.
-            if (isWallSliding) { state = MovementState.wallSliding; }
+        // If moving down (negative y-axis) set state to falling animation.
+        else if (rb.velocity.y < -0.1f) { state = MovementState.falling; }
 
-            // If dashing set state to dashing animation.
-            if (isDashing) { state = MovementState.dashing; }
-        }
+        // If wall sliding set state to wallSliding animation.
+        if (isWallSliding) { state = MovementState.wallSliding; }
+
+        // If dashing set state to dashing animation.
+        if (isDashing) { state = MovementState.dashing; }
+        
     }
     private void UpdateUI()
     {
