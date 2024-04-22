@@ -674,6 +674,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void UpdateUI()
     {
-        dashIcon.fillAmount = Math.Clamp(timeSinceDash, 0, 1);
+        // Refill dash icon fill amount. Make sure it is a value between 0 to 1, and not NaN
+        dashIcon.fillAmount = timeSinceDash != 0 ? Math.Clamp(timeSinceDash/dashingCooldown, 0, 1) : 0;
     }
 }
