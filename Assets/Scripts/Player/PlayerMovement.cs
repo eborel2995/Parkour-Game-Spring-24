@@ -63,29 +63,30 @@ public class PlayerMovement : MonoBehaviour
     // Dashing variables.
     private bool canDash = true;
     private bool isDashing;
+    private float timeSinceDash = 1;
     [SerializeField] private float dashingPower = 24f;
     [SerializeField] private float dashingTime = 0.2f;
     [SerializeField] private float dashingCooldown = 0.75f;
     [SerializeField] private Image dashIcon;
-    private float timeSinceDash = 1;
     [Space(5)]
 
     // Audio Variables
+    [Header("Audio Inputs:")]
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource doubleJumpSound;
     [SerializeField] private AudioSource wallJumpSound;
     [SerializeField] private AudioSource dashSound;
     [SerializeField] private AudioSource attackSound;
     [SerializeField] private AudioSource stepSound;
+    [Space(5)]
 
-
-    // AttackAttacking variables.
-    bool attack = false;    // Handles player attack permissions and holds attack key from Unity Input Manager.
-    bool restoreTime;
-    float timeSinceAttack;
-    float restoreTimeSpeed;
-    float timeBetweenAttack;
+    // Attack variables.
     [Header("Player Attack Settings:")]
+    private bool attack = false;    // Handles player attack permissions and holds attack key from Unity Input Manager.
+    private bool restoreTime;
+    private float timeSinceAttack;
+    private float restoreTimeSpeed;
+    private float timeBetweenAttack;
     [SerializeField] float damage = 1f;
 
     // Attack transform, attack area, attackable layers, and attack animations.
@@ -96,9 +97,9 @@ public class PlayerMovement : MonoBehaviour
     [Space(5)]
 
     // Player attack recoil variables.
+    [Header("Attack Recoil Settings:")]
     private int stepsXRecoiled;
     private int stepsYRecoiled;
-    [Header("Attack Recoil Settings:")]
     [SerializeField] int recoilXSteps = 3;
     [SerializeField] int recoilYSteps = 3;
     [SerializeField] float recoilXSpeed = 25;
@@ -108,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
     // Player health variables.
     [Header("Player Health Settings:")]
     [SerializeField] float hitFlashSpeed;
+    [Space(5)]
 
     // Effects variables.
     [Header("Effects:")]

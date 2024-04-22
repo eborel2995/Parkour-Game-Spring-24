@@ -61,6 +61,8 @@ public class BossScript : Enemy
     // Handles boss being attacked.
     public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
     {
+        if (_damageDone <= 0) { return; }
+
         health -= _damageDone;
         if (!isRecoiling)
         {
