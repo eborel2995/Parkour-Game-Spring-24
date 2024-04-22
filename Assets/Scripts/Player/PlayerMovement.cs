@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Attack variables.
     [Header("Player Attack Settings:")]
-    private bool attack = false;    // Handles player attack permissions and holds attack key from Unity Input Manager.
+    private bool playerClickedAttack = false;    // Handles player attack permissions and holds attack key from Unity Input Manager.
     private bool restoreTime;
     private float timeSinceAttack;
     private float restoreTimeSpeed;
@@ -132,11 +132,11 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         // Access components once to save processing power.
-        pState = GetComponent<PlayerStatesList>();
-        sprite = GetComponent<SpriteRenderer>();
-        coll = GetComponent<BoxCollider2D>();
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        pState  = GetComponent<PlayerStatesList>();
+        sprite  = GetComponent<SpriteRenderer>();
+        coll    = GetComponent<BoxCollider2D>();
+        rb      = GetComponent<Rigidbody2D>();
+        anim    = GetComponent<Animator>();
         gravity = rb.gravityScale;
     }
 
@@ -171,7 +171,7 @@ public class PlayerMovement : MonoBehaviour
         TrySlow();
         TryJump();
         TryDash();
-        Attack();
+        TryAttack();
         RestoreTimeScale();
         FlashWhileInvincible();
         WallSlide();
@@ -206,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
     void GetUserInput()
     {
         // Set attack, vertical, and horizontal input via Unity Input Manager.
-        attack = Input.GetButtonDown("Attack");
+        playerClickedAttack = Input.GetButtonDown("Attack");
         vertical = Input.GetAxisRaw("Vertical");
         horizontal = Input.GetAxisRaw("Horizontal");
     }
@@ -228,20 +228,21 @@ public class PlayerMovement : MonoBehaviour
     // Restores time scale if it has been modified.
     public void RestoreTimeScale()
     {
-        // If time scale needs to be restored.
-        if (restoreTime)
+        // Guard clause to prevent nesting.
+        // If restoreTime isn't required, skip this function.
+        if (!restoreTime)
+        { return; }
+
+        // If time scale < 1 then summation time scale.
+        if (Time.timeScale < 1)
         {
-            // If time scale < 1 then summation time scale.
-            if (Time.timeScale < 1)
-            {
-                Time.timeScale += Time.deltaTime * restoreTimeSpeed;
-            }
-            // Stop restoring time scale when time scale = 1.
-            else
-            {
-                Time.timeScale = 1;
-                restoreTime = false;
-            }
+            Time.timeScale += Time.deltaTime * restoreTimeSpeed;
+        }
+        // Stop restoring time scale when time scale = 1.
+        else
+        {
+            Time.timeScale = 1;
+            restoreTime = false;
         }
     }
 
@@ -251,13 +252,13 @@ public class PlayerMovement : MonoBehaviour
         if (sprite == null)
         {
             Debug.LogError("SpriteRenderer not assigned in PlayerMovement.");
-            return; // Exit if sprite is null to prevent further errors
+            return; // Exit if sprite is null to prevent further errors.
         }
 
         if (pState == null)
         {
             Debug.LogError("PlayerStatesList not assigned in PlayerMovement.");
-            return; // Exit if pState is null to prevent further errors
+            return; // Exit if pState is null to prevent further errors.
         }
 
         // Change player sprite color if player is invincible and don't change if not.
@@ -290,19 +291,25 @@ public class PlayerMovement : MonoBehaviour
 
     void TryJump()
     {
-        // Jump if on jumpable ground or the single double jump.
-        if (Input.GetButtonDown("Jump") && canDoubleJump)
-        {
-            if (!IsGrounded())
-            { canDoubleJump = false; }
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+        // Guard clause to prevent nesting.
+        // If the player isn't pressing jump, or if they are unable to double jump, skip trying to jump
+        if (!Input.GetButtonDown("Jump") || !canDoubleJump)
+        { return; }
 
-            //Play jump sound if on ground, play double jump sound if not on ground
-            if (IsGrounded())
-            { jumpSound.Play(); }
-            else if (!IsGrounded() && !isWallJumping)
-            { doubleJumpSound.Play(); }
-        }
+        // Jump if on jumpable ground or the single double jump.
+        
+        if (!IsGrounded())
+        { canDoubleJump = false; }
+
+        // Increase vertical velocity. 
+        rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+
+        //Play jump sound if on ground, play double jump sound if not on ground
+        if (IsGrounded())
+        { jumpSound.Play(); }
+        else if (!IsGrounded() && !isWallJumping)
+        { doubleJumpSound.Play(); }
+        
     }
 
     void TryDash()
@@ -339,7 +346,8 @@ public class PlayerMovement : MonoBehaviour
 
         // Player can dash again after dashingCooldown.
         yield return new WaitForSeconds(dashingCooldown);
-        canDash = true;
+
+        if (timeSinceDash >= dashingCooldown) { canDash = true; }
     }
 
     // Check if player can wall slide and do it if so.
@@ -432,63 +440,64 @@ public class PlayerMovement : MonoBehaviour
     //Combat functions:
 
     // Player attack handler.
-    void Attack()
+    void TryAttack()
     {
         // Set the time since the last attack.
         timeSinceAttack = Time.deltaTime;
 
-        // If the player can attack.
-        if (attack && timeSinceAttack >= timeBetweenAttack)
-        {
-            timeSinceAttack = 0;    // Reset time since last attack.
+        // Guard clause to prevent nesting.
+        // If the player didn't try to attack, skip this function.
+        if (!playerClickedAttack) { return; }
 
-            // If player is on the ground.
-            if (IsGrounded())
+        // If the player can attack.
+        if (timeSinceAttack >= timeBetweenAttack)
+        {
+            // Reset time since last attack.
+            timeSinceAttack = 0; 
+            
+            // If player is on the ground then side attack and display slash effect.
+            if (vertical == 0)
             {
-                
-                // If player is on the ground then side attack and display slash effect.
-                if (vertical == 0)
-                {
-                    attackSound.Play();
-                    Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
-                    Instantiate(slashEffect, SideAttackTransform);
-                }
-                // If player's vertical input > 0 then up attack and display slash effect.
-                else if (vertical > 0)
-                {
-                    attackSound.Play();
-                    Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
-                    SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
-                }
+                // Side attack.
+                ChooseAttackDirection("Side");
             }
-            // If player is in the air.
-            else if (!IsGrounded())
+            // If player's vertical input > 0 then up attack and display slash effect.
+            else if (vertical > 0)
             {
-                
-                // If player is in the air then side attack and display slash effect.
-                if (vertical == 0)
-                {
-                    attackSound.Play();
-                    Hit(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed);
-                    Instantiate(slashEffect, SideAttackTransform);
-                }
-                // If player's vertical input > 0 then up attack and display slash effect.
-                else if (vertical > 0)
-                {
-                    attackSound.Play();
-                    Hit(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed);
-                    SlashEffectAtAngle(slashEffect, 80, UpAttackTransform);
-                }
-                // If player's vertical input < 0 then down attack and display slash effect.
-                else if (vertical < 0)
-                {
-                    attackSound.Play();
-                    Hit(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed);
-                    SlashEffectAtAngle(slashEffect, -90, DownAttackTransform);
-                }
+                // Up attack.
+                ChooseAttackDirection("Up");
+            }
+            // If player is in the air and player's vertical input < 0 then down attack and display slash effect.
+            else if (!IsGrounded() && vertical < 0)
+            {
+                // Down attack.
+                ChooseAttackDirection("Down");
             }
         }
     }
+
+    // Allow the programmer to write a readable direction for the attack, all that's modifyable is in here. 
+    void ChooseAttackDirection(string attackDirection)
+    {
+        if (attackDirection == "Side")
+        { AttackDirection(SideAttackTransform, SideAttackArea, pState.recoilingX, recoilXSpeed, slashEffect, 0, SideAttackTransform, attackSound); }
+
+        else if (attackDirection == "Up")
+        { AttackDirection(UpAttackTransform, UpAttackArea, pState.recoilingY, recoilYSpeed, slashEffect, 80, UpAttackTransform, attackSound); }
+
+        else if (attackDirection == "Down")
+        { AttackDirection(DownAttackTransform, DownAttackArea, pState.recoilingY, recoilYSpeed, slashEffect, -90, DownAttackTransform, attackSound); }
+    }
+
+    void AttackDirection(Transform area, Vector2 distance, bool recoilDirection, float recoilSpeed, GameObject visualEffect, int effectAngle, Transform position, AudioSource soundEffect)
+    {
+        soundEffect.Play();
+        Hit(area, distance, ref recoilDirection, recoilSpeed);
+        SlashEffectAtAngle(visualEffect, effectAngle, position);
+    }
+
+
+
 
     // Handles player hit and recoil on enemies.
     private void Hit(Transform _attackTransform, Vector2 _attackArea, ref bool _recoilDir, float _recoilStrength)
@@ -496,26 +505,24 @@ public class PlayerMovement : MonoBehaviour
         // Holds an array of colliders for objects that can be hit.
         Collider2D[] objectsToHit = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0, attackableLayer);
 
-        // If there is an object to hit.
-        if (objectsToHit.Length > 0)
-        {
-            _recoilDir = true; //add a recoil effect on the player
+        // Guard clause for better readability.
+        // If there are no objects to hit.
+        if (objectsToHit.Length <= 0)
+        { return; }
 
-            canDoubleJump = true; //if player hit enemy, allow another air jump and dash
-            dashingCooldown = 0;
-            canDash = true;
-            timeSinceDash += 1;
-        }
+        _recoilDir = true; //add a recoil effect on the player
+        canDoubleJump = true; //if player hit enemy, allow another air jump and dash
+        dashingCooldown = 0;
+        canDash = true;
+        timeSinceDash += 1;
         
         // Loop through objectsToHit array and deal damage accordingly.
         for (int i = 0; i < objectsToHit.Length; i++)
         {
-            // If enemy game object has not been destroyed.
-            if (objectsToHit[i].GetComponent<Enemy>() != null)
-            {
-                // Apply hit damage to enemy, decrement enemy health, and recoil player.
-                objectsToHit[i].GetComponent<Enemy>().EnemyHit(damage, (transform.position - objectsToHit[i].transform.position).normalized, _recoilStrength);
-            }
+            // Apply hit damage to enemy, decrement enemy health, and recoil player.
+            // The ? is the same as if (objectsToHit[i] != null) {}
+            objectsToHit[i]?.GetComponent<Enemy>().EnemyHit(damage, (transform.position - objectsToHit[i].transform.position).normalized, _recoilStrength);
+            
         }
     }
 
@@ -524,6 +531,9 @@ public class PlayerMovement : MonoBehaviour
     {
         // Create slash effect.
         _slashEffect = Instantiate(_slashEffect, _attackTransform);
+        
+        // Prevent 0 degree angle from causing bug where side attack only displays to one side.
+        if (_effectAngle == 0) { return; }
 
         // Handle slash effect positioning.
         _slashEffect.transform.eulerAngles = new Vector3(0, 0, _effectAngle);
