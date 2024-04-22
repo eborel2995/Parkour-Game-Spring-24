@@ -476,17 +476,17 @@ public class PlayerMovement : MonoBehaviour
     void ChooseAttackDirection(string attackDirection)
     {
         if (attackDirection == "Side")
-        { AttackDirection(SideAttackTransform, SideAttackArea, pState.recoilingX, recoilXSpeed, slashEffect, 0, attackSound); }
+        { AttackDirection(SideAttackTransform, SideAttackArea, ref pState.recoilingX, recoilXSpeed, slashEffect, 0, attackSound); }
 
         else if (attackDirection == "Up")
-        { AttackDirection(UpAttackTransform, UpAttackArea, pState.recoilingY, recoilYSpeed, slashEffect, 80, attackSound); }
+        { AttackDirection(UpAttackTransform, UpAttackArea, ref pState.recoilingY, recoilYSpeed, slashEffect, 80, attackSound); }
 
         else if (attackDirection == "Down")
-        { AttackDirection(DownAttackTransform, DownAttackArea, pState.recoilingY, recoilYSpeed, slashEffect, -90, attackSound); }
+        { AttackDirection(DownAttackTransform, DownAttackArea, ref pState.recoilingY, recoilYSpeed, slashEffect, -90, attackSound); }
     }
 
     // Take inputs predefined in ChooseAttackDirection to keep consistent attack method. 
-    void AttackDirection(Transform positionArea, Vector2 distance, bool recoilDirection, float recoilSpeed, GameObject visualEffect, int effectAngle, AudioSource soundEffect)
+    void AttackDirection(Transform positionArea, Vector2 distance, ref bool recoilDirection, float recoilSpeed, GameObject visualEffect, int effectAngle, AudioSource soundEffect)
     {
         soundEffect.Play();
         Hit(positionArea, distance, ref recoilDirection, recoilSpeed);
@@ -502,7 +502,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Guard clause for better readability.
         // If there are no objects to hit.
-        if (objectsToHit.Length <= 0)
+        if (objectsToHit.Length < 1)
         { return; }
 
         _recoilDir = true; //add a recoil effect on the player
@@ -517,7 +517,6 @@ public class PlayerMovement : MonoBehaviour
             // Apply hit damage to enemy, decrement enemy health, and recoil player.
             // The ? is the same as if (objectsToHit[i] != null) {}
             objectsToHit[i]?.GetComponent<Enemy>().EnemyHit(damage, (transform.position - objectsToHit[i].transform.position).normalized, _recoilStrength);
-            
         }
     }
 
