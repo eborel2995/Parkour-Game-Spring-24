@@ -65,6 +65,8 @@ public class Enemy : MonoBehaviour
     // Handles enemy being attacked..
     public virtual void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
     {
+        if (_damageDone <= 0) { return; }
+
         // Do damage.
         health -= _damageDone;
 
