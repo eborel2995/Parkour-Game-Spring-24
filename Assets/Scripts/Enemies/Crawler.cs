@@ -63,14 +63,8 @@ public class Crawler : Enemy
     {
         Vector3 newScale = baseScale;
 
-        if(newDirection == LEFT)
-        {
-            newScale.x = -baseScale.x;
-        }
-        else if (newDirection == RIGHT) 
-        {
-            newScale.x = baseScale.x;
-        }
+        if (newDirection == LEFT) { newScale.x = -baseScale.x; }
+        else if (newDirection == RIGHT) { newScale.x = baseScale.x; }
 
         transform.localScale = newScale;
         facingDirection = newDirection;
@@ -79,14 +73,11 @@ public class Crawler : Enemy
     // Check if crawler is hitting a wall.
     protected bool IsHittingWall()
     {
-        bool val = false;
+        bool val;
         float castDist = baseCastDist;
 
         // Define the cast distance for left and right.
-        if(facingDirection == LEFT)
-        {
-            castDist = -baseCastDist;
-        }
+        if (facingDirection == LEFT) { castDist = -baseCastDist; }
 
         // Determine the target destination based on the cast distance.
         Vector3 targetPos = castPos.position;
@@ -100,13 +91,9 @@ public class Crawler : Enemy
         int combinedLayerMask = (1 << groundLayer) | (1 << wallLayer);
 
         if (Physics2D.Linecast(castPos.position, targetPos, combinedLayerMask))
-        {
-            val = true;
-        }
+        { val = true; }
         else
-        {
-            val = false;
-        }
+        { val = false; }
 
         return val;
     }
@@ -114,7 +101,7 @@ public class Crawler : Enemy
     // Check if crawler is near an edge.
     protected bool IsNearEdge()
     {
-        bool val = true;
+        bool val;
         float castDist = baseCastDist;
 
         // Determine the target destination based on the cst distance.
@@ -124,13 +111,9 @@ public class Crawler : Enemy
         Debug.DrawLine(castPos.position, targetPos, Color.red);
 
         if (Physics2D.Linecast(castPos.position, targetPos, 1 << LayerMask.NameToLayer("Ground")))
-        {
-            val = false;
-        }
+        { val = false; }
         else
-        {
-            val = true;
-        }
+        { val = true; }
 
         return val;
     }

@@ -25,7 +25,6 @@ GameObject:
   - component: {fileID: 886341013722013776}
   - component: {fileID: 8633057383147956892}
   - component: {fileID: -2012172786813040046}
-  - component: {fileID: 5963194494990490631}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -84,6 +83,7 @@ MonoBehaviour:
   dashingPower: 24
   dashingTime: 0.2
   dashingCooldown: 0.75
+  dashIcon: {fileID: 0}
   jumpSound: {fileID: -3690568159309531504}
   doubleJumpSound: {fileID: 6995583697590937344}
   wallJumpSound: {fileID: 1539732068184750423}
@@ -106,7 +106,6 @@ MonoBehaviour:
   recoilXSpeed: 25
   recoilYSpeed: 25
   hitFlashSpeed: 1
-  isSlowed: 0
 --- !u!114 &6226129961009158131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +154,7 @@ MonoBehaviour:
   recoilingY: 0
   lookingRight: 0
   invincible: 0
+  slowed: 0
 --- !u!50 &1302963316785135149
 Rigidbody2D:
   serializedVersion: 4
@@ -1185,18 +1185,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5963194494990490631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474088957329560946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59698ed82b4106041835766ad60fbcb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1664186760508678048
 GameObject:
   m_ObjectHideFlags: 0

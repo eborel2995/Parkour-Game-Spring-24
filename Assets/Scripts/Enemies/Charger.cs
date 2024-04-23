@@ -120,7 +120,7 @@ public class Charger : Enemy
     // Check if charger is hitting a wall.
     protected bool IsHittingWall()
     {
-        bool val = false;
+        bool val;
         float castDist = baseCastDist;
 
         // Define the cast distance for left and right.
@@ -141,13 +141,9 @@ public class Charger : Enemy
         int combinedLayerMask = (1 << groundLayer) | (1 << wallLayer);
 
         if (Physics2D.Linecast(castPos.position, targetPos, combinedLayerMask))
-        {
-            val = true;
-        }
+        {  val = true; }
         else
-        {
-            val = false;
-        }
+        { val = false; }
 
         return val;
     }
@@ -236,10 +232,8 @@ public class Charger : Enemy
         }
 
         // Change charger direction.
-        if (direction.x > 0 && facingDirection == LEFT)
-            ChangeFacingDirection(RIGHT);
-        else if (direction.x < 0 && facingDirection == RIGHT)
-            ChangeFacingDirection(LEFT);
+        if (direction.x > 0 && facingDirection == LEFT) { ChangeFacingDirection(RIGHT); }
+        else if (direction.x < 0 && facingDirection == RIGHT) { ChangeFacingDirection(LEFT); }
 
         // Activate charging movement.
         rb.velocity = new Vector2(direction.x * moveSpeed * chargeSpeedMultiplier, rb.velocity.y);
@@ -248,33 +242,36 @@ public class Charger : Enemy
     // Changes charger state.
     protected void ChangeState(ChargerStates newState)
     {
-        if (currentChargerState != newState)
+        // Guard clause to prevent nesting.
+        // If the new state is the same as the current, then don't change anything and skip this function. 
+        if (currentChargerState == newState)
+        { return; }
+
+        // Handle exiting states.
+        switch (currentChargerState)
         {
-            // Handle exiting states.
-            switch (currentChargerState)
-            {
-                case ChargerStates.Charger_Jumping:
-                    anim.SetBool("IsJumping", false); // Ensure jumping animation is turned off.
-                    break;
-            }
-
-            currentChargerState = newState;
-
-            // Handle entering new states.
-            switch (newState)
-            {
-                case ChargerStates.Charger_Charge:
-                    anim.SetBool("IsJumping", false); // Explicitly ensure this is off.
-                    anim.speed = chargeSpeedMultiplier; // Speed up animation.
-                    break;
-                case ChargerStates.Charger_Jumping:
-                    anim.SetBool("IsJumping", true);
-                    break;
-                default:
-                    anim.speed = 1; // Reset speed when not charging.
-                    break;
-            }
+            case ChargerStates.Charger_Jumping:
+                anim.SetBool("IsJumping", false); // Ensure jumping animation is turned off.
+                break;
         }
+
+        currentChargerState = newState;
+
+        // Handle entering new states.
+        switch (newState)
+        {
+            case ChargerStates.Charger_Charge:
+                anim.SetBool("IsJumping", false); // Explicitly ensure this is off.
+                anim.speed = chargeSpeedMultiplier; // Speed up animation.
+                break;
+            case ChargerStates.Charger_Jumping:
+                anim.SetBool("IsJumping", true);
+                break;
+            default:
+                anim.speed = 1; // Reset speed when not charging.
+                break;
+            }
+        
     }
 
     // Handles charger being attacked.
