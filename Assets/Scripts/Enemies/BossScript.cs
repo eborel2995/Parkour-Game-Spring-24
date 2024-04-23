@@ -79,6 +79,7 @@ public class BossScript : Enemy
 
         StartCoroutine(hitFlash(0.25f, original));
 
+        //update boss health bar
         healthBar.fillAmount = health / maxHealth;
     }
 
