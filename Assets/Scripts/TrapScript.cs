@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ICollide : MonoBehaviour
+public class TrapScript : MonoBehaviour
 {
     private GameObject player;
     private HealthManager healthManager;
