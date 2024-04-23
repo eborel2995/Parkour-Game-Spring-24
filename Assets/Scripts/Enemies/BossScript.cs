@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class BossScript : Enemy
 {
@@ -28,6 +29,10 @@ public class BossScript : Enemy
     // Particles.
     ParticleSystem.EmissionModule emissions; // Used to toggle particle emitters.
 
+    // Boss health bar variables.
+    public Image healthBar;
+    private float maxHealth;
+
     // Start() is called before the first frame update.
     protected override void Start()
     {
@@ -37,6 +42,7 @@ public class BossScript : Enemy
         original = spriteRenderer.color;
         playerObject = GameObject.Find("Player");
         hm = playerObject.GetComponent<HealthManager>();
+        maxHealth = health;
     }
 
     // Update() is called once per frame.
@@ -72,6 +78,8 @@ public class BossScript : Enemy
         timeSinceLastJump = 100; // Force the boss to jump.
 
         StartCoroutine(hitFlash(0.25f, original));
+
+        healthBar.fillAmount = health / maxHealth;
     }
 
     // Handles boss movement.
